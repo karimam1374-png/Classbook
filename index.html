@@ -27,7 +27,7 @@ const K2='cb2cache';let S={st:[],mo:[],hm:{},sub:[]},db=null,dirty=new Set(),las
 const $=s=>document.querySelector(s),E=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])),
 O=(a,v)=>a.map(x=>`<option${String(x)===String(v)?' selected':''}>${E(x)}</option>`).join(''),
 nz=s=>String(s||'').replace(/ي/g,'ی').replace(/ك/g,'ک'),ss=t=>{const e=$('#ss');if(e)e.textContent=t},
-TABS={hw:'تکالیف',ex:'آزمون',rp:'گزارش',ls:'لیست کل',ar:'نتیجه آزمون',cl:'کلاس',bk:'پشتیبان'};
+TABS={hw:'تکالیف',ex:'آزمون',rp:'گزارش',ls:'لیست کل',ar:'نتیجه آزمون',cl:'کلاس',bk:'تنظیمات'};
 let tab='hw',cm='',cs=0,ce=0,rs=0,fix=false;
 const part=k=>k=='st'?{st:S.st,mo:S.mo,n:S.sub.map(u=>u.n)}:k=='hm'?S.hm:S.sub[+k.slice(1)];
 const put=(k,o)=>{if(k=='st'){S.st=o.st;S.mo=o.mo}else if(k=='hm')S.hm=o;else S.sub[+k.slice(1)]=o};
@@ -99,7 +99,9 @@ return `<h3>${t}</h3><div class="g5">${[1,2,3,4].map(l=>`<div class="k s${l}"><b
 return h+(U.big?bl(i=>F(U,x,i),'نمره نهایی (با اثر تکلیف)')+bl(i=>x.s[i],'نمره خام آزمون'):bl(i=>x.s[i],'نتیجه آزمون'))}
 function vcl(){const all=S.st.map((s,i)=>{const f=S.mo.flatMap(m=>S.hm[m].v[i]).filter(x=>x!=null);return[i,f.length?Math.round(f.filter(x=>x==1).length/f.length*100):null]}).filter(a=>a[1]!=null).sort((a,b)=>a[1]-b[1]).slice(0,5);
 return `<h3>تکالیف — میانگین کلاس</h3><div class="g">${S.mo.map(m=>{const a=S.st.map((_,i)=>hp(m,i)).filter(x=>x!=='');return `<div class="k"><b>${a.length?Math.round(a.reduce((p,c)=>p+c,0)/a.length)+'٪':'-'}</b><span>${m}</span></div>`}).join('')}</div><h3>دروس — میانگین سطح کلاس (۱ بهترین)</h3>`+S.sub.map(U=>{const a=S.st.flatMap((_,i)=>nums(U,i));return `<div class="k2"><b>${E(U.n)}</b> ${a.length?ow(a,1)+' ('+a.length+' نمره)':'—'}</div>`}).join('')+`<h3>کمترین درصد انجام تکلیف</h3>`+all.map(([i,p])=>`<div class="k2">${E(S.st[i].n)} — ${p}٪</div>`).join('')}
-function vbk(){return `<div class="k2"><p>اطلاعات فقط روی همین دستگاه ذخیره می‌شود و با دستگاه دیگر همگام نمی‌شود. با پاک کردن اطلاعات مرورگر یا حذف برنامه از بین می‌رود، پس هر هفته پشتیبان بگیرید. برای انتقال به گوشی یا تبلت دیگر، پشتیبان را بفرستید و آنجا «بازیابی» کنید (بازیابی، اطلاعات آن دستگاه را با فایل جایگزین می‌کند).</p><button class="bt" data-a="s">ارسال پشتیبان (تلگرام، ایتا، ...)</button><button class="bt" data-a="j">دانلود پشتیبان کامل (JSON)</button><button class="bt" data-a="c">دانلود خلاصه کلاس (CSV برای اکسل)</button></div><div class="k2"><p>بازیابی از فایل پشتیبان (حتی پشتیبان نسخه قبلی برنامه):</p><input type="file" id="im" accept=".json,.txt,application/json,text/plain"></div>`}
+function vbk(){return vbk0()+vnm()}
+function vnm(){return `<div class="k2"><b>ویرایش نام دانش‌آموزان</b><p class="m">نام یا فامیلی را تغییر دهید. تغییر در همه تب‌ها، گزارش‌ها و کارنامه‌ها اعمال می‌شود. نام خالی ذخیره نمی‌شود.</p>${S.st.map((s,i)=>`<div class="bar"><span class="m" style="flex:0 0 26px">${i+1}</span><input data-nm="${i}" value="${E(s.n)}"></div>`).join('')}</div>`}
+function vbk0(){return `<div class="k2"><p>اطلاعات فقط روی همین دستگاه ذخیره می‌شود و با دستگاه دیگر همگام نمی‌شود. با پاک کردن اطلاعات مرورگر یا حذف برنامه از بین می‌رود، پس هر هفته پشتیبان بگیرید. برای انتقال به گوشی یا تبلت دیگر، پشتیبان را بفرستید و آنجا «بازیابی» کنید (بازیابی، اطلاعات آن دستگاه را با فایل جایگزین می‌کند).</p><button class="bt" data-a="s">ارسال پشتیبان (تلگرام، ایتا، ...)</button><button class="bt" data-a="j">دانلود پشتیبان کامل (JSON)</button><button class="bt" data-a="c">دانلود خلاصه کلاس (CSV برای اکسل)</button></div><div class="k2"><p>بازیابی از فایل پشتیبان (حتی پشتیبان نسخه قبلی برنامه):</p><input type="file" id="im" accept=".json,.txt,application/json,text/plain"></div>`}
 function csv(){const H=['نام','گروه درسی','گروه ورزشی',...S.mo.map(m=>'تکلیف '+m+' %'),...S.sub.flatMap(U=>[U.n+' میانگین',U.n+' مثبت',U.n+' منفی'])],
 r=S.st.map((s,i)=>[s.n,s.ga,s.gs,...S.mo.map(m=>hp(m,i)),...S.sub.flatMap(U=>[avg(nums(U,i)),U.p[i]||0,U.m[i]||0])]);
 return '\ufeff'+[H,...r].map(a=>a.map(c=>'"'+String(c==null?'':c).replace(/"/g,'""')+'"').join(',')).join('\n')}
@@ -157,11 +159,11 @@ R()});
 document.addEventListener('change',e=>{const t=e.target,d=t.dataset;
 if(t.id=='im'){const f=t.files[0];if(f)f.text().then(x=>{try{let n=JSON.parse(x);if(!n.st||!n.sub||!n.hm)throw 0;if(!Array.isArray(n.sub))n.sub=Object.entries(n.sub).map(([k,u])=>({n:k,...u}));
 try{localStorage.setItem(K2+'_bak',JSON.stringify(S))}catch(e){}S=n;cs=ce=rs=0;cm=S.mo[0];['st','hm',...S.sub.map((_,k)=>'s'+k)].forEach(mk);if(db)watch();R();alert('بازیابی شد')}catch(e){alert('فایل پشتیبان معتبر نیست')}});return}
-if(t.id=='pm'){cm=t.value;hd=-1}else if(t.id=='pd'){hd=+t.value;scj=hd}else if(t.id=='pas'){asb=+t.value;aex=-1}else if(t.id=='pae')aex=+t.value;else if(t.id=='ps'){cs=+t.value;ce=0}else if(t.id=='pe')ce=+t.value;else if(t.id=='pr')rs=+t.value;else if(t.id=='pw'){const x=X();if(t.value)x.w=t.value;else delete x.w;mk('s'+cs)}else if(t.id=='fx')fix=t.checked;else if(t.id=='pl')lsub=+t.value;else if(t.id=='so')lso=t.checked;R()});
+if(t.id=='pm'){cm=t.value;hd=-1}else if(t.id=='pd'){hd=+t.value;scj=hd}else if(t.id=='pas'){asb=+t.value;aex=-1}else if(t.id=='pae')aex=+t.value;else if(d.nm!=null){const v=t.value.trim();if(v){S.st[+d.nm].n=v;mk('st')}}else if(t.id=='ps'){cs=+t.value;ce=0}else if(t.id=='pe')ce=+t.value;else if(t.id=='pr')rs=+t.value;else if(t.id=='pw'){const x=X();if(t.value)x.w=t.value;else delete x.w;mk('s'+cs)}else if(t.id=='fx')fix=t.checked;else if(t.id=='pl')lsub=+t.value;else if(t.id=='so')lso=t.checked;R()});
 document.addEventListener('input',e=>{const t=e.target,d=t.dataset;
 if(t.id=='q'){q=t.value;const k=S.st.findIndex(p=>nz(p.n).includes(nz(q)));if(q&&k>=0)rs=k;R()}
 else if(t.id=='xd'){const x=X();x.d=t.value;mk('s'+cs)}else if(t.id=='xt'){X().t=t.value;mk('s'+cs)}
-else if(d.d!=null){S.hm[cm].d[+d.d]=t.value;mk('hm')}else if(d.g){const[i,k]=d.g.split(',');S.st[+i][k]=t.value;mk('st')}});
+else if(d.d!=null){S.hm[cm].d[+d.d]=t.value;mk('hm')}else if(d.g){const[i,k]=d.g.split(',');S.st[+i][k]=t.value;mk('st')}else if(d.nm!=null){if(t.value.trim()){S.st[+d.nm].n=t.value;mk('st')}}});
 try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 init();
