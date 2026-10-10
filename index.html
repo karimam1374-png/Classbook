@@ -1,0 +1,126 @@
+<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0f766e"><link rel="manifest" href="manifest.json"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png"><title>دفتر مدیریت کلاسی</title>
+<style>
+:root{--bg:#f6f7f4;--c:#fff;--t:#1d2b2a;--m:#6b7a78;--a:#0f766e;--l:#d9e2df;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121a19;--c:#1b2625;--t:#e6eeec;--m:#92a3a0;--a:#2dd4bf;--l:#2c3b39}}
+:root[data-theme="dark"]{--bg:#121a19;--c:#1b2625;--t:#e6eeec;--m:#92a3a0;--a:#2dd4bf;--l:#2c3b39}
+*{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--t);font:15px system-ui,Tahoma,sans-serif}
+header{position:sticky;top:env(safe-area-inset-top,0px);background:var(--a);color:#fff;padding:8px 10px;z-index:5}
+.h1{display:flex;justify-content:space-between;margin-bottom:6px}.h1 span{font-size:12px;opacity:.9}header input{width:100%}
+nav{position:fixed;bottom:0;right:0;left:0;display:flex;background:var(--c);border-top:1px solid var(--l);padding-bottom:env(safe-area-inset-bottom,0px);z-index:6}
+nav button{flex:1;padding:12px 2px;border:0;background:none;color:var(--m);font:inherit;font-size:12px}nav .on{color:var(--a);font-weight:700;box-shadow:inset 0 3px var(--a)}
+main{padding:10px 10px 90px;max-width:900px;margin:auto}.bar{display:flex;gap:6px;margin-bottom:8px;align-items:center}
+select,input:not([type]),.bt{font:inherit;padding:8px;border:1px solid var(--l);border-radius:8px;background:var(--c);color:var(--t);min-width:0}.bar>*{flex:1}
+.bt{background:var(--a);color:#fff;border:0;margin:4px 0;padding:11px 14px;display:block;width:100%}.bar .bt{margin:0}
+.w{overflow:auto;max-height:70vh;border:1px solid var(--l);border-radius:10px;background:var(--c)}table{border-collapse:collapse;width:100%}
+th,td{padding:4px 5px;border-bottom:1px solid var(--l);text-align:center;white-space:nowrap}th{position:sticky;top:0;background:var(--c);z-index:2;font-size:12px}
+.n{position:sticky;right:0;background:var(--c);text-align:right;z-index:1;border-left:1px solid var(--l);max-width:140px;overflow:hidden;text-overflow:ellipsis}th.n{z-index:3}
+.c{cursor:pointer;min-width:38px;height:40px;user-select:none;font-weight:700}.wk{border-right:2px solid var(--a)}
+.s1{background:#22c55e55}.s2{background:#84cc1655}.s3{background:#eab30855}.s4{background:#ef444455}.sa{background:#9ca3af55}.ov{text-decoration:underline}
+.dt{width:50px!important;padding:3px!important;font-size:11px;text-align:center}
+.m{color:var(--m);font-size:13px}.g{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.k,.k2{background:var(--c);border:1px solid var(--l);border-radius:10px;padding:8px;margin-bottom:6px}.k{text-align:center}.k b{display:block;font-size:18px;color:var(--a)}.k span{font-size:12px}
+.k2 i{font-style:normal;background:var(--bg);border-radius:6px;padding:1px 6px;margin-left:4px;display:inline-block}h3{margin:12px 0 6px}
+</style></head><body>
+<header><div class="h1"><b>📒 دفتر مدیریت کلاسی</b><span id="ss"></span></div><input id="q" placeholder="🔍 جستجوی نام دانش‌آموز"></header><main id="app"></main><nav id="nv"></nav>
+<script>
+const K2='cb2cache';let S={st:[],mo:[],hm:{},sub:[]},db=null,dirty=new Set(),last={},tm=0,q='',watching=false;
+const $=s=>document.querySelector(s),E=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])),
+O=(a,v)=>a.map(x=>`<option${String(x)===String(v)?' selected':''}>${E(x)}</option>`).join(''),
+nz=s=>String(s||'').replace(/ي/g,'ی').replace(/ك/g,'ک'),ss=t=>{const e=$('#ss');if(e)e.textContent=t},
+TABS={hw:'تکالیف',ex:'آزمون',rp:'گزارش',ls:'لیست کل',cl:'کلاس',bk:'پشتیبان'};
+let tab='hw',cm='',cs=0,ce=0,rs=0,fix=false;
+const part=k=>k=='st'?{st:S.st,mo:S.mo,n:S.sub.map(u=>u.n)}:k=='hm'?S.hm:S.sub[+k.slice(1)];
+const put=(k,o)=>{if(k=='st'){S.st=o.st;S.mo=o.mo}else if(k=='hm')S.hm=o;else S.sub[+k.slice(1)]=o};
+function mk(k){dirty.add(k);try{localStorage.setItem(K2,JSON.stringify(S))}catch(e){}ss('…');clearTimeout(tm);tm=setTimeout(flush,700)}
+async function flush(){if(!db){ss('فقط روی این دستگاه');return}const ks=[...dirty];dirty.clear();
+try{for(const k of ks){const j=JSON.stringify(part(k));last[k]=j;await db.doc('cb/'+k).set({j})}ss('✓ ذخیره و همگام شد')}catch(e){ks.forEach(k=>dirty.add(k));ss('⚠ ذخیره نشد، دوباره تلاش می‌شود');tm=setTimeout(flush,5000)}}
+function watch(){if(watching)return;watching=true;['st','hm',...S.sub.map((_,k)=>'s'+k)].forEach(k=>db.doc('cb/'+k).onSnapshot(s=>{if(!s.exists||dirty.has(k))return;const j=s.data().j;if(j===last[k])return;last[k]=j;put(k,JSON.parse(j));if(!document.activeElement.matches('input,select'))R()},()=>{}))}
+async function init(){let ok=false;db=null;
+if(db){try{const g=async k=>{const r=await db.doc('cb/'+k).get();return r.exists?r.data().j:null},js=await g('st');
+if(js){const o=JSON.parse(js);S.st=o.st;S.mo=o.mo;S.sub=[];last.st=js;const hj=await g('hm');S.hm=JSON.parse(hj);last.hm=hj;
+for(let k=0;k<o.n.length;k++){const j=await g('s'+k);S.sub[k]=JSON.parse(j);last['s'+k]=j}ok=true;watch();ss('✓ همگام')}}catch(e){ss('خطا در اتصال')}}
+if(!ok){try{const c=JSON.parse(localStorage.getItem(K2));if(c&&c.st){S=c;ss(db?'نسخه ذخیره‌شده روی دستگاه':'آفلاین')}}catch(e){}}
+cm=[...S.mo].reverse().find(m=>S.hm[m].v.some(r=>r.some(x=>x!=null)))||S.mo[0]||'';R()}
+const fin=(r,h)=>typeof r!='number'?r:Math.min(4,Math.max(1,r+(h==5?-1:1)));
+const X=()=>{const U=S.sub[cs];return U.ex[ce]||(U.ex[ce]={d:'',t:'',s:[],h:[],f:[],r:[]})};
+const nk=(m,d)=>(m<7?m+12:m)*100+d;
+function wk(date){const p=String(date||'').split('/').map(Number);if(p.length<3||!p[1])return null;const t=nk(p[1],p[2]);let b=null;
+S.mo.forEach(mn=>S.hm[mn].d.forEach((d,j)=>{const z=String(d).split('/').map(Number);if(z.length<2||!z[0])return;const k=nk(z[0],z[1]);if(k<=t&&(!b||k>=b.k))b={k,mn,g:j/5|0}}));return b}
+function HW(x,i){if(x.h[i]!=null)return x.h[i];const w=x.w&&S.hm[x.w.split('|')[0]]?{mn:x.w.split('|')[0],g:+x.w.split('|')[1]}:wk(x.d);if(!w)return null;const v=S.hm[w.mn].v[i].slice(w.g*5,w.g*5+5);return v.every(a=>a==null)?null:v.filter(a=>a===1).length}
+function F(U,x,i){const s=x.s[i];if(!U.big||s==null||s==='-')return s==null?null:s;const h=HW(x,i);return h==null?(x.f[i]==null?null:x.f[i]):fin(s,h)}
+const hp=(m,i)=>{const f=S.hm[m].v[i].filter(x=>x!=null);return f.length?Math.round(f.filter(x=>x==1).length/f.length*100):''};
+const avg=a=>a.length?(a.reduce((p,c)=>p+c,0)/a.length).toFixed(1):'';
+const nums=(U,i)=>U.ex.map(x=>x?F(U,x,i):null).filter(v=>typeof v=='number');
+const rows=f=>S.st.map((s,i)=>f(s,i)).join('');
+const sc=v=>v==null?'':v==='-'?'غ':v,cl=v=>v==null?'':v==='-'?'sa':'s'+v,nxt=v=>v==null?1:v===4?'-':v==='-'?null:v+1;
+function vhw(){const H=S.hm[cm];
+let h=`<div class="bar"><select id="pm">${O(S.mo,cm)}</select></div><p class="m">روی هر خانه بزنید: ✓ انجام شد، ✗ انجام نشد، · خالی.</p><div class="w"><table><tr><th class="n">نام</th>${H.d.map((d,j)=>`<th class="${j%5?'':'wk'}"><input class="dt" value="${E(d)}" data-d="${j}"></th>`).join('')}<th>٪</th></tr>`;
+return h+rows((s,i)=>`<tr><td class="n">${i+1}. ${E(s.n)}</td>${H.v[i].map((x,j)=>`<td class="c ${j%5?'':'wk'} ${x===1?'s1':x===0?'s4':''}" data-h="${i},${j}">${x===1?'✓':x===0?'✗':'·'}</td>`).join('')}<td>${hp(cm,i)}</td></tr>`)+'</table></div>'}
+function vex(){const U=S.sub[cs],x=X(),big=U.big;
+let h=`<div class="bar"><select id="ps">${S.sub.map((u,k)=>`<option value="${k}"${k==cs?' selected':''}>${E(u.n)}</option>`).join('')}</select><select id="pe">${U.ex.map((e,k)=>`<option value="${k}"${k==ce?' selected':''}>آزمون ${k+1}${e&&(e.d||e.t)?' ✓':''}</option>`).join('')}</select></div>
+<div class="bar"><input id="xd" placeholder="تاریخ مثلاً 1405/7/8" value="${E(x.d)}"><input id="xt" placeholder="موضوع" value="${E(x.t)}"></div>${big?`<div class="bar"><select id="pw"><option value="">نمره تکلیف: خودکار (از روی تاریخ آزمون)</option>${S.mo.flatMap(m=>[0,1,2,3,4].map(g=>{const d=S.hm[m].d.slice(g*5,g*5+5).filter(Boolean);return `<option value="${m}|${g}"${x.w==m+'|'+g?' selected':''}>تکلیف: ${m} — هفته ${g+1}${d.length?' ('+d[0]+' تا '+d[d.length-1]+')':''}</option>`})).join('')}</select></div>`:''}
+<p class="m">روی نمره بزنید تا ۱←۲←۳←۴←غایب←خالی عوض شود. (۱ خیلی خوب، ۲ خوب، ۳ قابل قبول، ۴ نیاز به تلاش بیشتر) <label><input type="checkbox" id="fx"${fix?' checked':''}> حالت کاهش مثبت/منفی</label></p><div class="w"><table><tr><th class="n">نام</th><th>نمره</th>${big?'<th>تکلیف</th><th>نهایی</th><th>برگه</th>':''}<th>＋</th><th>－</th></tr>`;
+h+=rows((s,i)=>{const f=F(U,x,i);return `<tr><td class="n">${i+1}. ${E(s.n)}</td><td class="c ${cl(x.s[i])}" data-s="${i}">${sc(x.s[i])}</td>`+(big?`<td class="c ${x.h[i]!=null?'ov':''}" data-hh="${i}">${HW(x,i)??''}</td><td class="${cl(f)}">${sc(f)}</td><td class="c" data-r="${i}">${x.r[i]===1?'✓':x.r[i]===0?'✗':'·'}</td>`:'')+`<td class="c" data-p="${i},p">${U.p[i]||0}</td><td class="c" data-p="${i},m">${U.m[i]||0}</td></tr>`});
+const cnt=a=>[1,2,3,4,'-'].map(k=>`${k=='-'?'غایب':k}: ${S.st.filter((_,i)=>a(i)===k).length}`).join(' | ');
+return h+`</table></div><p class="m">نمره خام ← ${cnt(i=>x.s[i])}</p>`+(big?`<p class="m">نهایی ← ${cnt(i=>F(U,x,i))}</p><p class="m">نمره تکلیف هر دانش‌آموز از هفته‌ای که بالا انتخاب کرده‌اید خوانده می‌شود (اگر انتخاب نکنید، از روی تاریخ آزمون) (۵ از ۵ یک سطح بهتر، کمتر یک سطح بدتر). برای تغییر دستی روی عدد تکلیف بزنید (خط‌دار یعنی دستی؛ بعد از ۵ دوباره خودکار می‌شود).</p>`:'')}
+const ch=a=>{let L=-1;a.forEach((v,k)=>{if(typeof v=='number')L=k});if(L<0)return'';const v=a.slice(0,L+1).map((y,k)=>typeof y=='number'?[k,y]:null).filter(Boolean),n=Math.max(L+1,2),W=240,H=56,px=k=>8+k*(W-16)/(n-1),py=y=>6+(y-1)*(H-12)/3;
+return `<svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}"><polyline fill="none" stroke="var(--a)" stroke-width="2" points="${v.map(([k,y])=>px(k)+','+py(y)).join(' ')}"/>${v.map(([k,y])=>`<circle cx="${px(k)}" cy="${py(y)}" r="3.5" fill="var(--a)"/>`).join('')}</svg>`};
+const LV=['','خیلی خوب','خوب','قابل قبول','نیاز به تلاش بیشتر'],lw=v=>typeof v=='number'?LV[v]:v==='-'?'غایب':'',ow=(a,p)=>{const w=a.map((_,k)=>p?1:k+1),m=a.reduce((s,v,k)=>s+v*w[k],0)/w.reduce((s,v)=>s+v,0);return LV[m<=1.5?1:m<=2.5?2:m<=3.5?3:4]};
+const sl=(U,i)=>{const v=U.ex.map(x=>x?F(U,x,i):null);return{v,a:nums(U,i),l:v.map((y,k)=>y==null?'':`<i>آزمون ${k+1}: ${lw(y)}</i>`).join('')}};
+function vrp(){const i=rs,s=S.st[i];if(!s)return'';
+let h=`<div class="bar"><button class="bt" data-n="1">▶</button><select id="pr">${S.st.map((p,k)=>!q||k==i||nz(p.n).includes(nz(q))?`<option value="${k}"${k==i?' selected':''}>${E(p.n)}</option>`:'').join('')}</select><button class="bt" data-n="-1">◀</button></div><div class="bar"><input data-g="${i},ga" placeholder="گروه درسی/کلاسی" value="${E(s.ga)}"><input data-g="${i},gs" placeholder="گروه ورزشی" value="${E(s.gs)}"></div><div class="bar"><input data-g="${i},note" placeholder="توضیحات" value="${E(s.note)}"></div><h3>تکالیف (درصد انجام)</h3><div class="g">`+S.mo.map(m=>`<div class="k"><b>${hp(m,i)===''?'-':hp(m,i)+'٪'}</b><span>${m}</span></div>`).join('')+'</div><h3>آزمون‌ها</h3>';
+h+=S.sub.map(U=>{const z=sl(U,i);return `<div class="k2"><b>${E(U.n)}</b>${z.a.length?' — نتیجه: '+ow(z.a):''}${ch(z.v)}<br>${z.l||'<span class="m">نمره‌ای ثبت نشده</span>'} <span class="m">مثبت: ${U.p[i]||0} | منفی: ${U.m[i]||0}</span></div>`}).join('');
+return h+'<button class="bt" data-a="k">دانلود کارنامه این دانش‌آموز (برای ارسال به والدین)</button>'}
+let lsub=0,lso=false;
+const wv=a=>{const w=a.map((_,k)=>k+1);return a.reduce((s,v,k)=>s+v*w[k],0)/w.reduce((s,v)=>s+v,0)},lv=m=>m<=1.5?1:m<=2.5?2:m<=3.5?3:4;
+function vls(){const all=lsub<0,U=S.sub[lsub];
+let h=`<div class="bar"><select id="pl"><option value="-1"${all?' selected':''}>همه دروس (خلاصه)</option>${S.sub.map((u,k)=>`<option value="${k}"${k==lsub?' selected':''}>${E(u.n)}</option>`).join('')}</select></div>${all?'':`<p class="m"><label><input type="checkbox" id="so"${lso?' checked':''}> مرتب‌سازی از ضعیف‌ترین به بهترین</label></p>`}<div class="w"><table><tr><th class="n">نام</th>`;
+h+=all?S.sub.map(u=>`<th>${E(u.n)}</th>`).join(''):'<th>میانگین نهایی</th><th>نتیجه</th><th>آزمون</th><th>مثبت</th><th>منفی</th>';
+h+='</tr>';const ix=S.st.map((_,i)=>i);
+if(lso&&!all)ix.sort((a,b)=>{const x=nums(U,a),y=nums(U,b);return (y.length?wv(y):-1)-(x.length?wv(x):-1)});
+const cn=[0,0,0,0,0];
+ix.forEach(i=>{h+=`<tr><td class="n">${i+1}. ${E(S.st[i].n)}</td>`;
+if(all)h+=S.sub.map(u=>{const a=nums(u,i);return a.length?`<td class="s${lv(wv(a))}">${wv(a).toFixed(1)}</td>`:'<td>·</td>'}).join('');
+else{const a=nums(U,i);if(a.length){const m=wv(a),l=lv(m);cn[l]++;h+=`<td class="s${l}">${m.toFixed(1)}</td><td class="s${l}">${LV[l]}</td><td>${a.length}</td>`}else{cn[0]++;h+='<td>·</td><td>·</td><td>0</td>'}h+=`<td>${U.p[i]||0}</td><td>${U.m[i]||0}</td>`}
+h+='</tr>'});
+h+='</table></div>';
+if(!all)h+=`<p class="m">${[1,2,3,4].map(l=>LV[l]+': '+cn[l]).join(' | ')} | بدون نمره: ${cn[0]}</p>`;
+return h+'<p class="m">میانگین نهایی وزنی است: آزمون‌های آخر اثر بیشتری دارند. ۱ خیلی خوب، ۲ خوب، ۳ قابل قبول، ۴ نیاز به تلاش بیشتر. در خلاصه همه دروس، عدد هر خانه همان میانگین نهایی آن درس است.</p>'}
+function vcl(){const all=S.st.map((s,i)=>{const f=S.mo.flatMap(m=>S.hm[m].v[i]).filter(x=>x!=null);return[i,f.length?Math.round(f.filter(x=>x==1).length/f.length*100):null]}).filter(a=>a[1]!=null).sort((a,b)=>a[1]-b[1]).slice(0,5);
+return `<h3>تکالیف — میانگین کلاس</h3><div class="g">${S.mo.map(m=>{const a=S.st.map((_,i)=>hp(m,i)).filter(x=>x!=='');return `<div class="k"><b>${a.length?Math.round(a.reduce((p,c)=>p+c,0)/a.length)+'٪':'-'}</b><span>${m}</span></div>`}).join('')}</div><h3>دروس — میانگین سطح کلاس (۱ بهترین)</h3>`+S.sub.map(U=>{const a=S.st.flatMap((_,i)=>nums(U,i));return `<div class="k2"><b>${E(U.n)}</b> ${a.length?ow(a,1)+' ('+a.length+' نمره)':'—'}</div>`}).join('')+`<h3>کمترین درصد انجام تکلیف</h3>`+all.map(([i,p])=>`<div class="k2">${E(S.st[i].n)} — ${p}٪</div>`).join('')}
+function vbk(){return `<div class="k2"><p>اطلاعات فقط روی همین دستگاه ذخیره می‌شود و با دستگاه دیگر همگام نمی‌شود. با پاک کردن اطلاعات مرورگر یا حذف برنامه از بین می‌رود، پس هر هفته پشتیبان بگیرید. برای انتقال به گوشی یا تبلت دیگر، پشتیبان را بفرستید و آنجا «بازیابی» کنید (بازیابی، اطلاعات آن دستگاه را با فایل جایگزین می‌کند).</p><button class="bt" data-a="s">ارسال پشتیبان (تلگرام، ایتا، ...)</button><button class="bt" data-a="j">دانلود پشتیبان کامل (JSON)</button><button class="bt" data-a="c">دانلود خلاصه کلاس (CSV برای اکسل)</button></div><div class="k2"><p>بازیابی از فایل پشتیبان (حتی پشتیبان نسخه قبلی برنامه):</p><input type="file" id="im" accept=".json,.txt,application/json,text/plain"></div>`}
+function csv(){const H=['نام','گروه درسی','گروه ورزشی',...S.mo.map(m=>'تکلیف '+m+' %'),...S.sub.flatMap(U=>[U.n+' میانگین',U.n+' مثبت',U.n+' منفی'])],
+r=S.st.map((s,i)=>[s.n,s.ga,s.gs,...S.mo.map(m=>hp(m,i)),...S.sub.flatMap(U=>[avg(nums(U,i)),U.p[i]||0,U.m[i]||0])]);
+return '\ufeff'+[H,...r].map(a=>a.map(c=>'"'+String(c==null?'':c).replace(/"/g,'""')+'"').join(',')).join('\n')}
+function card(i){const s=S.st[i];return `<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${E(s.n)}</title><style>:root{--a:#0f766e}</style></head><body style="font-family:system-ui,Tahoma,sans-serif;max-width:560px;margin:auto;padding:16px;line-height:1.9"><h2>کارنامه ${E(s.n)}</h2><p>${E(s.ga)} ${E(s.gs)}</p><h3>درصد انجام تکالیف</h3><p>${S.mo.map(m=>m+': '+(hp(m,i)===''?'-':hp(m,i)+'٪')).join(' | ')}</p><h3>آزمون‌ها</h3>`+S.sub.map(U=>{const z=sl(U,i);return z.l?`<p><b>${E(U.n)}</b>${z.a.length?' (نتیجه: '+ow(z.a)+')':''}${ch(z.v)}</p>`:''}).join('')+`<p style="color:#777;font-size:12px">در نمودار هر درس، هرچه نقطه بالاتر باشد عملکرد بهتر است.</p></body></html>`}
+async function dl(n,d){let u=null;try{u=window.claude&&await claude.use('downloads')}catch(e){}
+if(u){try{await u.save({filename:n,data:d})}catch(e){}return}
+const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([d]));a.download=n;a.click()}
+function R(){const w=$('.w'),l=w?w.scrollLeft:0,y=scrollY;
+$('#q').style.display=tab=='rp'?'block':'none';$('#nv').innerHTML=Object.entries(TABS).map(([k,v])=>`<button data-t="${k}" class="${k==tab?'on':''}">${v}</button>`).join('');
+$('#app').innerHTML=!S.st.length&&tab!='bk'?'<div class="k2">هنوز داده‌ای وجود ندارد. از تب «پشتیبان» یک فایل پشتیبان بارگذاری کنید.</div>':{hw:vhw,ex:vex,rp:vrp,ls:vls,cl:vcl,bk:vbk}[tab]();const w2=$('.w');if(w2)w2.scrollLeft=l;scrollTo(0,y)}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-t],[data-h],[data-p],[data-r],[data-a],[data-s],[data-hh],[data-n]');if(!t)return;const d=t.dataset;
+if(d.t){tab=d.t;q='';$('#q').value='';scrollTo(0,0)}
+else if(d.h){const[i,j]=d.h.split(',').map(Number),v=S.hm[cm].v[i];v[j]=v[j]==null?1:v[j]===1?0:null;mk('hm')}
+else if(d.s!=null){const x=X(),i=+d.s;x.s[i]=nxt(x.s[i]);mk('s'+cs)}
+else if(d.hh!=null){const x=X(),i=+d.hh,v=x.h[i];x.h[i]=v==null?0:v>=5?null:v+1;mk('s'+cs)}
+else if(d.p){const[i,k]=d.p.split(','),a=S.sub[cs][k];a[+i]=Math.max(0,(a[+i]||0)+(fix?-1:1));mk('s'+cs)}
+else if(d.r){const x=X(),i=+d.r;x.r[i]=x.r[i]==null?1:x.r[i]===1?0:null;mk('s'+cs)}
+else if(d.n){rs=(rs+ +d.n+S.st.length)%S.st.length}
+else if(d.a=='s'){const f=new File([JSON.stringify(S)],'classbook-backup.txt',{type:'text/plain'});if(navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f],title:'پشتیبان دفتر کلاس'}).catch(()=>{});else alert('این دستگاه ارسال فایل را پشتیبانی نمی‌کند. از دکمه دانلود استفاده کنید.');return}
+else if(d.a=='j'){dl('classbook-backup.json',JSON.stringify(S));return}
+else if(d.a=='c'){dl('class-summary.csv',csv());return}
+else if(d.a=='k'){dl('karnameh-'+(rs+1)+'.html',card(rs));return}
+R()});
+document.addEventListener('change',e=>{const t=e.target,d=t.dataset;
+if(t.id=='im'){const f=t.files[0];if(f)f.text().then(x=>{try{let n=JSON.parse(x);if(!n.st||!n.sub||!n.hm)throw 0;if(!Array.isArray(n.sub))n.sub=Object.entries(n.sub).map(([k,u])=>({n:k,...u}));
+try{localStorage.setItem(K2+'_bak',JSON.stringify(S))}catch(e){}S=n;cs=ce=rs=0;cm=S.mo[0];['st','hm',...S.sub.map((_,k)=>'s'+k)].forEach(mk);if(db)watch();R();alert('بازیابی شد')}catch(e){alert('فایل پشتیبان معتبر نیست')}});return}
+if(t.id=='pm')cm=t.value;else if(t.id=='ps'){cs=+t.value;ce=0}else if(t.id=='pe')ce=+t.value;else if(t.id=='pr')rs=+t.value;else if(t.id=='pw'){const x=X();if(t.value)x.w=t.value;else delete x.w;mk('s'+cs)}else if(t.id=='fx')fix=t.checked;else if(t.id=='pl')lsub=+t.value;else if(t.id=='so')lso=t.checked;R()});
+document.addEventListener('input',e=>{const t=e.target,d=t.dataset;
+if(t.id=='q'){q=t.value;const k=S.st.findIndex(p=>nz(p.n).includes(nz(q)));if(q&&k>=0)rs=k;R()}
+else if(t.id=='xd'){const x=X();x.d=t.value;mk('s'+cs)}else if(t.id=='xt'){X().t=t.value;mk('s'+cs)}
+else if(d.d!=null){S.hm[cm].d[+d.d]=t.value;mk('hm')}else if(d.g){const[i,k]=d.g.split(',');S.st[+i][k]=t.value;mk('st')}});
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+init();
+</script></body></html>
