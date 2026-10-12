@@ -107,7 +107,7 @@ if(aex<0)return h+'<div class="k2">برای این درس هنوز نمره‌ا
 const x=U.ex[aex],bl=(get,t)=>{const g={1:[],2:[],3:[],4:[],a:[],n:[]};S.st.forEach((s,i)=>{const v=get(i);(v===1||v===2||v===3||v===4?g[v]:v==='-'?g.a:g.n).push(s.n)});
 const nm=(l,a)=>a.length?`<details class="k2"><summary>${l} (${a.length})</summary>${a.map(E).join('، ')}</details>`:'';
 return `<h3>${t}</h3><div class="g5">${[1,2,3,4].map(l=>`<div class="k s${l}"><b>${g[l].length}</b><span>${LV[l]}</span></div>`).join('')}<div class="k sa"><b>${g.a.length}</b><span>غایب</span></div></div>${[1,2,3,4].map(l=>nm(LV[l],g[l])).join('')}${nm('غایب',g.a)}${g.n.length?`<p class="m">بدون نمره ثبت‌شده: ${g.n.length} نفر</p>`:''}`};
-return h+(U.big?bl(i=>F(U,x,i),'نمره نهایی (با اثر تکلیف)')+bl(i=>x.s[i],'نمره خام آزمون'):bl(i=>x.s[i],'نتیجه آزمون'))}
+return h+(U.big?bl(i=>x.s[i],'نمره خام آزمون')+bl(i=>F(U,x,i),'نمره نهایی (با اثر تکلیف)'):bl(i=>x.s[i],'نتیجه آزمون'))}
 let rsub='a';
 function trend(){const th=(a)=>a.filter(v=>v!=null);
 const out=S.sub.map(U=>{const arr=U.ex.map(x=>{if(!x)return null;const v=S.st.map((_,i)=>F(U,x,i)).filter(y=>typeof y=='number');return v.length?v.reduce((p,c)=>p+c,0)/v.length:null});const d=th(arr);if(!d.length)return'';
@@ -218,7 +218,7 @@ return `<div class="k2" style="text-align:center"><div style="font-weight:700">$
 function vcl(){const all=S.st.map((s,i)=>{const f=S.mo.flatMap(m=>S.hm[m].v[i]).filter(x=>x!=null);return[i,f.length?Math.round(f.filter(x=>x==1).length/f.length*100):null]}).filter(a=>a[1]!=null).sort((a,b)=>a[1]-b[1]).slice(0,5);
 return `<h3>تکالیف — میانگین کلاس</h3><div class="g">${S.mo.map(m=>{const a=S.st.map((_,i)=>hp(m,i)).filter(x=>x!=='');return `<div class="k"><b>${a.length?Math.round(a.reduce((p,c)=>p+c,0)/a.length)+'٪':'-'}</b><span>${m}</span></div>`}).join('')}</div><h3>دروس — میانگین سطح کلاس (۱ بهترین)</h3>`+S.sub.map(U=>{const a=S.st.flatMap((_,i)=>nums(U,i));return `<div class="k2"><b>${E(U.n)}</b> ${a.length?ow(a,1)+' ('+a.length+' نمره)':'—'}</div>`}).join('')+`<h3>کمترین درصد انجام تکلیف</h3>`+all.map(([i,p])=>`<div class="k2">${E(S.st[i].n)} — ${p}٪</div>`).join('')}
 function vbk(){return vbk0()+vauto()+vnm()}
-const BUILD='20261013-0010';
+const BUILD='20261013-0030';
 const LOGO='<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="30" fill="#0f766e" stroke="#e5b84b" stroke-width="3"/><path d="M14 41V27q9-4 18 1q9-5 18-1v14q-9-3-18 2q-9-5-18-2z" fill="#fff"/><path d="M32 28v15" stroke="#0f766e" stroke-width="1.6"/><path d="M32 8l2.3 4.8 5.2.7-3.8 3.6.9 5.2-4.6-2.5-4.6 2.5.9-5.2-3.8-3.6 5.2-.7z" fill="#e5b84b"/></svg>';
 let SU={},delC=-1;
 const t0=Date.now();
