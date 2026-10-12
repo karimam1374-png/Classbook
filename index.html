@@ -362,7 +362,10 @@ items.push({t:'d',title:'معاون مدرسه'+(I.depn?' — '+I.depn:''),badge
 return items}
 const mpn=k=>mpBuild(k).filter(x=>x.t=='p').length;
 const mpVis=()=>mp.items.map((it,ix)=>({it,ix})).filter(o=>o.it.t=='p'||inf().cc!==false);
-function mpRender(){let w=$('#mpw');if(mp&&mp.tab!=tab)mp=null;if(!mp){if(w)w.remove();return}
+const MPK='cb2mp';let mpLoaded=false;
+function mpSave(){try{if(mp)localStorage.setItem(MPK,JSON.stringify({t:Date.now(),mp}));else localStorage.removeItem(MPK)}catch(e){}}
+function mpRestore(){try{const o=JSON.parse(localStorage.getItem(MPK)||'null');if(o&&o.mp&&Date.now()-o.t<432e5&&Array.isArray(o.mp.items)&&o.mp.items.length){mp=o.mp;mp.sent=mp.sent||{};if(mp.tab&&mp.tab!=tab){tab=mp.tab;R();return true}}}catch(e){}return false}
+function mpRender(){if(!mpLoaded){mpLoaded=true;if(!mp&&mpRestore())return}let w=$('#mpw');if(mp&&mp.tab!=tab)mp=null;mpSave();if(!mp){if(w)w.remove();return}
 if(!w){w=document.createElement('div');w.id='mpw';document.body.appendChild(w)}
 const old=w.querySelector('.mpc'),sc=old?old.scrollTop:0,I=inf(),vis=mpVis(),ch=I.ch=='eitaa'?'eitaa':'sms';
 const rows=vis.map(({it,ix})=>{const c=mpCont(mpOwner(it)),done=mp.sent[ix];
@@ -374,16 +377,17 @@ const n=w.querySelector('.mpc');if(n)n.scrollTop=sc}
 function mpMark(){if(!mp)return;const vis=mpVis();vis.forEach(({it,ix})=>{const b=document.querySelector('[data-ms="'+ix+'"]'),c=mpCont(mpOwner(it));if(b&&c&&mp.sent[ix]){b.className='bt sent';b.textContent='✓ ارسال شد — دوباره باز کن'}});
 const left=vis.filter(({it,ix})=>!mp.sent[ix]&&mpCont(mpOwner(it))).length,q=document.querySelector('[data-mpq]');if(q)q.textContent='▶ ارسال بعدی ('+fd(left)+' مانده)';const nn=$('#mpn');if(nn)nn.textContent=mp.note||''}
 function mpCopy(t){const f=()=>{const a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();try{document.execCommand('copy')}catch(e){}a.remove()};try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).catch(f);return}}catch(e){}f()}
-function mpSend(ix){const it=mp.items[ix];if(!it)return;const c=mpCont(mpOwner(it));if(!c)return;mp.sent[ix]=1;
-if(c.ch=='eitaa'){mpCopy(it.text);mp.note='متن پیام «'+it.title+'» کپی شد. در ایتا روی کادر پیام بزنید و «چسباندن» را انتخاب کنید.';mpMark();window.open(mpUrl(c,it.text),'_blank')}
-else{mp.note='برنامه‌ی پیامک برای «'+it.title+'» باز شد.';mpMark();location.href=mpUrl(c,it.text)}}
+function mpOpen(u,blank){try{const a=document.createElement('a');a.href=u;if(blank){a.target='_blank';a.rel='noopener'}a.style.display='none';document.body.appendChild(a);a.click();setTimeout(()=>a.remove(),500)}catch(e){if(blank)window.open(u,'_blank');else location.href=u}}
+function mpSend(ix){const it=mp.items[ix];if(!it)return;const c=mpCont(mpOwner(it));if(!c)return;mp.sent[ix]=1;mpSave();
+if(c.ch=='eitaa'){mpCopy(it.text);mp.note='متن پیام «'+it.title+'» کپی شد. در ایتا روی کادر پیام بزنید و «چسباندن» را انتخاب کنید.';mpMark();mpOpen(mpUrl(c,it.text),true)}
+else{mp.note='برنامه‌ی پیامک برای «'+it.title+'» باز شد.';mpMark();mpOpen(mpUrl(c,it.text))}}
 function mpNext(){const o=mpVis().find(({it,ix})=>!mp.sent[ix]&&mpCont(mpOwner(it)));if(o)mpSend(o.ix);else{mp.note='همه‌ی پیام‌های قابل ارسال انجام شد.';mpMark()}}
 document.addEventListener('click',e=>{let t=e.target.closest('[data-mp]');
 if(t){const k=t.dataset.mp;mp={k,tab:k=='at'?'at':'sh',items:mpBuild(k),sent:{},note:''};mpRender();return}
 t=e.target.closest('[data-ms],[data-mpq],[data-mpx],[data-mpch],[data-mpcc]');if(!t)return;const d=t.dataset;
 if(d.mpch||d.mpcc!=null){S.info=Object.assign(inf(),S.info||{});if(d.mpch)S.info.ch=d.mpch;else S.info.cc=S.info.cc===false;mk('st');if(mp)mpRender();else R();return}
 if(d.mpx!=null){mp=null;mpRender();return}if(!mp)return;if(d.ms!=null)mpSend(+d.ms);else if(d.mpq!=null)mpNext()});
-document.addEventListener('input',e=>{const t=e.target;if(t.dataset&&t.dataset.mt!=null&&mp&&mp.items[+t.dataset.mt])mp.items[+t.dataset.mt].text=t.value});
+document.addEventListener('input',e=>{const t=e.target;if(t.dataset&&t.dataset.mt!=null&&mp&&mp.items[+t.dataset.mt]){mp.items[+t.dataset.mt].text=t.value;mpSave()}});
 /* ===== چیدمان کلاس ===== */
 const ASP={p:1.5,s:1,l:2/3},EDN={L:'سمت چپ نقشه',R:'سمت راست نقشه',T:'بالای نقشه',B:'پایین نقشه'},
 ZT=[['fr','جلوی کلاس'],['bk','عقب کلاس'],['tg','کنار هم'],['ap','دور از هم'],['ed','کنار دیوار'],['fx','صندلی ثابت']],
