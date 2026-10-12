@@ -247,7 +247,7 @@ return `<div class="k2" style="text-align:center"><div style="font-weight:700">$
 function vcl(){const all=S.st.map((s,i)=>{const f=S.mo.flatMap(m=>S.hm[m].v[i]).filter(x=>x!=null);return[i,f.length?Math.round(f.filter(x=>x==1).length/f.length*100):null]}).filter(a=>a[1]!=null).sort((a,b)=>a[1]-b[1]).slice(0,5);
 return `<h3>تکالیف — میانگین کلاس</h3><div class="g">${S.mo.map(m=>{const a=S.st.map((_,i)=>hp(m,i)).filter(x=>x!=='');return `<div class="k"><b>${a.length?Math.round(a.reduce((p,c)=>p+c,0)/a.length)+'٪':'-'}</b><span>${m}</span></div>`}).join('')}</div><h3>دروس — میانگین سطح کلاس (۱ بهترین)</h3>`+S.sub.map(U=>{const a=S.st.flatMap((_,i)=>nums(U,i));return `<div class="k2"><b>${E(U.n)}</b> ${a.length?ow(a,1)+' ('+a.length+' نمره)':'—'}</div>`}).join('')+`<h3>کمترین درصد انجام تکلیف</h3>`+all.map(([i,p])=>`<div class="k2">${E(S.st[i].n)} — ${p}٪</div>`).join('')}
 function vbk(){return vbk0()+vauto()+vnm()}
-const BUILD='20261013-0400';
+const BUILD='20261013-0530';
 const LOGO='<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="30" fill="#0f766e" stroke="#e5b84b" stroke-width="3"/><path d="M14 41V27q9-4 18 1q9-5 18-1v14q-9-3-18 2q-9-5-18-2z" fill="#fff"/><path d="M32 28v15" stroke="#0f766e" stroke-width="1.6"/><path d="M32 8l2.3 4.8 5.2.7-3.8 3.6.9 5.2-4.6-2.5-4.6 2.5.9-5.2-3.8-3.6 5.2-.7z" fill="#e5b84b"/></svg>';
 let SU={},delC=-1;
 const t0=Date.now();
@@ -451,11 +451,11 @@ g+=C(r,2,cl+'tzn','زنگ '+TPZ[p])
 const BL={'هدیه‌های آسمانی':'هدیه','کار و فناوری':'فناوری'};
 const bd=`<div class="tbd"><div class="tbh">بودجه بندی سالانه</div><div class="tbg"><div class="tbc th2">درس</div><div class="tbc th2">محتوا</div>${TPB.map(n=>`<div class="tbc tbn${n=='تفکر و پژوهش'?' sm':''}">${E(BL[n]||n)}</div><div class="tbc tbx"><textarea class="tpx" wrap="off" data-tpbd="${E(n)}" maxlength="600" aria-label="بودجه‌بندی ${E(n)}">${E(T.bud[n]||'')}</textarea></div>`).join('')}</div></div>`;
 const side=`<div class="tsb"><div><div class="tst">برنامه هفتگی<br>تدریس</div><div class="tfl"><div>پایه: <u>${E(I.cls||'')}</u></div><div>هفته: <u>${tpFd(k,0)} تا ${tpFd(k,4)}</u></div><div>تاریخ: <u>${fd(tdy())}</u></div></div></div>${bd}</div>`;
-let panel='';if(tpSend){const it=tpCollect(tpSd),cnt=d=>tpCollect(d).reduce((a,g)=>a+g.rows.length,0);
+let panel='';if(tpSend){let nn=0;const it=tpCollect(tpSd),cnt=d=>tpCollect(d).reduce((a,g)=>a+g.rows.length,0);
 panel=`<div class="k2"><b>ارسال تکالیف زنگ‌های تدریس‌شده</b><p class="m" style="margin:4px 0 8px">فقط زنگ‌هایی که تیک خورده‌اند و تکلیف دارند در تصویر می‌آیند. روز موردنظر را انتخاب کنید:</p><div class="cb" style="flex-wrap:wrap">${TPD.map((n,d)=>zch2('tpsd',d,n+' ('+fd(cnt(d))+')',tpSd==d)).join('')}${zch2('tpsd',-1,'کل هفته ('+fd(cnt(-1))+')',tpSd==-1)}</div>`+
-(it.length?it.map(g=>`<div class="m" style="margin-top:6px"><b>${TPD[g.d]} ${tpFd(k,g.d)}</b></div>`+g.rows.map(r=>`<div class="m">• ${E(r.l)}: ${E(r.h)}</div>`).join('')).join(''):'<div class="m" style="color:var(--a)">برای این انتخاب، زنگِ تیک‌خورده‌ای با تکلیف ثبت نشده است.</div>')+
+(it.length?it.map(g=>(nn=0,'')+`<div class="m" style="margin-top:6px"><b>${TPD[g.d]} ${tpFd(k,g.d)}</b></div>`+g.rows.map(r=>`<div class="m">${fd(++nn)}. ${E(r.h)}</div>`).join('')).join(''):'<div class="m" style="color:var(--a)">برای این انتخاب، زنگِ تیک‌خورده‌ای با تکلیف ثبت نشده است.</div>')+
 `<button type="button" class="bt" data-tpb="img" style="width:100%;margin-top:8px">🖼 ساخت و ارسال تصویر</button></div>`}
-return `<div class="k2"><div class="bar"><button type="button" class="chip" data-tpw="-1">‹ هفته قبل</button><b style="flex:1;text-align:center">هفته: ${tpFd(k,0)} تا ${tpFd(k,4)}</b><button type="button" class="chip" data-tpw="1">هفته بعد ›</button></div><div class="cb">${now?'':'<button type="button" class="chip" data-tpw="0">📍 هفته جاری</button>'}<button type="button" class="chip${tpSend?' on':''}" data-tpb="send">📤 ارسال تکالیف</button></div><div class="m tpho">📱 برای دیدن کامل برنامه با همان چیدمان کاغذی، گوشی یا تبلت را افقی کنید.</div></div>${panel}<div class="tpo"><div class="tpf" id="tpf"><div class="tmain"><div class="tgrid">${g}</div></div>${side}</div></div>`}
+return `<div class="k2"><div class="bar"><button type="button" class="chip" data-tpw="-1">‹ هفته قبل</button><b style="flex:1;text-align:center">هفته: ${tpFd(k,0)} تا ${tpFd(k,4)}</b><button type="button" class="chip" data-tpw="1">هفته بعد ›</button></div><div class="cb">${now?'':'<button type="button" class="chip" data-tpw="0">📍 هفته جاری</button>'}<button type="button" class="chip${tpSend?' on':''}" data-tpb="send">📤 ارسال تکالیف</button><button type="button" class="chip" data-tpb="full">🖼 ارسال کل برنامه هفته</button></div><div class="m tpho">📱 برای دیدن کامل برنامه با همان چیدمان کاغذی، گوشی یا تبلت را افقی کنید.</div></div>${panel}<div class="tpo"><div class="tpf" id="tpf"><div class="tmain"><div class="tgrid">${g}</div></div>${side}</div></div>`}
 function tpFit(){const m=document.querySelector('main');if(m)m.style.maxWidth=tab=='tp'?'none':'';const o=document.querySelector('.tpo'),f=document.getElementById('tpf');if(!o||!f)return;const s=o.clientWidth/1080;f.style.transform='scale('+s+')';o.style.height=Math.ceil(f.offsetHeight*s)+'px'}
 window.addEventListener('resize',()=>{if(tab=='tp')tpFit()});window.addEventListener('orientationchange',()=>setTimeout(()=>{if(tab=='tp')tpFit()},250));
 async function tpPng(sd){if(tpBusy)return;const items=tpCollect(sd);if(!items.length){alert('برای این انتخاب، زنگِ تیک‌خورده‌ای با تکلیف ثبت نشده است.');return}
@@ -464,13 +464,12 @@ try{const I=inf(),k=tpK(),W=1080,P=44,FN='Yekan,Vazirmatn,Tahoma,sans-serif',cv=
 try{await document.fonts.load('700 30px Yekan')}catch(e){}
 const wrap=(t,f,mw)=>{x.font=f;const o=[];String(t).split(/\r?\n/).forEach(par=>{let c='';par.split(/\s+/).filter(Boolean).forEach(wd=>{const z=c?c+' '+wd:wd;if(c&&x.measureText(z).width>mw){o.push(c);c=wd}else c=z});o.push(c)});return o};
 const LF='700 34px '+FN,TF='400 30px '+FN,LH=50,sub=sd>=0?TPD[sd]+' '+tpFd(k,sd):'هفته '+tpFd(k,0)+' تا '+tpFd(k,4);
-const run=dr=>{let y=0;
+const run=dr=>{let y=0,n=0;
 if(dr){x.fillStyle='#0f766e';x.fillRect(0,0,W,190);x.fillStyle='#fff';x.textAlign='center';x.textBaseline='middle';try{x.direction='rtl'}catch(e){}x.font='700 56px '+FN;x.fillText('تکالیف'+(I.cls?' — '+I.cls:''),W/2,62);x.font='400 28px '+FN;x.fillText([I.school,I.teacher].filter(Boolean).join(' — '),W/2,118);x.fillText(sub,W/2,158)}
 y=190+26;
-items.forEach(g=>{if(sd<0){if(dr){x.fillStyle='#e3f2ef';x.fillRect(P,y,W-2*P,64);x.fillStyle='#0f766e';x.textAlign='right';x.textBaseline='middle';x.font='700 34px '+FN;x.fillText(TPD[g.d]+' '+tpFd(k,g.d),W-P-14,y+32)}y+=64+12}
-g.rows.forEach(r=>{const ls=wrap(r.h,TF,W-2*P-28);
-if(dr){x.fillStyle='#0f766e';x.textAlign='right';x.textBaseline='middle';x.font=LF;x.fillText(r.l,W-P-14,y+26)}y+=54;
-ls.forEach(l=>{if(dr){x.fillStyle='#1d2b2a';x.textAlign='right';x.textBaseline='middle';x.font=TF;x.fillText(l,W-P-14,y+LH/2)}y+=LH});y+=10;
+items.forEach(g=>{n=0;if(sd<0){if(dr){x.fillStyle='#e3f2ef';x.fillRect(P,y,W-2*P,64);x.fillStyle='#0f766e';x.textAlign='right';x.textBaseline='middle';x.font='700 34px '+FN;x.fillText(TPD[g.d]+' '+tpFd(k,g.d),W-P-14,y+32)}y+=64+12}
+g.rows.forEach(r=>{n++;const NW=76,ls=wrap(r.h,TF,W-2*P-28-NW);
+ls.forEach((l,li)=>{if(dr){x.fillStyle='#1d2b2a';x.textAlign='right';x.textBaseline='middle';x.font=TF;x.fillText(l,W-P-14-NW,y+LH/2);if(li==0){x.fillStyle='#0f766e';x.font=LF;x.fillText(fd(n)+'.',W-P-14,y+LH/2)}}y+=LH});y+=10;
 if(dr){x.strokeStyle='#d9e2df';x.lineWidth=2;x.beginPath();x.moveTo(P,y);x.lineTo(W-P,y);x.stroke()}y+=16});y+=8});
 if(dr){x.fillStyle='#8a9a97';x.textAlign='center';x.textBaseline='middle';x.font='400 22px '+FN;x.fillText('آکادمی ایران',W/2,y+28)}
 return y+64};
@@ -479,12 +478,60 @@ const blob=await new Promise(r=>cv.toBlob(r,'image/png')),fl=new File([blob],'ho
 try{if(navigator.canShare&&navigator.canShare({files:[fl]}))await navigator.share({files:[fl]});else await dl(fl.name,fl)}catch(e){if(!e||e.name!='AbortError')alert('ذخیره یا ارسال تصویر انجام نشد.')}
 }catch(e){alert('ساخت تصویر انجام نشد.')}
 tpBusy=false;ss('')}
+async function tpFull(){if(tpBusy)return;tpBusy=true;ss('در حال ساخت تصویر…');
+try{const T=TP(),k=tpK(),w=tpG(k),I=inf(),K=2,FN='Yekan,Vazirmatn,Tahoma,sans-serif',TC='#4bacc6',cv=document.createElement('canvas'),x=cv.getContext('2d');
+try{await document.fonts.load('700 30px Yekan');await document.fonts.load('400 30px Yekan')}catch(e){}
+const lines=(t,f,mw)=>{x.font=f;const o=[];String(t||'').split(/\r?\n/).forEach(par=>{let c='';par.split(/\s+/).filter(Boolean).forEach(wd=>{const z=c?c+' '+wd:wd;if(c&&x.measureText(z).width>mw){o.push(c);c=wd}else c=z});o.push(c)});return o.length?o:['']};
+const CW=[96,76,75,18,345,255],XR=1076,TW=865,XL=XR-TW,F12='400 12px '+FN,LHt=17,colR=[];let cx=XR;CW.forEach(wd=>{colR.push([cx-wd,cx]);cx-=wd});
+const R=[];let bodyH=0;for(let d=0;d<5;d++){R[d]=[];for(let p=0;p<5;p++){const cl=lines(w.c[d][p],F12,CW[4]-12),hl=lines(w.h[d][p],F12,CW[5]-12),n=Math.max(cl.length,hl.length),h=Math.max(26,n*LHt+8);R[d][p]={cl,hl,h};bodyH+=h}}
+const yT=8,yb=yT+54,tb=yb+bodyH,BL={'هدیه‌های آسمانی':'هدیه','کار و فناوری':'فناوری'},bw1=86,bw2=104,bx0=4,BR=[];let bh=28+26;
+TPB.forEach(n=>{const ls=lines(T.bud[n]||'',F12,bw2-10),h=Math.max(26,ls.length*LHt+8);BR.push({n,ls,h});bh+=h});
+const bTop=Math.max(300,tb-bh),H=Math.ceil(Math.max(tb,bTop+bh)+10);
+cv.width=1080*K;cv.height=H*K;x.scale(K,K);x.fillStyle='#fff';x.fillRect(0,0,1080,H);try{x.direction='rtl'}catch(e){}
+const ln=(x1,y1,x2,y2,c,lw)=>{x.strokeStyle=c;x.lineWidth=lw;x.beginPath();x.moveTo(x1,y1);x.lineTo(x2,y2);x.stroke()},
+tx=(t,xx,yy,f,c,al)=>{x.font=f;x.fillStyle=c;x.textAlign=al||'center';x.textBaseline='middle';x.fillText(t,xx,yy)};
+const ml=(ls,xx,top,h,al)=>{const y0=top+(h-ls.length*LHt)/2+LHt/2;ls.forEach((l,i)=>tx(l,xx,y0+i*LHt,F12,'#1d2b2a',al))};
+// header
+tx('برنامه روزانه تدریس',(XL+XR)/2,yT+14,'700 14px '+FN,'#1e293b');
+[['ایام هفته',0,0],['زنگ ها',1,1],['درس',2,2],['تکلیف/توضیحات',5,5]].forEach(([t,a])=>tx(t,(colR[a][0]+colR[a][1])/2,yT+41,'700 13px '+FN,'#1e293b'));
+tx('محتوای تدریس',(colR[4][0]+colR[3][1])/2,yT+41,'700 13px '+FN,'#1e293b');
+ln(XL,yT+27,XR,yT+27,TC,1);ln(XL,yb,XR,yb,TC,1);
+// body
+let y=yb;const dTop=[];
+for(let d=0;d<5;d++){const y0=y;let dh=0;
+for(let p=0;p<5;p++){const r=R[d][p],dn=w.k[d][p],top=y;
+if(dn){x.fillStyle='#dcf1e3';x.fillRect(XL,top,TW-CW[0],r.h)}else if(p%2==0){x.fillStyle='#ececec';x.fillRect(XL,top,TW-CW[0],r.h)}
+const mid=top+r.h/2;
+tx('زنگ '+TPZ[p],(colR[1][0]+colR[1][1])/2,mid,'400 11px '+FN,'#1e293b');
+const v=tpLes(w,d,p);if(v){let fs=13;x.font='700 '+fs+'px '+FN;while(fs>8&&x.measureText(v).width>CW[2]-6){fs--;x.font='700 '+fs+'px '+FN}tx(v,(colR[2][0]+colR[2][1])/2,mid,'700 '+fs+'px '+FN,'#2563eb')}
+const bx=(colR[3][0]+colR[3][1])/2;x.fillStyle=dn?'#dcfce7':'#fff';x.fillRect(bx-7,mid-7,14,14);x.strokeStyle=TC;x.lineWidth=1;x.strokeRect(bx-7,mid-7,14,14);if(dn)tx('✓',bx,mid+1,'700 12px '+FN,'#16a34a');
+ml(r.cl,colR[4][1]-6,top,r.h,'right');ml(r.hl,colR[5][1]-6,top,r.h,'right');
+y+=r.h;dh+=r.h;if(p<4)ln(XL,y,XR-CW[0],y,TC,1)}
+if(d%2){x.fillStyle='#ececec';x.fillRect(colR[0][0],y0,CW[0],dh)}
+tx(TPD[d],(colR[0][0]+colR[0][1])/2,y0+dh/2-9,'700 16px '+FN,'#1e293b');tx(tpFd(k,d),(colR[0][0]+colR[0][1])/2,y0+dh/2+13,'400 12px '+FN,'#64748b');
+if(d<4)ln(XL,y,XR,y,'#222',2);}
+// verticals
+for(let i=0;i<5;i++){const xx=colR[i][0];ln(xx,yb,xx,tb,TC,1);if(i!=3)ln(xx,yT+27,xx,yb,TC,1)}
+x.strokeStyle=TC;x.lineWidth=2;x.strokeRect(XL,yT,TW,tb-yT);
+// sidebar
+const sc=bx0+95;tx('برنامه هفتگی',sc,70,'800 30px '+FN,'#1e293b');tx('تدریس',sc,112,'800 30px '+FN,'#1e293b');
+[['پایه:',I.cls||''],['هفته:',tpFd(k,0)+' تا '+tpFd(k,4)],['تاریخ:',fd(tdy())]].forEach(([l,v],i)=>{const fy=175+i*45;tx(l,190,fy,'700 15px '+FN,'#1e293b','right');ln(10,fy+10,140,fy+10,'#1e293b',1);tx(v,75,fy,'400 12px '+FN,'#1e293b')});
+// budget
+const bR=bx0+190;x.strokeStyle='#222';x.lineWidth=1;x.strokeRect(bx0,bTop,190,bh);
+tx('بودجه بندی سالانه',bx0+95,bTop+14,'400 15px '+FN,'#1e293b');ln(bx0,bTop+28,bR,bTop+28,'#222',1);
+tx('درس',bR-bw1/2,bTop+41,'700 12px '+FN,'#1e293b');tx('محتوا',bR-bw1-bw2/2,bTop+41,'700 12px '+FN,'#1e293b');ln(bx0,bTop+54,bR,bTop+54,'#222',1);
+let by=bTop+54;BR.forEach((r,i)=>{tx(BL[r.n]||r.n,bR-bw1/2,by+r.h/2,(r.n=='تفکر و پژوهش'?'400 9px ':'400 12px ')+FN,'#1e293b');ml(r.ls,bR-bw1-6,by,r.h,'right');by+=r.h;if(i<BR.length-1)ln(bx0,by,bR,by,'#222',1)});
+ln(bR-bw1,bTop+28,bR-bw1,bTop+bh,'#222',1);
+const blob=await new Promise(r=>cv.toBlob(r,'image/png')),fl=new File([blob],'weekly-plan-'+stamp()+'.png',{type:'image/png'});
+try{if(navigator.canShare&&navigator.canShare({files:[fl]}))await navigator.share({files:[fl]});else await dl(fl.name,fl)}catch(e){if(!e||e.name!='AbortError')alert('ذخیره یا ارسال تصویر انجام نشد.')}
+}catch(e){alert('ساخت تصویر انجام نشد.')}
+tpBusy=false;ss('')}
 document.addEventListener('click',e=>{const t=e.target.closest('[data-tpk],[data-tpw],[data-tpb],[data-tpsd]');if(!t||tab!='tp')return;const d=t.dataset;
 if(d.tpk!=null){const[a,b]=d.tpk.split(',').map(Number),w=tpW(tpK());w.k[a][b]=w.k[a][b]?0:1;mk('st');R()}
 else if(d.tpw!=null){const n=+d.tpw;if(n==0){tpNav=false;tpCur=tpSat(new Date())}else{const b=tpK();tpNav=true;tpCur=tpAdd(b,n*7)}R()}
 else if(d.tpsd!=null){tpSd=+d.tpsd;R()}
 else if(d.tpb=='send'){tpSend=!tpSend;if(tpSend){const g=(new Date().getDay()+1)%7;tpSd=tpK()==tpSat(new Date())&&g<5&&tpCollect(g).length?g:-1}R()}
-else if(d.tpb=='img')tpPng(tpSd)});
+else if(d.tpb=='img')tpPng(tpSd);else if(d.tpb=='full')tpFull()});
 document.addEventListener('input',e=>{const t=e.target,d=t.dataset;if(tab!='tp'||!d)return;
 if(d.tpc!=null||d.tph!=null){const s=(d.tpc!=null?d.tpc:d.tph).split(',').map(Number),w=tpW(tpK());(d.tpc!=null?w.c:w.h)[s[0]][s[1]]=t.value;clearTimeout(tpTm);tpTm=setTimeout(()=>mk('st'),500)}
 else if(d.tpbd!=null){TP().bud[d.tpbd]=t.value;clearTimeout(tpTm);tpTm=setTimeout(()=>mk('st'),500)}});
