@@ -288,7 +288,7 @@ return `<div class="k2" style="text-align:center"><div style="font-weight:700">$
 function vcl(){const all=S.st.map((s,i)=>{const f=S.mo.flatMap(m=>S.hm[m].v[i]).filter(x=>x!=null);return[i,f.length?Math.round(f.filter(x=>x==1).length/f.length*100):null]}).filter(a=>a[1]!=null).sort((a,b)=>a[1]-b[1]).slice(0,5);
 return `<h3>تکالیف — میانگین کلاس</h3><div class="g">${S.mo.map(m=>{const a=S.st.map((_,i)=>hp(m,i)).filter(x=>x!=='');return `<div class="k"><b>${a.length?Math.round(a.reduce((p,c)=>p+c,0)/a.length)+'٪':'-'}</b><span>${m}</span></div>`}).join('')}</div><h3>دروس — میانگین سطح کلاس (۱ بهترین)</h3>`+S.sub.map(U=>{const ks=bks(U);return `<div class="k2"><b>${E(U.n)}</b> `+ks.map(k=>{const a=S.st.flatMap((_,i)=>numsB(U,i,k));return (ks.length>1?'<span class="m">'+BL[k]+': </span>':'')+(a.length?ow(a,1)+' ('+a.length+' نمره)':'—')}).join(' | ')+'</div>'}).join('')+`<h3>کمترین درصد انجام تکلیف</h3>`+all.map(([i,p])=>`<div class="k2">${E(S.st[i].n)} — ${p}٪</div>`).join('')}
 function vbk(){return bkStat()+vbk0()+vauto()+vnm()+`<div class="k2"><b>درباره برنامه</b><p class="m">ورژن ${VER} — ساخت ${BUILD}</p></div>`}
-var BUILD='20261017-1200',VER='۳۲';
+var BUILD='20261017-1500',VER='۳۳';
 /* ===== نیازمند توجه ===== */
 const rkn=v=>+String(v==null?'':v).replace(/[۰-۹]/g,c=>c.charCodeAt(0)-1776).replace(/[٠-٩]/g,c=>c.charCodeAt(0)-1632);
 const rkc=()=>{const I=S.info||{};return{ab:Math.max(1,rkn(I.rkab)||3),hw:Math.min(100,Math.max(1,rkn(I.rkhw)||60)),neg:Math.max(1,rkn(I.rkneg)||5),ex:Math.min(10,Math.max(1,rkn(I.rkex)||2))}};
@@ -496,7 +496,7 @@ const capD=()=>new Date().toLocaleDateString('fa-IR',{year:'numeric',month:'long
 const capCT=()=>{const I=inf();return[I.cls?'🏫 کلاس '+I.cls:'',I.teacher?'🧑‍🏫 '+I.teacher:''].filter(Boolean).join(' | ')};
 const capJ=(title,head,tail)=>[title,...head,capCT()].filter(Boolean).join('\n');
 const capLv=(get)=>{const c={1:0,2:0,3:0,4:0,a:0};S.st.forEach((_,i)=>{const v=get(i);if(v===1||v===2||v===3||v===4)c[v]++;else if(v==='-')c.a++});return ['🟢','🟡','🟠','🔴'].map((e,k)=>e+' '+LV[k+1]+': '+fd(c[k+1])).join(' | ')+(c.a?' | ⚪ غایب: '+fd(c.a):'')};
-function wkCap(){wkInit();const D=wkData(),rg=wkRange(wm,wg);return capJ('📊 گزارش هفتگی انجام تکالیف',[],['📈 میانگین کلاس: '+(D.avg==null?'—':fd(D.avg)+'٪')+' | ✅ انجام کامل: '+fd(D.full.length)+' نفر',D.low.length?'⚠️ نیازمند پیگیری: '+D.low.map(r=>r.n).join('، '):'🎉 همه دانش‌آموزان بالای ۵۰٪ انجام داده‌اند'])}
+function wkCap(){wkInit();const D=wkData(),rg=wkRange(wm,wg);return capJ('📊 گزارش هفتگی انجام تکالیف',['📆 هفته '+fd(wg+1)+' '+wm],['📈 میانگین کلاس: '+(D.avg==null?'—':fd(D.avg)+'٪')+' | ✅ انجام کامل: '+fd(D.full.length)+' نفر',D.low.length?'⚠️ نیازمند پیگیری: '+D.low.map(r=>r.n).join('، '):'🎉 همه دانش‌آموزان بالای ۵۰٪ انجام داده‌اند'])}
 function hwCap(D){return capJ('📊 گزارش '+D.title.replace(/^گزارش /,''),[],['📈 میانگین کلاس: '+(D.avg==null?'—':fd(D.avg)+'٪')+' | ✅ انجام کامل: '+fd(D.full.length)+' نفر',D.low.length?'⚠️ نیازمند پیگیری: '+D.low.map(r=>r.n).join('، '):'🎉 همه دانش‌آموزان بالای ۵۰٪ انجام داده‌اند'])}
 function kmCap(i){const s=S.st[i],mn=MNM[jp(new Date())[1]-1],mm=mn+(/[ردذزژوا]$/.test(mn)?'':'\u200c')+'ماه';return ['🎓 کارنامه '+s.n,capCT(),'📅 '+mm].filter(Boolean).join('\n')}
 function exCap(){const U=S.sub[asb],x=U.ex[aex],big=U.big,t=big?(RB=='r'?'نتیجه اولیه آزمون':RB=='f'?'نتیجه نهایی آزمون':'نتیجه اولیه و نهایی آزمون'):'نتیجه آزمون';return ['📝 گزارش '+t,'📚 درس: '+U.n+' — '+(x.t||'آزمون '+fd(aex+1)),capCT(),x.d?'📅 تاریخ: '+wdp(x.d)+fd(ln(x.d)):''].filter(Boolean).join('\n')}
@@ -785,9 +785,10 @@ if(dr){x.fillStyle='#8a9a97';x.textAlign='center';x.textBaseline='middle';x.font
 return y+64};
 const H=run(false);cv.width=W;cv.height=H;x.fillStyle='#fff';x.fillRect(0,0,W,H);run(true);
 const blob=await new Promise(r=>cv.toBlob(r,'image/png')),fl=new File([blob],'homework-'+stamp()+'.png',{type:'image/png'});
-await sendImg(fl)
+await sendImg(fl,tpHwCap(sd))
 }catch(e){alert('ساخت تصویر انجام نشد.')}
 tpBusy=false;ss('')}
+function tpHwCap(sd){const k=tpK(),I=inf();let t;if(sd>=0){const dj=jp(tpDate(tpAdd(k,sd))).join('/');t='📌 تکلیف '+(dj==tdy()?'امروز ':'')+TPD[sd]+' '+fd(dj)}else t='📌 تکالیف هفته '+tpFd(k,0)+' تا '+tpFd(k,4);return t+'\n'+capCT()+'\n\n🌱 خواهشمند است اولیاء گرامی، بر حسن انجام تکالیف توسط دانش آموزان عزیز، نظارت و توجه لازم را مبذول فرمایند.'}
 async function tpFull(){if(tpBusy)return;tpBusy=true;ss('در حال ساخت تصویر…');
 try{const T=TP(),k=tpK(),w=tpG(k),I=inf(),K=2,FN='Yekan,Vazirmatn,Tahoma,sans-serif',TC='#ea580c',cv=document.createElement('canvas'),x=cv.getContext('2d');
 try{await document.fonts.load('700 30px Yekan');await document.fonts.load('400 30px Yekan')}catch(e){}
