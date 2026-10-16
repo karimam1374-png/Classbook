@@ -1267,7 +1267,7 @@ function peConv(P){
  if(!fb&&!vb&&!dg){if(P.sx)delete P.sx;return}
  const R=peSched3();peCarry(R,fb,0);peCarry(R,vb,1);peCarry(R,dg,2);
  const any=R.r.some(r=>r.some(g=>g.d));P.rd=R;P.lg=null;P.mg=0;P.m3=any?1:0;if(P.sx)delete P.sx;mk('st')}
-const PE=()=>{if(!S.pe)S.pe={t:[],lg:null};const P=S.pe;if(!Array.isArray(P.t))P.t=[];for(let i=0;i<6;i++)if(!P.t[i])P.t[i]='تیم '+fd(i+1);P.t.length=6;if(!Array.isArray(P.h))P.h=[];if(!Array.isArray(P.ya))P.ya=[];if((P.lg&&!P.lg.v)||(!P.lg&&P.r))peMig(P);if(P.lg&&!(Array.isArray(P.lg.f)&&P.lg.f.length==PEFT))P.lg=null;if(P.rd&&!(Array.isArray(P.rd.r)&&P.rd.r.length==PEFT&&P.rd.r.every(r=>Array.isArray(r)&&r.length==3)))P.rd=null;peConv(P);return P};
+const PE=()=>{if(!S.pe)S.pe={t:[],lg:null};const P=S.pe;if(!Array.isArray(P.t))P.t=[];for(let i=0;i<6;i++)if(!P.t[i])P.t[i]='تیم '+fd(i+1);P.t.length=6;if(!Array.isArray(P.h))P.h=[];if(!Array.isArray(P.ya))P.ya=[];if((P.lg&&!P.lg.v)||(!P.lg&&P.r))peMig(P);if(P.lg&&!(Array.isArray(P.lg.f)&&P.lg.f.length==PEFT))P.lg=null;if(P.rd&&P.rd.v==4&&Array.isArray(P.rd.r)){const o=P.rd.r,R=peSched3();[0,1,2].forEach(j=>peCarry(R,o.map(r=>Array.isArray(r)?r[j]:null).filter(Boolean),j));P.rd=R;P.lg=null;P.mg=0;P.m3=R.r.some(r=>r.some(g=>g.d))?1:0;mk('st')}if(P.rd&&!(P.rd.v==3&&Array.isArray(P.rd.r)&&P.rd.r.length==PEFT&&P.rd.r.every(r=>Array.isArray(r)&&r.length==3&&r.every(g=>g&&typeof g=='object'))))P.rd=null;peConv(P);return P};
 const peTr=P=>{const c=[0,0,0,0,0,0];P.h.forEach(h=>{if(h&&h.c>=0&&h.c<6)c[h.c]++});return c};
 const peN=(P,i)=>E(P.t[i])+(peTC[i]?' <span class="petr">'+(peTC[i]>3?'🏆×'+fd(peTC[i]):'🏆'.repeat(peTC[i]))+'</span>':'');
 const peFb=P=>P.rd?P.rd.r.map(r=>r[0]):[];
