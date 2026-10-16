@@ -289,7 +289,7 @@ return `<div class="k2" style="text-align:center"><div style="font-weight:700">$
 function vcl(){const all=S.st.map((s,i)=>{const f=S.mo.flatMap(m=>S.hm[m].v[i]).filter(x=>x!=null);return[i,f.length?Math.round(f.filter(x=>x==1).length/f.length*100):null]}).filter(a=>a[1]!=null).sort((a,b)=>a[1]-b[1]).slice(0,5);
 return `<h3>تکالیف — میانگین کلاس</h3><div class="g">${S.mo.map(m=>{const a=S.st.map((_,i)=>hp(m,i)).filter(x=>x!=='');return `<div class="k"><b>${a.length?Math.round(a.reduce((p,c)=>p+c,0)/a.length)+'٪':'-'}</b><span>${m}</span></div>`}).join('')}</div><h3>دروس — میانگین سطح کلاس (۱ بهترین)</h3>`+S.sub.map(U=>{const ks=bks(U);return `<div class="k2"><b>${E(U.n)}</b> `+ks.map(k=>{const a=S.st.flatMap((_,i)=>numsB(U,i,k));return (ks.length>1?'<span class="m">'+BL[k]+': </span>':'')+(a.length?ow(a,1)+' ('+a.length+' نمره)':'—')}).join(' | ')+'</div>'}).join('')+`<h3>کمترین درصد انجام تکلیف</h3>`+all.map(([i,p])=>`<div class="k2">${E(S.st[i].n)} — ${p}٪</div>`).join('')}
 function vbk(){return bkStat()+vbk0()+vauto()+vnm()+`<div class="k2"><b>درباره برنامه</b><p class="m">ورژن ${VER} — ساخت ${BUILD}</p></div>`}
-var BUILD='20261018-1700',VER='۳۶';
+var BUILD='20261019-1800',VER='۴۰';
 /* ===== نیازمند توجه ===== */
 const rkn=v=>+String(v==null?'':v).replace(/[۰-۹]/g,c=>c.charCodeAt(0)-1776).replace(/[٠-٩]/g,c=>c.charCodeAt(0)-1632);
 const rkc=()=>{const I=S.info||{};return{ab:Math.max(1,rkn(I.rkab)||3),hw:Math.min(100,Math.max(1,rkn(I.rkhw)||60)),neg:Math.max(1,rkn(I.rkneg)||5),ex:Math.min(10,Math.max(1,rkn(I.rkex)||2))}};
@@ -742,7 +742,7 @@ document.addEventListener('input',e=>{const t=e.target;if(t.dataset&&t.dataset.m
 const TPD=['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه'],TPZ=['اول','دوم','سوم','چهارم','پنجم'],
 TPL=['قرآن','فارسی','نگارش','ریاضی','علوم','مطالعات','هدیه‌های آسمانی','تفکر و پژوهش','کار و فناوری','هنر','ورزش'],
 TPB=['قرآن','فارسی','نگارش','ریاضی','علوم','مطالعات','هدیه‌های آسمانی','تفکر و پژوهش','کار و فناوری'];
-let tpSend=false,tpSd=-1,tpBo=false,tpBusy=false,tpCur='',tpNav=false,tpTm=0;
+let tpSend=false,tpCont=false,tpSd=-1,tpBo=false,tpBusy=false,tpCur='',tpNav=false,tpTm=0;
 const tpIso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'),
 tpDate=k=>{const z=k.split('-').map(Number);return new Date(z[0],z[1]-1,z[2],12)};
 function tpSat(d){const g=d.getDay(),x=new Date(d.getFullYear(),d.getMonth(),d.getDate(),12);x.setDate(x.getDate()+(g==4?2:g==5?1:-((g+1)%7)));return tpIso(x)}
@@ -774,7 +774,8 @@ let panel='';if(tpSend){let nn=0;const it=tpCollect(tpSd),cnt=d=>tpCollect(d).re
 panel=`<div class="k2"><b>ارسال تکالیف زنگ‌های تدریس‌شده</b><p class="m" style="margin:4px 0 8px">فقط زنگ‌هایی که تیک خورده‌اند و تکلیف دارند در تصویر می‌آیند. روز موردنظر را انتخاب کنید:</p><div class="cb" style="flex-wrap:wrap">${TPD.map((n,d)=>zch2('tpsd',d,n+' ('+fd(cnt(d))+')',tpSd==d)).join('')}${zch2('tpsd',-1,'کل هفته ('+fd(cnt(-1))+')',tpSd==-1)}</div>`+
 (it.length?it.map(g=>(nn=0,'')+`<div class="m" style="margin-top:6px"><b>${TPD[g.d]} ${tpFd(k,g.d)}</b></div>`+g.rows.map(r=>`<div class="m">${fd(++nn)}. ${E(r.h)}</div>`).join('')).join(''):'<div class="m" style="color:var(--a)">برای این انتخاب، زنگِ تیک‌خورده‌ای با تکلیف ثبت نشده است.</div>')+
 `<button type="button" class="bt" data-tpb="img" style="width:100%;margin-top:8px">🖼 ساخت و ارسال تصویر</button></div>`}
-return `<div class="k2"><div class="bar"><button type="button" class="chip" data-tpw="-1">‹ هفته قبل</button><b style="flex:1;text-align:center">هفته: ${tpFd(k,0)} تا ${tpFd(k,4)}</b><button type="button" class="chip" data-tpw="1">هفته بعد ›</button></div><div class="cb">${now?'':'<button type="button" class="chip" data-tpw="0">📍 هفته جاری</button>'}<button type="button" class="chip${tpSend?' on':''}" data-tpb="send">📤 ارسال تکالیف</button><button type="button" class="chip" data-tpb="full">🖼 ارسال کل برنامه هفته</button></div><div class="m tpho">📱 برای دیدن کامل برنامه با همان چیدمان کاغذی، گوشی یا تبلت را افقی کنید.</div></div>${panel}<div class="tpo"><div class="tpf" id="tpf"><div class="tmain"><div class="tgrid">${g}</div></div>${side}</div></div>`}
+if(tpCont){const sdc=tpSd<0?0:tpSd,it=tpCollectC(sdc);panel=`<div class="k2"><b>ارسال محتوای تدریس‌شده</b><p class="m" style="margin:4px 0 8px">همه‌ی زنگ‌هایی که تیک خورده‌اند در تصویر می‌آیند. روز موردنظر را انتخاب کنید:</p><div class="cb" style="flex-wrap:wrap">${TPD.map((n,d)=>zch2('tpsd',d,n+' ('+fd(tpCollectC(d).length)+')',sdc==d)).join('')}</div>`+(it.length?it.map(r=>`<div class="m"><b>${E(r.l)}</b>${r.c?': '+E(r.c.replace(/\n/g,'، ')):''}</div>`).join(''):'<div class="m" style="color:var(--a)">برای این روز، زنگِ تیک‌خورده‌ای ثبت نشده است.</div>')+`<button type="button" class="bt" data-tpb="cimg" style="width:100%;margin-top:8px">🎨 ساخت و ارسال تصویر محتوای تدریس</button></div>`}
+return `<div class="k2"><div class="bar"><button type="button" class="chip" data-tpw="-1">‹ هفته قبل</button><b style="flex:1;text-align:center">هفته: ${tpFd(k,0)} تا ${tpFd(k,4)}</b><button type="button" class="chip" data-tpw="1">هفته بعد ›</button></div><div class="cb">${now?'':'<button type="button" class="chip" data-tpw="0">📍 هفته جاری</button>'}<button type="button" class="chip${tpSend?' on':''}" data-tpb="send">📤 ارسال تکالیف</button><button type="button" class="chip${tpCont?' on':''}" data-tpb="cont">📚 ارسال محتوای تدریس</button><button type="button" class="chip" data-tpb="full">🖼 ارسال کل برنامه هفته</button></div><div class="m tpho">📱 برای دیدن کامل برنامه با همان چیدمان کاغذی، گوشی یا تبلت را افقی کنید.</div></div>${panel}<div class="tpo"><div class="tpf" id="tpf"><div class="tmain"><div class="tgrid">${g}</div></div>${side}</div></div>`}
 function tpFit(){const m=document.querySelector('main');if(m)m.style.maxWidth=tab=='tp'?'none':'';const o=document.querySelector('.tpo'),f=document.getElementById('tpf');if(!o||!f)return;const s=o.clientWidth/1080;f.style.transform='scale('+s+')';o.style.height=Math.ceil(f.offsetHeight*s)+'px'}
 window.addEventListener('resize',()=>{if(tab=='tp')tpFit()});window.addEventListener('orientationchange',()=>setTimeout(()=>{if(tab=='tp')tpFit()},250));
 async function tpPng(sd){if(tpBusy)return;const items=tpCollect(sd);if(!items.length){alert('برای این انتخاب، زنگِ تیک‌خورده‌ای با تکلیف ثبت نشده است.');return}
@@ -798,6 +799,35 @@ await sendImg(fl,tpHwCap(sd))
 }catch(e){alert('ساخت تصویر انجام نشد.')}
 tpBusy=false;ss('')}
 function tpHwCap(sd){const k=tpK(),I=inf();let t;if(sd>=0){const dj=jp(tpDate(tpAdd(k,sd))).join('/');t='📌 تکلیف '+(dj==tdy()?'امروز ':'')+TPD[sd]+' '+fd(dj)}else t='📌 تکالیف هفته '+tpFd(k,0)+' تا '+tpFd(k,4);return t+'\n'+capCT()+'\n\n🌱 خواهشمند است اولیاء گرامی، بر حسن انجام تکالیف توسط دانش آموزان عزیز، نظارت و توجه لازم را مبذول فرمایند.'}
+function tpCollectC(sd){const k=tpK(),w=tpG(k),d=sd,out=[];if(d<0||d>4)return out;for(let p=0;p<5;p++){if(!w.k[d][p])continue;out.push({p,l:tpLes(w,d,p)||('زنگ '+TPZ[p]),c:String(w.c[d][p]||'').split(/\r?\n/).map(z=>z.trim()).filter(Boolean).join('\n')})}return out}
+function tpCntCap(sd){const k=tpK(),dj=jp(tpDate(tpAdd(k,sd))).join('/');return ['📚 محتوای تدریس شده '+(dj==tdy()?'امروز ':'')+TPD[sd]+' '+fd(dj),capCT(),'',...tpCollectC(sd).map(r=>'🔹 '+r.l+(r.c?': '+r.c.replace(/\n/g,'، '):''))].join('\n')}
+async function tpCntPng(sd){if(tpBusy)return;const rows=tpCollectC(sd);if(!rows.length){alert('برای این روز، زنگِ تیک‌خورده‌ای ثبت نشده است.');return}
+tpBusy=true;ss('در حال ساخت تصویر…');
+try{const I=inf(),k=tpK(),W=1080,P=48,FN='Yekan,Vazirmatn,Tahoma,sans-serif',cv=document.createElement('canvas'),x=cv.getContext('2d');
+try{await document.fonts.load('700 30px Yekan');await document.fonts.load('400 30px Yekan')}catch(e){}
+const COL={'قرآن':'#0d9488','فارسی':'#e11d48','نگارش':'#c026d3','ریاضی':'#2563eb','علوم':'#16a34a','مطالعات':'#ea580c','هدیه‌های آسمانی':'#0891b2','تفکر و پژوهش':'#7c3aed','کار و فناوری':'#ca8a04','هنر':'#db2777','ورزش':'#059669'},cl=n=>COL[n]||'#7c3aed';
+const rr=(a,b,w,h,r)=>{x.beginPath();x.moveTo(a+r,b);x.lineTo(a+w-r,b);x.quadraticCurveTo(a+w,b,a+w,b+r);x.lineTo(a+w,b+h-r);x.quadraticCurveTo(a+w,b+h,a+w-r,b+h);x.lineTo(a+r,b+h);x.quadraticCurveTo(a,b+h,a,b+h-r);x.lineTo(a,b+r);x.quadraticCurveTo(a,b,a+r,b);x.closePath()};
+const wrap=(t,f,mw)=>{x.font=f;const o=[];String(t).split(/\r?\n/).forEach(par=>{let c='';par.split(/\s+/).filter(Boolean).forEach(wd=>{const z=c?c+' '+wd:wd;if(c&&x.measureText(z).width>mw){o.push(c);c=wd}else c=z});o.push(c)});return o};
+const dj=jp(tpDate(tpAdd(k,sd))).join('/'),sub=TPD[sd]+' '+fd(dj),HH=310,CF='400 32px '+FN,LF2='700 34px '+FN,LH=50,RX=W-P-40;
+const run=dr=>{let y=HH+44;
+if(dr){const g=x.createLinearGradient(0,0,W,HH);g.addColorStop(0,'#6d28d9');g.addColorStop(.55,'#db2777');g.addColorStop(1,'#f97316');
+x.save();rr(-60,-60,W+120,HH+60,70);x.fillStyle=g;x.fill();x.clip();x.fillStyle='rgba(255,255,255,.13)';[[90,60,130],[W-60,250,160],[W/2+240,30,70],[300,270,60]].forEach(([a,b,r])=>{x.beginPath();x.arc(a,b,r,0,7);x.fill()});x.restore();
+x.textAlign='center';x.textBaseline='middle';x.fillStyle='#fff';x.font='700 68px '+FN;x.fillText('محتوای تدریس',W/2,92);
+x.font='700 34px '+FN;const pw=x.measureText(sub).width+80;x.fillStyle='rgba(255,255,255,.96)';rr(W/2-pw/2,138,pw,60,30);x.fill();x.fillStyle='#be185d';x.fillText(sub,W/2,170);
+x.fillStyle='rgba(255,255,255,.95)';x.font='400 28px '+FN;x.fillText([I.school,I.cls,I.teacher].filter(Boolean).join(' — '),W/2,246)}
+rows.forEach(r=>{const col=cl(r.l),ls=r.c?wrap(r.c,CF,W-2*P-14-26-34):[];x.font=LF2;const pw=x.measureText(r.l).width+60,ph=60,ch=30+ph+(ls.length?18+ls.length*LH:0)+30;
+if(dr){x.save();x.shadowColor='rgba(91,33,182,.18)';x.shadowBlur=24;x.shadowOffsetY=8;x.fillStyle='#fff';rr(P,y,W-2*P,ch,30);x.fill();x.restore();
+x.save();rr(P,y,W-2*P,ch,30);x.clip();x.fillStyle=col+'14';x.fillRect(P,y,W-2*P,ch);x.fillStyle=col;x.fillRect(W-P-14,y,14,ch);x.restore();
+x.fillStyle=col;rr(RX-pw,y+30,pw,ph,30);x.fill();x.fillStyle='#fff';x.textAlign='center';x.textBaseline='middle';x.font=LF2;x.fillText(r.l,RX-pw/2,y+30+ph/2+2);
+x.fillStyle='#1f2937';x.textAlign='right';x.font=CF;ls.forEach((l,i)=>x.fillText(l,RX,y+30+ph+18+i*LH+LH/2))}
+y+=ch+24});
+if(dr){x.fillStyle='#a78bfa';x.textAlign='center';x.textBaseline='middle';x.font='400 22px '+FN;x.fillText('آکادمی ایران',W/2,y+24)}
+return y+70};
+const H=run(false);cv.width=W;cv.height=H;const bg=x.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#fdf4ff');bg.addColorStop(1,'#fff7ed');x.fillStyle=bg;x.fillRect(0,0,W,H);try{x.direction='rtl'}catch(e){}run(true);
+const blob=await new Promise(r=>cv.toBlob(r,'image/png')),fl=new File([blob],'teaching-'+stamp()+'.png',{type:'image/png'});
+await sendImg(fl,tpCntCap(sd))
+}catch(e){alert('ساخت تصویر انجام نشد.')}
+tpBusy=false;ss('')}
 async function tpFull(){if(tpBusy)return;tpBusy=true;ss('در حال ساخت تصویر…');
 try{const T=TP(),k=tpK(),w=tpG(k),I=inf(),K=2,FN='Yekan,Vazirmatn,Tahoma,sans-serif',TC='#ea580c',cv=document.createElement('canvas'),x=cv.getContext('2d');
 try{await document.fonts.load('700 30px Yekan');await document.fonts.load('400 30px Yekan')}catch(e){}
@@ -850,7 +880,7 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-tpk],[data
 if(d.tpk!=null){const[a,b]=d.tpk.split(',').map(Number),w=tpW(tpK());w.k[a][b]=w.k[a][b]?0:1;mk('st');R()}
 else if(d.tpw!=null){const n=+d.tpw;if(n==0){tpNav=false;tpCur=tpSat(new Date())}else{const b=tpK();tpNav=true;tpCur=tpAdd(b,n*7)}R()}
 else if(d.tpsd!=null){tpSd=+d.tpsd;R()}
-else if(d.tpb=='send'){tpSend=!tpSend;if(tpSend){const g=(new Date().getDay()+1)%7;tpSd=tpK()==tpSat(new Date())&&g<5&&tpCollect(g).length?g:-1}R()}
+else if(d.tpb=='cont'){tpCont=!tpCont;if(tpCont){tpSend=false;const g=(new Date().getDay()+1)%7,f=[0,1,2,3,4].find(z=>tpCollectC(z).length);tpSd=tpK()==tpSat(new Date())&&g<5&&tpCollectC(g).length?g:(f==null?0:f)}R()} else if(d.tpb=='cimg')tpCntPng(tpSd<0?0:tpSd);else if(d.tpb=='send'){tpSend=!tpSend;if(tpSend){tpCont=false;const g=(new Date().getDay()+1)%7;tpSd=tpK()==tpSat(new Date())&&g<5&&tpCollect(g).length?g:-1}R()}
 else if(d.tpb=='img')tpPng(tpSd);else if(d.tpb=='full')tpFull()});
 document.addEventListener('input',e=>{const t=e.target,d=t.dataset;if(tab!='tp'||!d)return;
 if(d.tpc!=null||d.tph!=null){const s=(d.tpc!=null?d.tpc:d.tph).split(',').map(Number),w=tpW(tpK());(d.tpc!=null?w.c:w.h)[s[0]][s[1]]=t.value;clearTimeout(tpTm);tpTm=setTimeout(()=>mk('st'),500)}
