@@ -296,7 +296,7 @@ return `<div class="k2" style="text-align:center"><div style="font-weight:700">$
 function vcl(){const all=S.st.map((s,i)=>{const f=S.mo.flatMap(m=>S.hm[m].v[i]).filter(x=>x!=null);return[i,f.length?Math.round(f.filter(x=>x==1).length/f.length*100):null]}).filter(a=>a[1]!=null).sort((a,b)=>a[1]-b[1]).slice(0,5);
 return `<h3>تکالیف — میانگین کلاس</h3><div class="g">${S.mo.map(m=>{const a=S.st.map((_,i)=>hp(m,i)).filter(x=>x!=='');return `<div class="k"><b>${a.length?Math.round(a.reduce((p,c)=>p+c,0)/a.length)+'٪':'-'}</b><span>${m}</span></div>`}).join('')}</div><h3>دروس — میانگین سطح کلاس (۱ بهترین)</h3>`+S.sub.map(U=>{const ks=bks(U);return `<div class="k2"><b>${E(U.n)}</b> `+ks.map(k=>{const a=S.st.flatMap((_,i)=>numsB(U,i,k));return (ks.length>1?'<span class="m">'+BL[k]+': </span>':'')+(a.length?ow(a,1)+' ('+a.length+' نمره)':'—')}).join(' | ')+'</div>'}).join('')+`<h3>کمترین درصد انجام تکلیف</h3>`+all.map(([i,p])=>`<div class="k2">${E(S.st[i].n)} — ${p}٪</div>`).join('')}
 function vbk(){return bkStat()+vbk0()+vauto()+vnm()+`<div class="k2"><b>درباره برنامه</b><p class="m">ورژن ${VER} — ساخت ${BUILD}</p></div>`}
-var BUILD='20261018-0030',VER='۶۶';
+var BUILD='20261017-1600',VER='۶۸';
 /* ===== نیازمند توجه ===== */
 const rkn=v=>+String(v==null?'':v).replace(/[۰-۹]/g,c=>c.charCodeAt(0)-1776).replace(/[٠-٩]/g,c=>c.charCodeAt(0)-1632);
 const rkc=()=>{const I=S.info||{};return{ab:Math.max(1,rkn(I.rkab)||3),hw:Math.min(100,Math.max(1,rkn(I.rkhw)||60)),neg:Math.max(1,rkn(I.rkneg)||5),ex:Math.min(10,Math.max(1,rkn(I.rkex)||2))}};
@@ -1263,50 +1263,54 @@ const peOkF=(cn,a,b)=>{const m=Math.min(...cn),lo=[];cn.forEach((c,i)=>{if(c==m)
  const o=a==lo[0]?b:b==lo[0]?a:-1;if(o<0)return false;
  return cn[o]==Math.min(...cn.filter((_,i)=>i!=lo[0]))};
 /* قرعه‌کشی تازه: ۱۰ دسته‌ی سه‌دوری؛ در هر دسته فوتبال همه‌ی ۶ تیم را دقیقاً یک‌بار دارد (والیبال و وسطی هم همین‌طور) */
+/* هزینه‌ی استراحت: برای هر رشته، فاصله‌ی دو بازیِ پشت‌سرهمِ یک تیم در ایدهآل ۳ است (دو بازی استراحت، بازی چهارم نوبت خودش). هر انحراف و هر فاصله‌ی کوتاه‌تر از ۳ هزینه دارد. */
+function peCost(L){let c=0;for(let j=0;j<3;j++){const last={};L.forEach((g,i)=>{if(!g||!g[j])return;[g[j].a,g[j].b].forEach(x=>{if(last[x]!==undefined){const d=i-last[x];c+=Math.abs(d-3)+(d<3?1:0)}last[x]=i})})}return c}
 function peSched3(){
  const t=peSh([0,1,2,3,4,5]),r=t.slice(1),days=[];
  for(let d=0;d<5;d++){const w=[t[0]].concat(r);days.push([[w[0],w[5]],[w[1],w[4]],[w[2],w[3]]]);r.unshift(r.pop())}
  const ori=days.map(d=>d.map(()=>[0,1,2].map(()=>Math.random()<.5)));
- const PM=[[0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]],fk=(f,sh)=>days[f][(3-sh)%3];
- const used=[[],[]],seq=[];
- const dfs=b=>{if(b==10)return true;const leg=b<5?0:1,fs=peSh([0,1,2,3,4].filter(f=>!used[leg].includes(f)));
-  for(const f of fs)for(const p of peSh(PM)){const pr=seq.length?fk(seq[seq.length-1].f,seq[seq.length-1].sh):null,fi=fk(f,p[0]);
-   if(pr&&(pr.includes(fi[0])||pr.includes(fi[1])))continue;
-   used[leg].push(f);p.forEach(sh=>seq.push({f,sh,leg}));if(dfs(b+1))return true;seq.length-=3;used[leg].pop()}
-  return false};
- let ok=false;for(let i=0;i<50&&!ok;i++){seq.length=0;used[0]=[];used[1]=[];ok=dfs(0)}
- if(!ok){seq.length=0;for(let leg=0;leg<2;leg++)for(let f=0;f<5;f++)for(let sh=0;sh<3;sh++)seq.push({f,sh,leg})}
- return {v:3,r:seq.map(c=>{const g=[null,null,null];days[c.f].forEach((m,k)=>{const j=(k+c.sh)%3;let fl=ori[c.f][k][j];if(c.leg==1)fl=!fl;g[j]={s:'fvd'[j],a:fl?m[1]:m[0],b:fl?m[0]:m[1],d:0,ga:0,gb:0}});return g})}}
+ const PM=[[0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]];
+ const build=st=>{const R=[];for(let b=0;b<10;b++){const f=st.o[b],leg=b<5?0:1;for(const sh of st.p[b]){const g=[null,null,null];days[f].forEach((m,k)=>{const j=(k+sh)%3;let fl=ori[f][k][j];if(leg==1)fl=!fl;g[j]={s:'fvd'[j],a:fl?m[1]:m[0],b:fl?m[0]:m[1],d:0,ga:0,gb:0}});R.push(g)}}return R};
+ const sc=st=>{const R=build(st);let pv=0;for(let i=1;i<R.length;i++){const a=R[i][0],b=R[i-1][0];if(a.a==b.a||a.a==b.b||a.b==b.a||a.b==b.b)pv++}return peCost(R)+100*pv};
+ let best=null,bs=1e9;
+ for(let rs=0;rs<12;rs++){
+  let st={o:peSh([0,1,2,3,4]).concat(peSh([0,1,2,3,4])),p:Array.from({length:10},()=>PM[Math.floor(Math.random()*6)])},c=sc(st);
+  for(let it=0;it<1500;it++){const n={o:st.o.slice(),p:st.p.slice()};
+   if(Math.random()<.5)n.p[Math.floor(Math.random()*10)]=PM[Math.floor(Math.random()*6)];
+   else{const lg=Math.random()<.5?0:5,a=lg+Math.floor(Math.random()*5),b=lg+Math.floor(Math.random()*5),x=n.o[a];n.o[a]=n.o[b];n.o[b]=x}
+   const ns=sc(n);if(ns<=c){st=n;c=ns}}
+  if(c<bs){bs=c;best=st}}
+ return {v:3,r:build(best)}}
 /* ساخت دوباره‌ی دورهای بعد از دورهای قفل‌شده (انجام‌شده یا در حال برگزاری) با رعایت قاعده‌ی فوتبال */
-function peRebuild(old,lockN){
+function peRebuild(old,lockN){peRebuild.bst=null;
  const NR=30,fixed=old.slice(0,lockN).map(r=>r.map(g=>Object.assign({},g)));
- const cs=[0,1,2].map(()=>new Array(36).fill(0)),cn=[0,0,0,0,0,0],fo=[{},{},{}];
- for(const r of fixed)r.forEach((g,j)=>{const k=peK(g.a,g.b);if(++cs[j][k]>2)throw 0;if(j==0){cn[g.a]++;cn[g.b]++}if(!fo[j][k])fo[j][k]=[g.a,g.b]});
+ const cs=[0,1,2].map(()=>new Array(36).fill(0)),cn=[[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]],fo=[{},{},{}];
+ for(const r of fixed)r.forEach((g,j)=>{const k=peK(g.a,g.b);if(++cs[j][k]>2)throw 0;cn[j][g.a]++;cn[j][g.b]++;if(!fo[j][k])fo[j][k]=[g.a,g.b]});
  const P0=[];for(let a=0;a<6;a++)for(let b=a+1;b<6;b=b+1)P0.push([a,b]);
  for(let mode=0;mode<3;mode++){
   for(let at=0;at<30;at++){
-   let nodes=0;const R=fixed.map(r=>r.map(g=>Object.assign({},g))),c2=cs.map(x=>x.slice()),cn2=cn.slice(),fo2=fo.map(o=>Object.assign({},o));
+   let nodes=0;const R=fixed.map(r=>r.map(g=>Object.assign({},g))),c2=cs.map(x=>x.slice()),cn2=cn.map(x=>x.slice()),fo2=fo.map(o=>Object.assign({},o));
    const cap=(j,i)=>mode==0||(mode==1&&j==0)?(i<15?1:2):2;
    const place=(j,p,i)=>{const k=peK(p[0],p[1]);let a=p[0],b=p[1];if(fo2[j][k]){a=fo2[j][k][1];b=fo2[j][k][0]}else{if(Math.random()<.5){a=p[1];b=p[0]}fo2[j][k]=[a,b]}return {s:'fvd'[j],a,b,d:0,ga:0,gb:0}};
    const dfs=i=>{if(i==NR)return true;if(++nodes>6000)return false;
     const pv=i?[R[i-1][0].a,R[i-1][0].b]:null,opts=[];
-    for(const f of P0){const kf=peK(f[0],f[1]);if(c2[0][kf]>=cap(0,i)||!peOkF(cn2,f[0],f[1]))continue;if(pv&&(pv.includes(f[0])||pv.includes(f[1])))continue;
+    for(const f of P0){const kf=peK(f[0],f[1]);if(c2[0][kf]>=cap(0,i)||!peOkF(cn2[0],f[0],f[1]))continue;if(pv&&(pv.includes(f[0])||pv.includes(f[1])))continue;
      const rm=[0,1,2,3,4,5].filter(x=>x!=f[0]&&x!=f[1]);
      for(const sp of [[[rm[0],rm[1]],[rm[2],rm[3]]],[[rm[0],rm[2]],[rm[1],rm[3]]],[[rm[0],rm[3]],[rm[1],rm[2]]]])for(const sw of [0,1]){
       const v=sw?sp[1]:sp[0],t=sw?sp[0]:sp[1];
-      if(c2[1][peK(v[0],v[1])]>=cap(1,i)||c2[2][peK(t[0],t[1])]>=cap(2,i))continue;opts.push([f,v,t])}}
+      if(c2[1][peK(v[0],v[1])]>=cap(1,i)||c2[2][peK(t[0],t[1])]>=cap(2,i)||!peOkF(cn2[1],v[0],v[1])||!peOkF(cn2[2],t[0],t[1]))continue;opts.push([f,v,t])}}
     for(const [f,v,t] of peSh(opts)){const g=[place(0,f,i),place(1,v,i),place(2,t,i)],sv=[fo2[0],fo2[1],fo2[2]].map(o=>Object.assign({},o));
-     [f,v,t].forEach((p,j)=>c2[j][peK(p[0],p[1])]++);cn2[f[0]]++;cn2[f[1]]++;R.push(g);
+     [f,v,t].forEach((p,j)=>{c2[j][peK(p[0],p[1])]++;cn2[j][p[0]]++;cn2[j][p[1]]++});R.push(g);
      if(dfs(i+1))return true;
-     R.pop();[f,v,t].forEach((p,j)=>c2[j][peK(p[0],p[1])]--);cn2[f[0]]--;cn2[f[1]]--;fo2[0]=sv[0];fo2[1]=sv[1];fo2[2]=sv[2]}
+     R.pop();[f,v,t].forEach((p,j)=>{c2[j][peK(p[0],p[1])]--;cn2[j][p[0]]--;cn2[j][p[1]]--});fo2[0]=sv[0];fo2[1]=sv[1];fo2[2]=sv[2]}
     return false};
-   if(dfs(lockN))return R}}
+   if(dfs(lockN)){if(mode==0&&at<7&&!(peRebuild.bst&&peRebuild.bst.c<=peCost(R))){peRebuild.bst={c:peCost(R),R:R.map(r=>r.map(g=>Object.assign({},g)))};continue}return peRebuild.bst&&peRebuild.bst.c<peCost(R)?peRebuild.bst.R:R}}}
  return null}
 /* بررسی: از دور lockN به بعد قاعده رعایت شده؟ */
-function peBad(L,lockN){const cn=[0,0,0,0,0,0];let pv=null;
- for(let i=0;i<L.length;i++){const g=L[i][0];
-  if(i>=lockN){if(!peOkF(cn,g.a,g.b))return true;if(pv&&(pv.includes(g.a)||pv.includes(g.b)))return true}
-  cn[g.a]++;cn[g.b]++;pv=[g.a,g.b]}
+function peBad(L,lockN){const cn=[[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]];let pv=null;
+ for(let i=0;i<L.length;i++){
+  for(let j=0;j<3;j++){const g=L[i][j];if(i>=lockN&&!peOkF(cn[j],g.a,g.b))return true;if(j==0&&i>=lockN&&pv&&(pv.includes(g.a)||pv.includes(g.b)))return true;cn[j][g.a]++;cn[j][g.b]++}
+  pv=[L[i][0].a,L[i][0].b]}
  return false}
 
 const peCur=P=>{if(!P.rd)return -1;const k=P.rd.r.findIndex(r=>r.some(g=>g.p&&!g.d));return k>=0?k:peNext(P)};
@@ -1320,12 +1324,12 @@ function peSeed64(P){
  L[4][0].p=1;P.fx=0;P.fxn=1;mk('st')}
 /* یک‌بار برای هر برنامه: اگر بازی‌های فوتبالِ دورهای بعدی قاعده‌ی «بازی اول همه، بعد بازی دوم همه» را رعایت نمی‌کند، فقط دورهای بعد از آخرین دورِ شروع‌شده دوباره چیده می‌شود */
 function peFixF(P){
- if(!P.rd||P.fx)return;P.fx=1;
+ if(!P.rd||P.fx4)return;P.fx4=1;P.fx3=1;P.fx=1;
  const L=P.rd.r;let last=-1;L.forEach((r,i)=>{if(r.some(g=>g.d||g.p))last=i});
- const lk=last+1;if(!peBad(L,lk))return;
- if(lk==0){P.rd=peSched3();P.fxn=1;mk('st');return}
+ const lk=last+1;if(lk>=PEFT)return;
+ if(lk==0){if(peBad(L,0)||peCost(peSched3().r)<peCost(L)){P.rd=peSched3();P.fxn=1;mk('st')}return}
  let R=null;try{R=peRebuild(L,lk)}catch(e){R=null}
- if(R){P.rd={v:3,r:R};P.fxn=1;mk('st')}}
+ if(R&&(peBad(L,lk)||peCost(R)<peCost(L))){P.rd={v:3,r:R};P.fxn=1;mk('st')}}
 /* نتیجه‌های ثبت‌شده‌ی برنامه‌ی قبلی را در برنامه‌ی جدید، برای همان دو تیم و همان رشته، جا می‌دهد */
 function peCarry(R,olds,j){(olds||[]).forEach(o=>{if(!o||!o.d)return;for(const r of R.r){const x=r[j];if(!x.d&&((x.a==o.a&&x.b==o.b)||(x.a==o.b&&x.b==o.a))){if(x.a==o.a){x.ga=+o.ga||0;x.gb=+o.gb||0}else{x.ga=+o.gb||0;x.gb=+o.ga||0}x.d=1;return}}})}
 function peConv(P){
