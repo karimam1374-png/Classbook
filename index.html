@@ -296,7 +296,7 @@ return `<div class="k2" style="text-align:center"><div style="font-weight:700">$
 function vcl(){const all=S.st.map((s,i)=>{const f=S.mo.flatMap(m=>S.hm[m].v[i]).filter(x=>x!=null);return[i,f.length?Math.round(f.filter(x=>x==1).length/f.length*100):null]}).filter(a=>a[1]!=null).sort((a,b)=>a[1]-b[1]).slice(0,5);
 return `<h3>تکالیف — میانگین کلاس</h3><div class="g">${S.mo.map(m=>{const a=S.st.map((_,i)=>hp(m,i)).filter(x=>x!=='');return `<div class="k"><b>${a.length?Math.round(a.reduce((p,c)=>p+c,0)/a.length)+'٪':'-'}</b><span>${m}</span></div>`}).join('')}</div><h3>دروس — میانگین سطح کلاس (۱ بهترین)</h3>`+S.sub.map(U=>{const ks=bks(U);return `<div class="k2"><b>${E(U.n)}</b> `+ks.map(k=>{const a=S.st.flatMap((_,i)=>numsB(U,i,k));return (ks.length>1?'<span class="m">'+BL[k]+': </span>':'')+(a.length?ow(a,1)+' ('+a.length+' نمره)':'—')}).join(' | ')+'</div>'}).join('')+`<h3>کمترین درصد انجام تکلیف</h3>`+all.map(([i,p])=>`<div class="k2">${E(S.st[i].n)} — ${p}٪</div>`).join('')}
 function vbk(){return bkStat()+vbk0()+vauto()+vnm()+`<div class="k2"><b>درباره برنامه</b><p class="m">ورژن ${VER} — ساخت ${BUILD}</p></div>`}
-var BUILD='20261017-2010',VER='۷۴';
+var BUILD='20261017-2020',VER='۷۵';
 /* ===== نیازمند توجه ===== */
 const rkn=v=>+String(v==null?'':v).replace(/[۰-۹]/g,c=>c.charCodeAt(0)-1776).replace(/[٠-٩]/g,c=>c.charCodeAt(0)-1632);
 const rkc=()=>{const I=S.info||{};return{ab:Math.max(1,rkn(I.rkab)||3),hw:Math.min(100,Math.max(1,rkn(I.rkhw)||60)),neg:Math.max(1,rkn(I.rkneg)||5),ex:Math.min(10,Math.max(1,rkn(I.rkex)||2))}};
@@ -1423,7 +1423,7 @@ const css=fontCss()+`*{box-sizing:border-box}body{margin:0;background:#0a1a3a;fo
 .fm{display:inline-flex;gap:3px;direction:ltr}.fm i{display:inline-block;width:17px;height:17px;border-radius:50%;font-style:normal}.fm .w{background:#16a34a}.fm .d{background:#9aa5b8}.fm .l{background:#dc2626}.fm .e{background:#e3e9f4}
 .sec{margin:8px 18px 0;background:#fff;border:1px solid #dbe3f0;border-radius:10px;padding:10px 14px;border-right:7px solid #1d6fe0}.sec h3{margin:0 0 6px;font-size:15px;color:#0d2c6b}
 .rs{display:flex;align-items:center;justify-content:center;gap:10px;font-size:16px;font-weight:700;padding:2px 0}.rs b{background:#0d2c6b;color:#fff;border-radius:6px;padding:0 12px;min-width:64px;text-align:center;direction:ltr}.rs span{flex:1}.rs span:first-child{text-align:left}.rs span:last-child{text-align:right}
-.nx{text-align:center;font-size:18px;font-weight:800;color:#07163a}.nx em{font-style:normal;background:#e8b923;border-radius:6px;padding:0 8px;margin:0 8px;font-size:14px}
+.nx{display:flex;align-items:center;justify-content:center;gap:12px;font-size:18px;font-weight:800;color:#07163a}.nx span{flex:1;unicode-bidi:isolate;white-space:nowrap}.nx span:first-child{text-align:left}.nx span:last-child{text-align:right}.nx em{font-style:normal;background:#e8b923;border-radius:6px;padding:0 12px;font-size:14px}
 .lg{display:flex;gap:16px;justify-content:center;font-size:12px;color:#475569;margin:10px 18px 0}.lg span:before{content:"";display:inline-block;width:11px;height:11px;border-radius:3px;margin-left:5px;vertical-align:-1px;background:var(--c)}
 .ft{display:flex;justify-content:space-between;margin-top:12px;background:#07163a;color:#fff;padding:9px 22px;font-size:13px}`;
 const rows=T.map((t,k)=>{const f=fm(t.i),z=!t.p?'z0':k==0?'z1':k<3?'z2':'z0',dots=[...f,...Array(5-f.length).fill('e')].map(c=>`<i class="${c}"></i>`).join('');
@@ -1433,7 +1433,7 @@ const body=`<div class="hd"><div class="hr"><div class="bl">${peBall(56)}</div><
 <div class="bw"><table class="tb"><thead><tr><th>رده</th><th style="text-align:right">تیم</th><th>بازی</th><th>برد</th><th>مساوی</th><th>باخت</th><th>زده</th><th>خورده</th><th>تفاضل</th><th>۵ بازی اخیر</th><th>امتیاز</th></tr></thead><tbody>${rows}</tbody></table></div>
 <div class="lg"><span style="--c:#e8b923">صدرنشین</span><span style="--c:#1d6fe0">رده‌های دوم و سوم</span><span style="--c:#16a34a">برد</span><span style="--c:#9aa5b8">مساوی</span><span style="--c:#dc2626">باخت</span></div>
 ${rec?`<div class="sec"><h3>نتایج اخیر</h3>${rec}</div>`:''}
-${nx?`<div class="sec" style="border-right-color:#e8b923"><h3>هفته‌ی پیش‌رو</h3><div class="nx">${E(P.t[nx.a])}<em>VS</em>${E(P.t[nx.b])}</div></div>`:''}
+${nx?`<div class="sec" style="border-right-color:#e8b923"><h3>هفته‌ی پیش‌رو</h3><div class="nx"><span>${E(P.t[nx.a])}</span><em>VS</em><span>${E(P.t[nx.b])}</span></div></div>`:''}
 <div class="lg" style="margin-top:8px">برد ۳ امتیاز، مساوی ۱ و باخت ۰ — در برابری امتیاز: تفاضل گل، سپس گل زده</div>
 <div class="ft"><span>${I.teacher?'معلم: '+E(I.teacher):'آکادمی ایران'}</span><span>تاریخ صدور: ${dt}</span></div>`;
 return rcPage(css,900,body)}
