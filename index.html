@@ -296,7 +296,7 @@ return `<div class="k2" style="text-align:center"><div style="font-weight:700">$
 function vcl(){const all=S.st.map((s,i)=>{const f=S.mo.flatMap(m=>S.hm[m].v[i]).filter(x=>x!=null);return[i,f.length?Math.round(f.filter(x=>x==1).length/f.length*100):null]}).filter(a=>a[1]!=null).sort((a,b)=>a[1]-b[1]).slice(0,5);
 return `<h3>تکالیف — میانگین کلاس</h3><div class="g">${S.mo.map(m=>{const a=S.st.map((_,i)=>hp(m,i)).filter(x=>x!=='');return `<div class="k"><b>${a.length?Math.round(a.reduce((p,c)=>p+c,0)/a.length)+'٪':'-'}</b><span>${m}</span></div>`}).join('')}</div><h3>دروس — میانگین سطح کلاس (۱ بهترین)</h3>`+S.sub.map(U=>{const ks=bks(U);return `<div class="k2"><b>${E(U.n)}</b> `+ks.map(k=>{const a=S.st.flatMap((_,i)=>numsB(U,i,k));return (ks.length>1?'<span class="m">'+BL[k]+': </span>':'')+(a.length?ow(a,1)+' ('+a.length+' نمره)':'—')}).join(' | ')+'</div>'}).join('')+`<h3>کمترین درصد انجام تکلیف</h3>`+all.map(([i,p])=>`<div class="k2">${E(S.st[i].n)} — ${p}٪</div>`).join('')}
 function vbk(){return bkStat()+vbk0()+vauto()+vnm()+`<div class="k2"><b>درباره برنامه</b><p class="m">ورژن ${VER} — ساخت ${BUILD}</p></div>`}
-var BUILD='20261017-1930',VER='۷۲';
+var BUILD='20261017-2010',VER='۷۴';
 /* ===== نیازمند توجه ===== */
 const rkn=v=>+String(v==null?'':v).replace(/[۰-۹]/g,c=>c.charCodeAt(0)-1776).replace(/[٠-٩]/g,c=>c.charCodeAt(0)-1632);
 const rkc=()=>{const I=S.info||{};return{ab:Math.max(1,rkn(I.rkab)||3),hw:Math.min(100,Math.max(1,rkn(I.rkhw)||60)),neg:Math.max(1,rkn(I.rkneg)||5),ex:Math.min(10,Math.max(1,rkn(I.rkex)||2))}};
@@ -353,8 +353,8 @@ return `<tr style="background:${bg}"><td><b style="display:inline-block;min-widt
 const sw=W.e+W.h+W.p+W.a,pc=w=>sw?fd(Math.round(w/sw*100))+'٪':'—';
 const body=rcHead(I,'تابلوی رتبه‌بندی','',[I.teacher?E(I.teacher):'','رتبه ۱ تا '+fd(rows.length)]).replace(LOGO,rnTr(84,'b'))+pod+`<div class="st4" style="grid-template-columns:repeat(3,1fr)">${tiles}</div><h3>رتبه‌بندی کامل دانش‌آموزان</h3><div style="display:flex;gap:12px;padding:0 20px;align-items:flex-start">${tb(rows.slice(0,hf))}${rows.length>hf?tb(rows.slice(hf)):''}</div><div class="lg">امتیاز کل = آزمون ${pc(W.e)} + تکالیف ${pc(W.h)} + شایستگی عمومی (مثبت و منفی) ${pc(W.p)} + حضور ${pc(W.a)}. مواردی که ثبت نشده باشد از محاسبه کنار می‌رود. رتبه‌ها یکتا هستند؛ در برابری، نمرهٔ آزمون و سپس تکالیف حساب می‌شود. مبنای نمره: نمره اولیه.</div>`+rcFoot(I);
 return rcPage(css,1180,body)}
-function rnCap(){const D=rnData(),m=['🥇','🥈','🥉'],L=D.rows.filter(r=>r.t!=null).slice(0,10).map(r=>(m[r.rk-1]||fd(r.rk)+'.')+' '+S.st[r.i].n+' — '+rf(r.t));
-return capJ('🏆 رتبه‌بندی دانش‌آموزان',[],L.length?[...L,'📋 فهرست کامل رتبه‌ها در تصویر']:['فعلاً داده‌ای برای رتبه‌بندی ثبت نشده است'])}
+function rnCap(){const d=tdy();
+return ['🏆 گزارش رتبه‌بندی دانش‌آموزان',capCT(),'📅 بروز شده در روز '+fd(wdp(d)+d),'','📌با توجه به تلاش و فعالیت دانش آموزان عزیز، رتبه های کسب شده ، روزانه قابل ارتقاء می باشد.','','با آرزوی موفقیت و کسب بهترین رتبه ها برای شما دانش آموزان عزیز 💐'].join('\n')}
 /* ===== کارنامه دسته‌جمعی ===== */
 const crcT=(()=>{const t=[];for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
 const crc32=b=>{let c=-1;for(let i=0;i<b.length;i++)c=crcT[(c^b[i])&255]^(c>>>8);return(c^-1)>>>0};
@@ -1437,8 +1437,8 @@ ${nx?`<div class="sec" style="border-right-color:#e8b923"><h3>هفته‌ی پی
 <div class="lg" style="margin-top:8px">برد ۳ امتیاز، مساوی ۱ و باخت ۰ — در برابری امتیاز: تفاضل گل، سپس گل زده</div>
 <div class="ft"><span>${I.teacher?'معلم: '+E(I.teacher):'آکادمی ایران'}</span><span>تاریخ صدور: ${dt}</span></div>`;
 return rcPage(css,900,body)}
-function peLeagueCap(){const P=PE(),T=peTbl(P),m=['🥇','🥈','🥉'],n=peDn(P);
-return capJ('⚽ جدول لیگ فوتبال',['📊 '+fd(n)+' بازی از '+fd(PEFT)+' بازی انجام شده'],T.map((t,k)=>(t.p&&k<3?m[k]:fd(k+1)+'.')+' '+P.t[t.i]+' — '+fd(t.pt)+' امتیاز ('+fd(t.w)+' برد، '+fd(t.d)+' مساوی، '+fd(t.l)+' باخت)'))}
+function peLeagueCap(){const d=tdy();
+return ['🏆 جدول رده بندی لیگ فوتبال',capCT(),'📅 بروز شده در روز '+fd(wdp(d)+d)].join('\n')}
 function pel(P){
  const L=P.rd;if(!L)return `<div class="k2 m" style="text-align:center">لیگ هنوز شروع نشده است. از بخش «بازی‌ها» برنامه‌ی هم‌زمان را قرعه‌کشی کنید. در لیگ فوتبال هر تیم با ۵ تیم دیگر دو بار (رفت و برگشت) بازی می‌کند و مجموع بازی‌های فوتبال ${fd(PEFT)} بازی است.</div>`;
  const T=peTbl(P),all=peDn(P)==PEFT,md=['🥇','🥈','🥉'];
