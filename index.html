@@ -299,8 +299,63 @@ function vmn(){const I=inf(),it=[['at','🙋','حضور و غیاب','ثبت ر�
 return `<div class="k2" style="text-align:center"><div style="font-weight:700">${E(I.school)}${I.cls?' — '+E(I.cls):''}</div><div class="m">${E(I.teacher)}${I.year?' | سال تحصیلی '+E(I.year):''}</div></div>${riskCard()}<div class="mg">${it.map(([k,i,t,s])=>`<button class="mt" data-t="${k}"><span class="mi">${i}</span><b>${t}</b><small>${s}</small></button>`).join('')}</div><p class="m" style="text-align:center;margin-top:12px">ورژن ${VER}</p>`}
 function vcl(){const all=S.st.map((s,i)=>{const f=S.mo.flatMap(m=>S.hm[m].v[i]).filter(x=>x!=null);return[i,f.length?Math.round(f.filter(x=>x==1).length/f.length*100):null]}).filter(a=>a[1]!=null).sort((a,b)=>a[1]-b[1]).slice(0,5);
 return `<h3>تکالیف — میانگین کلاس</h3><div class="g">${S.mo.map(m=>{const a=S.st.map((_,i)=>hp(m,i)).filter(x=>x!=='');return `<div class="k"><b>${a.length?Math.round(a.reduce((p,c)=>p+c,0)/a.length)+'٪':'-'}</b><span>${m}</span></div>`}).join('')}</div><h3>دروس — میانگین سطح کلاس (۱ بهترین)</h3>`+S.sub.map(U=>{const ks=bks(U);return `<div class="k2"><b>${E(U.n)}</b> `+ks.map(k=>{const a=S.st.flatMap((_,i)=>numsB(U,i,k));return (ks.length>1?'<span class="m">'+BL[k]+': </span>':'')+(a.length?ow(a,1)+' ('+a.length+' نمره)':'—')}).join(' | ')+'</div>'}).join('')+`<h3>کمترین درصد انجام تکلیف</h3>`+all.map(([i,p])=>`<div class="k2">${E(S.st[i].n)} — ${p}٪</div>`).join('')}
-function vbk(){return bkStat()+vbk0()+vauto()+vnm()+`<div class="k2"><b>درباره برنامه</b><p class="m">ورژن ${VER} — ساخت ${BUILD}</p></div>`}
-var BUILD='20261022-1100',VER='۷۷';
+function vbk(){return bkStat()+vbk0()+vauto()+vpp()+vnm()+`<div class="k2"><b>درباره برنامه</b><p class="m">ورژن ${VER} — ساخت ${BUILD}</p></div>`}
+var BUILD='20261023-1000',VER='۷۹';
+/* ===== پورتال اولیا ===== */
+const ncN=v=>String(v||'').replace(/[۰-۹]/g,c=>c.charCodeAt(0)-1776).replace(/[٠-٩]/g,c=>c.charCodeAt(0)-1632).replace(/\D/g,'');
+function vpp(){const n=S.st.filter(s=>ncN(s.nc).length==10).length;return `<div class="k2"><b>🔐 پورتال اولیا (کارنامه و رتبه با کد ملی)</b><p class="m">کد ملی ۱۰ رقمی هر دانش‌آموز را وارد کنید. سپس «ساخت فایل پورتال» را بزنید و فایل را روی یک سایت (مثلاً Netlify، GitHub Pages یا سایت مدرسه) بگذارید. اولیا با وارد کردن کد ملی فرزندشان فقط رتبه و کارنامه همان فرزند را می‌بینند. اطلاعات هر دانش‌آموز با کد ملی خودش رمزگذاری می‌شود. بعد از هر تغییر مهم نمرات، فایل را دوباره بسازید و جایگزین کنید.</p>${S.st.map((s,i)=>`<div class="bar"><span class="m" style="flex:3">${i+1}. ${E(s.n)}</span><input inputmode="numeric" maxlength="10" data-g="${i},nc" value="${E(s.nc||'')}" placeholder="کد ملی" style="flex:3;direction:ltr"></div>`).join('')}<p class="m">${fd(n)} از ${fd(S.st.length)} کد ملی ثبت شده است.</p><button class="bt" data-a="pp">📦 ساخت فایل پورتال اولیا</button></div>`}
+const PT=`<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>__TITLE__</title><style id="fs">__FONT__</style><style>*{box-sizing:border-box}body{margin:0;background:#eef2f1;font-family:Yekan,Tahoma,system-ui,sans-serif;color:#1e293b;line-height:1.8}.w{max-width:760px;margin:0 auto;padding:16px}.cd{background:#fff;border-radius:16px;box-shadow:0 4px 20px #0001;padding:20px;margin-bottom:14px;text-align:center}h1{font-size:19px;margin:6px 0;color:#0f766e}p{margin:6px 0;color:#64748b;font-size:14px}input{width:100%;padding:13px;font:inherit;font-size:20px;text-align:center;direction:ltr;letter-spacing:2px;border:2px solid #cbd5e1;border-radius:12px;margin:10px 0}button{width:100%;padding:13px;font:inherit;font-size:16px;font-weight:700;background:#0f766e;color:#fff;border:0;border-radius:12px;margin-top:6px;cursor:pointer}button.s{background:#e2e8f0;color:#1e293b}button:disabled{opacity:.6}#m{color:#dc2626;min-height:24px;font-size:14px}.big{font-size:56px;font-weight:800;color:#b45309;line-height:1.2}.g{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.g div{background:#f1f5f4;border-radius:10px;padding:8px 4px}.g b{display:block;font-size:18px;color:#0f766e}.g span{font-size:12px;color:#64748b}iframe{width:100%;border:0;border-radius:16px;background:#fff;box-shadow:0 4px 20px #0001;min-height:400px}#v{display:none}</style></head><body><div class="w"><div id="lg" class="cd"><h1>__TITLE__</h1><p>__SUB__</p><p>برای مشاهدهٔ رتبه و کارنامهٔ فرزندتان، کد ملی دانش‌آموز را وارد کنید.</p><input id="c" inputmode="numeric" maxlength="10" placeholder="کد ملی ۱۰ رقمی" autocomplete="off"><div id="m"></div><button id="b" onclick="go()">مشاهدهٔ کارنامه و رتبه</button></div><div id="v"></div></div><script>
+var D=__DATA__;
+function $(s){return document.querySelector(s)}
+function fd(n){return String(n).replace(/\\d/g,function(d){return '۰۱۲۳۴۵۶۷۸۹'[d]})}
+function E(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function nd(s){return String(s).replace(/[۰-۹]/g,function(c){return c.charCodeAt(0)-1776}).replace(/[٠-٩]/g,function(c){return c.charCodeAt(0)-1632}).replace(/\\D/g,'')}
+function ub(b){var s=atob(b),u=new Uint8Array(s.length);for(var i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u}
+function hx(u){return Array.prototype.map.call(u,function(x){return('0'+x.toString(16)).slice(-2)}).join('')}
+function rf(v){return v==null?'—':fd((Math.round(v*10)/10).toString().replace('.','٫'))}
+function pc(v){return v==null?'—':fd(Math.round(v))+'٪'}
+async function go(){var c=nd($('#c').value),m=$('#m'),b=$('#b');m.textContent='';
+if(c.length!=10){m.textContent='کد ملی باید ۱۰ رقم باشد.';return}
+if(!window.crypto||!crypto.subtle){m.textContent='لطفاً صفحه را با آدرس https باز کنید.';return}
+b.disabled=true;m.style.color='#64748b';m.textContent='در حال بررسی…';
+try{var k=await crypto.subtle.importKey('raw',new TextEncoder().encode(c),'PBKDF2',false,['deriveBits']);
+var x=new Uint8Array(await crypto.subtle.deriveBits({name:'PBKDF2',salt:ub(D.s),iterations:D.it,hash:'SHA-256'},k,384));
+var id=hx(x.slice(32)),r=D.r.filter(function(q){return q.i==id})[0];m.style.color='#dc2626';
+if(!r){m.textContent='برای این کد ملی گزارشی پیدا نشد. کد را بررسی کنید یا با معلم تماس بگیرید.';b.disabled=false;return}
+var ak=await crypto.subtle.importKey('raw',x.slice(0,32),'AES-GCM',false,['decrypt']);
+var pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:ub(r.v)},ak,ub(r.d));
+show(JSON.parse(new TextDecoder().decode(pt)))}catch(e){m.style.color='#dc2626';m.textContent='خطا در نمایش گزارش. دوباره تلاش کنید.'}
+b.disabled=false}
+function show(o){$('#lg').style.display='none';var v=$('#v');v.style.display='block';
+v.innerHTML='<div class="cd"><p>'+E(o.n)+'</p><div class="big">'+fd(o.rk)+'</div><h1>رتبه از '+fd(o.N)+' دانش‌آموز</h1><div class="g"><div><b>'+rf(o.t)+'</b><span>امتیاز کل</span></div><div><b>'+rf(o.avg)+'</b><span>میانگین کلاس</span></div><div><b>'+rf(o.top)+'</b><span>بالاترین امتیاز</span></div><div><b>'+(o.es==null?'—':rf(o.es))+'</b><span>آزمون‌ها</span></div><div><b>'+pc(o.hs)+'</b><span>تکالیف</span></div><div><b>'+pc(o.ats)+'</b><span>حضور</span></div></div><p>مثبت: '+fd(o.p)+' | منفی: '+fd(o.q)+'</p></div><iframe id="f" title="کارنامه"></iframe><button onclick="document.getElementById(\\'f\\').contentWindow.print()">چاپ / ذخیره PDF کارنامه</button><button class="s" onclick="location.reload()">خروج</button>';
+var f=$('#f');f.onload=function(){try{f.style.height=f.contentDocument.documentElement.scrollHeight+'px'}catch(e){}};
+f.srcdoc=o.h.replace('<style>','<style>'+$('#fs').textContent)}
+document.addEventListener('keydown',function(e){if(e.key=='Enter'&&$('#lg').style.display!='none')go()});
+<\/script></body></html>`;
+async function ppBuild(){
+if(!window.crypto||!crypto.subtle){alert('این مرورگر از رمزگذاری پشتیبانی نمی‌کند. برنامه را با آدرس https باز کنید.');return}
+const ids=S.st.map((s,i)=>[i,ncN(s.nc)]).filter(([,c])=>c.length==10);
+if(!ids.length){alert('ابتدا کد ملی دانش‌آموزان را (۱۰ رقمی) وارد کنید.');return}
+const sn=new Set();for(const[i,c]of ids){if(sn.has(c)){alert('کد ملی «'+S.st[i].n+'» تکراری است. لطفاً اصلاح کنید.');return}sn.add(c)}
+const I=inf(),D=rnData(),ok=D.rows.filter(r=>r.t!=null),avg=ok.length?ok.reduce((a,r)=>a+r.t,0)/ok.length:null,top=ok.length?ok[0].t:null,fc=fontCss(),te=new TextEncoder();
+const b64=u=>{u=new Uint8Array(u);let s='';for(let k=0;k<u.length;k+=8192)s+=String.fromCharCode.apply(null,u.subarray(k,k+8192));return btoa(s)};
+const salt=crypto.getRandomValues(new Uint8Array(16)),IT=300000,out={s:b64(salt),it:IT,r:[]};
+let n=0;
+try{for(const[i,c]of ids){ss('در حال ساخت پورتال… '+fd(++n)+' از '+fd(ids.length));await new Promise(r=>setTimeout(r,30));
+const rw=D.rows.find(r=>r.i==i),h=fc?card(i).split(fc).join(''):card(i);
+const o={n:S.st[i].n,rk:rw.rk,N:S.st.length,t:rw.t,es:rw.es,hs:rw.hs,p:rw.p,q:rw.q,ats:rw.ats,avg,top,h};
+const km=await crypto.subtle.importKey('raw',te.encode(c),'PBKDF2',false,['deriveBits']);
+const bits=new Uint8Array(await crypto.subtle.deriveBits({name:'PBKDF2',salt,iterations:IT,hash:'SHA-256'},km,384));
+const ak=await crypto.subtle.importKey('raw',bits.slice(0,32),'AES-GCM',false,['encrypt']),iv=crypto.getRandomValues(new Uint8Array(12));
+const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},ak,te.encode(JSON.stringify(o)));
+out.r.push({i:Array.from(bits.slice(32)).map(x=>('0'+x.toString(16)).slice(-2)).join(''),v:b64(iv),d:b64(ct)})}}
+catch(e){ss('⚠ ساخت پورتال ناموفق بود');alert('ساخت پورتال ناموفق بود.');return}
+out.r.sort(()=>Math.random()-.5);
+const title='گزارش عملکرد دانش‌آموز'+(I.cls?' — '+I.cls:''),sub=[I.school,I.teacher?'معلم: '+I.teacher:'',I.year].filter(Boolean).join(' | ');
+const html=PT.replace('__TITLE__',()=>E(title)).replace('__TITLE__',()=>E(title)).replace('__SUB__',()=>E(sub)).replace('__FONT__',()=>fc).replace('__DATA__',()=>JSON.stringify(out).replace(/</g,'\\u003c'));
+ss('✓ پورتال ساخته شد');await dl('parent-portal-'+stamp()+'.html',html);
+alert('فایل پورتال اولیا برای '+fd(ids.length)+' دانش‌آموز ساخته شد. آن را روی یک سایت (Netlify، GitHub Pages یا سایت مدرسه) بارگذاری کنید و آدرس را برای اولیا بفرستید.')}
+
 /* ===== نیازمند توجه ===== */
 const rkn=v=>+String(v==null?'':v).replace(/[۰-۹]/g,c=>c.charCodeAt(0)-1776).replace(/[٠-٩]/g,c=>c.charCodeAt(0)-1632);
 const rkc=()=>{const I=S.info||{};return{ab:Math.max(1,rkn(I.rkab)||3),hw:Math.min(100,Math.max(1,rkn(I.rkhw)||60)),neg:Math.max(1,rkn(I.rkneg)||5),ex:Math.min(10,Math.max(1,rkn(I.rkex)||2))}};
@@ -800,6 +855,7 @@ else if(d.a&&d.a.slice(0,4)=='dsc:'){dscSend(+d.a.slice(4));return}
 else if(d.a&&d.a.slice(0,4)=='dsd:'){const i=+d.a.slice(4);S.st[i].dm=gen(i).m;mk('st')}
 else if(d.a=='j'){markBk();dl('classbook-backup-'+stamp()+'.json',JSON.stringify(S));return}
 else if(d.a=='c'){dl('class-summary-'+stamp()+'.csv',csv());return}
+else if(d.a=='pp'){ppBuild();return}
 else if(d.a=='k'){dl('karnameh-'+(rs+1)+'.html',card(rs));return}
 R()});
 document.addEventListener('change',e=>{const t=e.target,d=t.dataset;if(d.xn!=null||d.cf!=null)return;rbm='';
