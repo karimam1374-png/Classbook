@@ -280,7 +280,12 @@ let j=H.d.findIndex(x=>{const z=md2(x);return z[0]==t[1]&&z[1]==t[2]});
 if(j<0&&!thf(t.join('/'))){j=H.d.findIndex(x=>!String(x||'').trim());if(j>=0){H.d[j]=t[1]+'/'+t[2];mk('hm')}}
 if(j>=0){hd=j;ahd=j;scj=j}}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState=='visible'&&S.st&&S.st.length&&tdy()!=lastDay){goToday();R()}});
+/* ✗ در ستون «برگه» یعنی نیاورده: برای همان درس یک منفی ثبت می‌شود؛ اگر ✗ برداشته شود، همان یک منفی برمی‌گردد (x.rn نشانِ ثبت‌شدن است تا دوبار حساب نشود) */
+function rpen(U,x,i){if(!U.m)U.m=[];if(!x.rn)x.rn=[];const want=x.r&&x.r[i]===0,has=!!x.rn[i];
+ if(want&&!has){U.m[i]=(+U.m[i]||0)+1;x.rn[i]=1;return 1}
+ if(!want&&has){U.m[i]=Math.max(0,(+U.m[i]||0)-1);x.rn[i]=0;return -1}return 0}
 function mig(){if(!S.st||!S.sub)return false;let ch=false;if(!S.cp){CP();ch=true}
+(S.sub||[]).forEach(U=>(U.ex||[]).forEach(x=>{if(x&&Array.isArray(x.r))x.r.forEach((v,i)=>{if(v===0&&rpen(U,x,i))ch=true})}));
 (S.sub||[]).forEach(U=>(U.ex||[]).forEach(x=>{if(x&&x.fm=='m'){x.o=x.o||[];S.st.forEach((_,i)=>{const v=x.mo&&x.mo[i];if(typeof v=='number'&&x.s[i]!=null&&x.s[i]!=='-'){const a=FA(U,x,i);x.o[i]=v==a?null:v}});x.fm='a';ch=true}}));
 (S.mo||[]).forEach(m=>{const H=S.hm&&S.hm[m];if(!H||!H.d)return;H.d.forEach((x,j)=>{if(String(x||'').trim()&&thf(x)&&!S.st.some((_,i)=>(H.v&&H.v[i]&&H.v[i][j]!=null)||(H.a&&H.a[i]&&H.a[i][j]!=null))){H.d[j]='';ch=true}})});
 const nn=x=>nz(x).replace(/[\s‌]/g,''),k=S.sub.findIndex(u=>nn(u.n)==nn('شایستگی‌های رفتاری'));
@@ -341,7 +346,7 @@ return `<div class="k2" style="text-align:center"><div style="font-weight:700">$
 function vcl(){const all=S.st.map((s,i)=>{const f=S.mo.flatMap(m=>S.hm[m].v[i]).filter(x=>x!=null);return[i,f.length?Math.round(f.filter(x=>x==1).length/f.length*100):null]}).filter(a=>a[1]!=null).sort((a,b)=>a[1]-b[1]).slice(0,5);
 return `<h3>تکالیف — میانگین کلاس</h3><div class="g">${S.mo.map(m=>{const a=S.st.map((_,i)=>hp(m,i)).filter(x=>x!=='');return `<div class="k"><b>${a.length?Math.round(a.reduce((p,c)=>p+c,0)/a.length)+'٪':'-'}</b><span>${m}</span></div>`}).join('')}</div><h3>دروس — میانگین سطح کلاس (۱ بهترین)</h3>`+S.sub.map(U=>{const ks=bks(U);return `<div class="k2"><b>${E(U.n)}</b> `+ks.map(k=>{const a=S.st.flatMap((_,i)=>numsB(U,i,k));return (ks.length>1?'<span class="m">'+BL[k]+': </span>':'')+(a.length?ow(a,1)+' ('+a.length+' نمره)':'—')}).join(' | ')+'</div>'}).join('')+`<h3>کمترین درصد انجام تکلیف</h3>`+all.map(([i,p])=>`<div class="k2">${E(S.st[i].n)} — ${p}٪</div>`).join('')}
 function vbk(){return bkStat()+vbk0()+vauto()+vpp()+vnm()+`<div class="k2"><b>درباره برنامه</b><p class="m">ورژن ${VER} — ساخت ${BUILD}</p></div>`}
-var BUILD='20261030-0900',VER='۸۹';
+var BUILD='20261030-1200',VER='۹۰';
 /* ===== سرور و پورتال اولیا ===== */
 const ncN=v=>String(v||'').replace(/[۰-۹]/g,c=>c.charCodeAt(0)-1776).replace(/[٠-٩]/g,c=>c.charCodeAt(0)-1632).replace(/\D/g,'');
 let srvOk=false,cbV=-1,cbD={},cbW=[],cbT=0,ppT=0;
@@ -843,7 +848,7 @@ else if(d.fm){const x=X(),U=S.sub[cs];if(d.fm=='m'){if(!x.mo)x.mo=S.st.map((_,i)
 else if(d.fo!=null){const x=X(),i=+d.fo,U=S.sub[cs];if(x.s[i]==null||x.s[i]==='-')return;if(x.fm=='m'){x.mo=x.mo||[];const v=x.mo[i];x.mo[i]=fix?(v==null?4:v<=1?null:v-1):(v==null?1:v>=4?null:v+1);mk('s'+cs);R();return}x.o=x.o||[];const a=FA(U,x,i),v=x.o[i]!=null?x.o[i]:a;let n=Math.min(4,Math.max(1,v+(fix?-1:1)));x.o[i]=n==a?null:n;mk('s'+cs)}
 else if(d.pt){const[i,k,si]=d.pt.split(','),sj=si!=null?+si:psi,a=S.sub[sj][k];a[+i]=Math.max(0,(a[+i]||0)+(fix?-1:1));mk('s'+sj)}
 else if(d.p){const[i,k]=d.p.split(','),a=S.sub[cs][k];a[+i]=Math.max(0,(a[+i]||0)+(fix?-1:1));mk('s'+cs)}
-else if(d.r){const x=X(),i=+d.r;x.r[i]=x.r[i]==null?1:x.r[i]===1?0:null;mk('s'+cs)}
+else if(d.r){const x=X(),i=+d.r;x.r[i]=x.r[i]==null?1:x.r[i]===1?0:null;const pr=rpen(S.sub[cs],x,i);rbm=pr>0?'✗ برای «'+S.st[i].n+'» یک نمره‌ی منفی در درس «'+S.sub[cs].n+'» ثبت شد.':pr<0?'علامت ✗ برداشته شد و منفیِ مربوط به آن از درس «'+S.sub[cs].n+'» کم شد.':'';mk('s'+cs)}
 else if(d.n){rs=(rs+ +d.n+S.st.length)%S.st.length}
 else if(d.a=='s'){markBk();const f=new File([JSON.stringify(S)],'classbook-backup-'+stamp()+'.txt',{type:'text/plain'});if(navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f],title:'پشتیبان دفتر کلاس'}).catch(()=>{});else alert('این دستگاه ارسال فایل را پشتیبانی نمی‌کند. از دکمه دانلود استفاده کنید.');return}
 else if(d.gt){gtp=d.gt}
