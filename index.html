@@ -64,7 +64,7 @@ const K2='cb2cache';let S={st:[],mo:[],hm:{},sub:[]},db=null,dirty=new Set(),las
 const $=s=>document.querySelector(s),E=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])),
 O=(a,v)=>a.map(x=>`<option${String(x)===String(v)?' selected':''}>${E(x)}</option>`).join(''),
 nz=s=>String(s||'').replace(/ي/g,'ی').replace(/ك/g,'ک'),ss=t=>{const e=$('#ss');if(e)e.textContent=t},
-TABS={mn:'منوی اصلی',at:'حضور و غیاب',hw:'ثبت تکالیف',tp:'برنامه‌ریزی تدریس',ex:'ثبت نمرات آزمون',sh:'شایستگی‌های عمومی',pt:'ثبت امتیاز',rp:'گزارش‌ها',rn:'رتبه‌بندی',gp:'گروه‌بندی',sq:'چیدمان کلاس',pe:'زنگ ورزش',bk:'تنظیمات',hp:'راهنما'};
+TABS={mn:'منوی اصلی',at:'حضور و غیاب',hw:'ثبت تکالیف',tp:'برنامه‌ریزی تدریس',ex:'ثبت نمرات آزمون',sh:'شایستگی‌های عمومی',pt:'ثبت امتیاز',rp:'گزارش‌ها',rn:'رتبه‌بندی',gp:'گروه‌بندی',sq:'چیدمان کلاس',pe:'زنگ ورزش',wh:'گردونه شانس',bk:'تنظیمات',hp:'راهنما'};
 let tab='mn',cm='',cs=0,ce=0,rs=0,fix=false,psi=0;
 const part=k=>k=='st'?{st:S.st,mo:S.mo,n:S.sub.map(u=>u.n),info:S.info,grp:S.grp,cp:S.cp,arch:S.arch,v2:S.v2,seat:S.seat,tp:S.tp,pe:S.pe}:k=='hm'?S.hm:S.sub[+k.slice(1)];
 const put=(k,o)=>{if(k=='st'){S.st=o.st;S.mo=o.mo;S.info=o.info;S.grp=o.grp;S.cp=o.cp;S.arch=o.arch;S.v2=o.v2;S.seat=o.seat;S.tp=o.tp;S.pe=o.pe}else if(k=='hm')S.hm=o;else S.sub[+k.slice(1)]=o};
@@ -336,12 +336,12 @@ const bkBanner=()=>{if(!S.st.length||bkDis)return'';if(Date.now()-(+localStorage
 async function snapRender(){const el=document.getElementById('snl');if(!el)return;try{const d0=await idb(),a=await snapList(d0);el.innerHTML=a.length?a.map(r=>`<div class="bar" style="margin-bottom:4px"><span class="m" style="flex:2">${r.k=='pre'?'قبل از آخرین بازگردانی':E(new Date(r.t).toLocaleString('fa-IR',{dateStyle:'medium',timeStyle:'short'}))} — ${fd(r.n)} نفر</span><button class="chip" style="flex:0 0 auto${snapC==r.k?';color:#dc2626;border-color:#dc2626':''}" data-sr="${E(r.k)}">${snapC==r.k?'تأیید بازگردانی':'بازگردانی'}</button></div>`).join(''):'<div class="m">هنوز نسخه خودکاری ساخته نشده است. با بستن یا کنار گذاشتن برنامه ساخته می‌شود.</div>'}catch(e){el.textContent='ساخت نسخه خودکار در این مرورگر ممکن نیست.'}}
 async function snapRestore(k){try{const d0=await idb(),rec=await idbDo(d0,'readonly',st=>st.get(k));if(!rec)return;await snapPut('pre',true);S=JSON.parse(rec.d);mig();lsub=0;lex=-1;asb=0;dsi=0;lastSnap='';cm=S.mo[0];cs=ce=rs=0;ahd=-1;hd=-1;mkAll();if(db)watch();R();ss('✓ نسخه بازگردانی شد')}catch(e){alert('بازگردانی انجام نشد.')}}
 function vauto(){const on=localStorage.getItem('cb2auto')!=='0';return `<div class="k2"><b>ثبت و پشتیبان‌گیری خودکار هنگام خروج</b><label style="display:block;margin:8px 0"><input type="checkbox" id="aut"${on?' checked':''}> هنگام بستن یا کنار گذاشتن برنامه، اطلاعات ذخیره و یک نسخه پشتیبان داخلی ساخته شود</label><p class="m">برنامه نمی‌تواند بی‌صدا فایل پشتیبان روی گوشی بسازد. به‌جای آن، تا ۸ نسخه داخلی نگه می‌دارد (برای هر روز یک نسخه) تا اگر اشتباهی پیش آمد، به نسخه قبل برگردید. این نسخه‌ها با پاک کردن اطلاعات مرورگر یا حذف برنامه از بین می‌روند؛ فایل پشتیبان را هم گاهی بگیرید (اگر یک هفته نگرفته باشید، یادآوری می‌شود).</p><div id="snl"></div></div>`}
-function vmn(){const I=inf(),it=[['at','🙋','حضور و غیاب','ثبت روزانه حضور، تأخیر و غیبت'],['hw','✅','ثبت تکالیف','تیک تکالیف هر روز'],['tp','📅','برنامه‌ریزی تدریس','برنامه هفتگی، تیک تدریس و ارسال تکالیف'],['ex','📝','ثبت نمرات آزمون','نمره، تکلیف و توضیح توصیفی'],['sh','🌟','شایستگی‌های عمومی','مثبت و منفی و بازخورد توصیفی'],['pt','⭐','ثبت امتیاز','مثبت و منفی هر درس؛ در گزارش همان درس می‌آید'],['rp','📊','گزارش‌ها','آزمون، فردی، گروهی، کلاس و تکالیف'],['rn','🏆','رتبه‌بندی','برترین‌ها بر اساس آزمون، تکالیف، شایستگی و حضور'],['gp','👥','گروه‌بندی','گروه درسی، ورزشی و سرگروه'],['sq','🪑','چیدمان کلاس','نیمکت‌ها، شرط‌ها و چیدمان تصادفی'],['pe','⚽','زنگ ورزش','فوتبال، والیبال و وسطی هم‌زمان با یک تایمر'],['bk','⚙️','تنظیمات','اطلاعات کلاس، نام‌ها و پشتیبان'],['hp','📖','راهنما','آموزش کامل و کانال آکادمی']];
+function vmn(){const I=inf(),it=[['at','🙋','حضور و غیاب','ثبت روزانه حضور، تأخیر و غیبت'],['hw','✅','ثبت تکالیف','تیک تکالیف هر روز'],['tp','📅','برنامه‌ریزی تدریس','برنامه هفتگی، تیک تدریس و ارسال تکالیف'],['ex','📝','ثبت نمرات آزمون','نمره، تکلیف و توضیح توصیفی'],['sh','🌟','شایستگی‌های عمومی','مثبت و منفی و بازخورد توصیفی'],['pt','⭐','ثبت امتیاز','مثبت و منفی هر درس؛ در گزارش همان درس می‌آید'],['rp','📊','گزارش‌ها','آزمون، فردی، گروهی، کلاس و تکالیف'],['rn','🏆','رتبه‌بندی','برترین‌ها بر اساس آزمون، تکالیف، شایستگی و حضور'],['gp','👥','گروه‌بندی','گروه درسی، ورزشی و سرگروه'],['sq','🪑','چیدمان کلاس','نیمکت‌ها، شرط‌ها و چیدمان تصادفی'],['pe','⚽','زنگ ورزش','فوتبال، والیبال و وسطی هم‌زمان با یک تایمر'],['wh','🎡','گردونه شانس','انتخاب تصادفی نوبتی بدون تکرار برای مشارکت بچه‌ها'],['bk','⚙️','تنظیمات','اطلاعات کلاس، نام‌ها و پشتیبان'],['hp','📖','راهنما','آموزش کامل و کانال آکادمی']];
 return `<div class="k2" style="text-align:center"><div style="font-weight:700">${E(I.school)}${I.cls?' — '+E(I.cls):''}</div><div class="m">${E(I.teacher)}${I.year?' | سال تحصیلی '+E(I.year):''}</div></div>${riskCard()}<div class="mg">${it.map(([k,i,t,s])=>`<button class="mt" data-t="${k}"><span class="mi">${i}</span><b>${t}</b><small>${s}</small></button>`).join('')}</div><p class="m" style="text-align:center;margin-top:12px">ورژن ${VER}</p>`}
 function vcl(){const all=S.st.map((s,i)=>{const f=S.mo.flatMap(m=>S.hm[m].v[i]).filter(x=>x!=null);return[i,f.length?Math.round(f.filter(x=>x==1).length/f.length*100):null]}).filter(a=>a[1]!=null).sort((a,b)=>a[1]-b[1]).slice(0,5);
 return `<h3>تکالیف — میانگین کلاس</h3><div class="g">${S.mo.map(m=>{const a=S.st.map((_,i)=>hp(m,i)).filter(x=>x!=='');return `<div class="k"><b>${a.length?Math.round(a.reduce((p,c)=>p+c,0)/a.length)+'٪':'-'}</b><span>${m}</span></div>`}).join('')}</div><h3>دروس — میانگین سطح کلاس (۱ بهترین)</h3>`+S.sub.map(U=>{const ks=bks(U);return `<div class="k2"><b>${E(U.n)}</b> `+ks.map(k=>{const a=S.st.flatMap((_,i)=>numsB(U,i,k));return (ks.length>1?'<span class="m">'+BL[k]+': </span>':'')+(a.length?ow(a,1)+' ('+a.length+' نمره)':'—')}).join(' | ')+'</div>'}).join('')+`<h3>کمترین درصد انجام تکلیف</h3>`+all.map(([i,p])=>`<div class="k2">${E(S.st[i].n)} — ${p}٪</div>`).join('')}
 function vbk(){return bkStat()+vbk0()+vauto()+vpp()+vnm()+`<div class="k2"><b>درباره برنامه</b><p class="m">ورژن ${VER} — ساخت ${BUILD}</p></div>`}
-var BUILD='20261029-1500',VER='۸۸';
+var BUILD='20261030-0900',VER='۸۹';
 /* ===== سرور و پورتال اولیا ===== */
 const ncN=v=>String(v||'').replace(/[۰-۹]/g,c=>c.charCodeAt(0)-1776).replace(/[٠-٩]/g,c=>c.charCodeAt(0)-1632).replace(/\D/g,'');
 let srvOk=false,cbV=-1,cbD={},cbW=[],cbT=0,ppT=0;
@@ -816,7 +816,7 @@ if(u){try{await u.save({filename:n,data:d})}catch(e){}return}
 const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([d]));a.download=n;a.click()}
 function R(){const w=$('.w'),l=w?w.scrollLeft:0,tp=w?w.scrollTop:0,y=scrollY,k=tab+'|'+rsub+'|'+cm+'|'+cs+'|'+ce;
 {const l=$('#nvl');if(l)l.textContent=TABS[tab]}$('#nv').innerHTML='<div class="dh">'+LOGO+'<b>آکادمی ایران</b></div>'+Object.entries(TABS).map(([k,v])=>`<button data-t="${k}" class="${k==tab?'on':''}">${({mn:'🏠',tp:'📅',hw:'✅',at:'🙋',ex:'📝',sh:'🌟',rp:'📊',rn:'🏆',gp:'👥',sq:'🪑',pe:'⚽',bk:'⚙️',hp:'📖'})[k]||''} ${v}</button>`).join('')+'<div class="m" style="margin-top:auto;padding:12px;text-align:center;opacity:.7">ورژن '+VER+'</div>';
-{const cw=$('#calw');if(cw)cw.innerHTML=cal?calHtml():''}$('#app').innerHTML=bkBanner()+baleBanner()+(!S.st.length&&tab!='bk'?vsetup():{mn:vmn,hw:vhw,at:vat,ex:vex,sh:vsh,pt:vpt,rp:vrep,rn:vrn,gp:vgp,sq:vsq,pe:vpe,bk:vbk,hp:vhelp,tp:vtp}[tab]());if(tab=='bk')snapRender();const w2=$('.w');if(w2){w2.scrollLeft=l;if(lk===k)w2.scrollTop=tp}lk=k;if(scj>=0){const e=$('th[data-col="'+scj+'"]');if(e&&e.scrollIntoView)e.scrollIntoView({inline:'center',block:'nearest'});scj=-1}tpFit();scrollTo(0,y);mpRender();bkSync()}
+{const cw=$('#calw');if(cw)cw.innerHTML=cal?calHtml():''}$('#app').innerHTML=bkBanner()+baleBanner()+(!S.st.length&&tab!='bk'?vsetup():{mn:vmn,hw:vhw,at:vat,ex:vex,sh:vsh,pt:vpt,rp:vrep,rn:vrn,gp:vgp,sq:vsq,pe:vpe,wh:vwh,bk:vbk,hp:vhelp,tp:vtp}[tab]());if(tab=='bk')snapRender();const w2=$('.w');if(w2){w2.scrollLeft=l;if(lk===k)w2.scrollTop=tp}lk=k;if(scj>=0){const e=$('th[data-col="'+scj+'"]');if(e&&e.scrollIntoView)e.scrollIntoView({inline:'center',block:'nearest'});scj=-1}tpFit();scrollTo(0,y);mpRender();bkSync()}
 (function(){const SEL='[data-s],[data-fo],[data-p],[data-cp],[data-pt]';let tm=0,sx=0,sy=0,sup=false;
 const st=document.createElement('style');st.textContent=SEL+'{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation}';document.head.appendChild(st);
 const stop=()=>{clearTimeout(tm);tm=0};
@@ -1607,6 +1607,42 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-pe]');if(!
  R()});
 document.addEventListener('change',e=>{const t=e.target.closest('[data-pen]');if(!t||tab!='pe')return;const P=PE(),i=+t.dataset.pen;P.t[i]=String(t.value||'').trim()||'تیم '+fd(i+1);t.value=P.t[i];mk('st')});
 
+/* ===== گردونه شانس: انتخاب تصادفی نوبتی (بدون تکرار تا همه‌ی عددها بیایند) ===== */
+let whDur=4600,whBusy=false;
+const whSt=(()=>{let o={n:38,used:[]};try{const j=JSON.parse(localStorage.getItem('cbwh')||'null');if(j&&+j.n>=2&&Array.isArray(j.used)){o.n=Math.min(100,+j.n|0);o.used=j.used.filter(x=>x>=1&&x<=o.n)}}catch(e){}return o})();
+const whSave=()=>{try{localStorage.setItem('cbwh',JSON.stringify(whSt))}catch(e){}};
+const whRem=()=>{const r=[];for(let i=1;i<=whSt.n;i++)if(!whSt.used.includes(i))r.push(i);return r};
+const WHC=['#ef4444','#f59e0b','#22c55e','#06b6d4','#3b82f6','#a855f7','#ec4899','#84cc1b'];
+function whSvg(rem){const N=rem.length;if(!N)return '<svg viewBox="-100 -100 200 200" width="100%"><circle r="96" fill="#e2e8f0" stroke="#fff" stroke-width="3"/><text y="6" text-anchor="middle" font-size="16" font-weight="800" fill="#475569">همه آمدند 🎉</text></svg>';
+ const a=360/N,P=(r,t)=>[Math.sin(t*Math.PI/180)*r,-Math.cos(t*Math.PI/180)*r].map(v=>v.toFixed(2)).join(' ');
+ let g='';
+ rem.forEach((n,i)=>{const c=WHC[(N>1&&i==N-1&&N%WHC.length==1)?3:i%WHC.length],t0=i*a,t1=(i+1)*a,tm=(i+.5)*a,fs=Math.max(3.5,Math.min(15,2*Math.PI*82/N*.62));
+  g+=N==1?`<circle r="96" fill="${c}" stroke="#fff" stroke-width="1.5"/>`:`<path d="M0 0L${P(96,t0)}A96 96 0 ${a>180?1:0} 1 ${P(96,t1)}Z" fill="${c}" stroke="#fff" stroke-width="1.2"/>`;
+  g+=`<g transform="rotate(${tm.toFixed(2)})"><text x="0" y="${(-96+fs*1.15+2.5).toFixed(1)}" text-anchor="middle" font-size="${fs.toFixed(1)}" font-weight="800" fill="#fff" style="paint-order:stroke;stroke:#0006;stroke-width:.6px">${fd(n)}</text></g>`});
+ return `<svg viewBox="-100 -100 200 200" width="100%" style="display:block"><circle r="99" fill="#fff" stroke="#1e293b" stroke-width="2"/>${g}<circle r="13" fill="#1e293b" stroke="#fde047" stroke-width="3"/></svg>`}
+function whRes(n){const nm=n&&S.st&&S.st[n-1]?S.st[n-1].n:'';return n?`<div style="font-size:64px;font-weight:800;color:#d97706;line-height:1.1">${fd(n)}</div>${nm?`<div style="font-size:22px;font-weight:700">${E(nm)}</div>`:''}`:'<div class="m">دکمه‌ی «بچرخان» را بزنید</div>'}
+function whInfo(){const rem=whRem(),u=whSt.used;return `<div class="m" style="text-align:center">${fd(u.length)} عدد آمده — ${fd(rem.length)} عدد باقی مانده</div><div style="display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-top:8px">${u.map((n,k)=>`<span style="background:#fef3c7;border:1px solid #f59e0b;border-radius:14px;padding:0 9px;font-weight:700;font-size:13px">${fd(n)}${k==u.length-1?' ✓':''}</span>`).join('')}</div>`}
+function vwh(){const rem=whRem();return `<div style="text-align:center"><h3 style="margin:4px 0">🎡 گردونه شانس</h3><p class="m" style="margin:0 0 8px">عدد ۱ تا ${fd(whSt.n)} به‌صورت تصادفی انتخاب می‌شود؛ تا همه‌ی عددها نیامده‌اند، عدد تکراری نمی‌آید.</p></div>
+<div style="position:relative;max-width:380px;margin:6px auto 0"><div style="position:absolute;left:50%;top:-8px;margin-left:-14px;z-index:3;width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-top:30px solid #1e293b;filter:drop-shadow(0 2px 2px #0005)"></div><div id="whw" style="border-radius:50%;box-shadow:0 6px 22px #0004">${whSvg(rem)}</div></div>
+<div class="k2" style="text-align:center;margin-top:12px" id="whr">${whRes(whSt.used[whSt.used.length-1])}</div>
+<button class="bt" id="whs" data-wh="spin" type="button" style="font-size:18px"${rem.length?'':' disabled'}>🎡 بچرخان</button>
+<div class="bar"><button class="bt" data-wh="undo" type="button" style="background:#6b7280">↶ لغو آخرین</button><button class="bt" data-wh="reset" type="button" style="background:#dc2626">🔄 شروع دوباره</button></div>
+<div class="k2" id="whi">${whInfo()}</div>
+<div class="k2"><div class="bar"><span class="m" style="flex:3">بیشترین عدد (از ۱ تا ...)</span><input type="number" min="2" max="100" inputmode="numeric" id="whn" value="${whSt.n}" style="flex:1"></div><p class="m" style="margin:4px 0 0">عدد هر دانش‌آموز همان شماره‌ی او در لیست کلاس است و نامش زیر عدد نمایش داده می‌شود. با تغییر عدد، گردونه از اول شروع می‌شود.</p></div>`}
+function whSpin(){if(whBusy)return;const rem=whRem(),N=rem.length;if(!N)return;whBusy=true;
+ const idx=Math.floor(Math.random()*N),n=rem[idx],a=360/N,w=document.getElementById('whw'),b=document.getElementById('whs');if(b)b.disabled=true;
+ const R=360*(5+Math.floor(Math.random()*3))-(idx+.5)*a+(Math.random()-.5)*a*.7;
+ if(w){w.style.transition='transform '+whDur+'ms cubic-bezier(.12,.72,.1,1)';w.style.transform='rotate('+R+'deg)'}
+ setTimeout(()=>{whSt.used.push(n);whSave();whBusy=false;try{navigator.vibrate&&navigator.vibrate(120)}catch(e){}
+  const w2=document.getElementById('whw'),r=document.getElementById('whr'),i=document.getElementById('whi'),b2=document.getElementById('whs');
+  if(w2){w2.style.transition='none';w2.style.transform='rotate(0deg)';w2.innerHTML=whSvg(whRem())}
+  if(r)r.innerHTML=whRes(n);if(i)i.innerHTML=whInfo();if(b2)b2.disabled=!whRem().length},w?whDur+80:0)}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-wh]');if(!t||tab!='wh')return;const k=t.dataset.wh;
+ if(k=='spin')whSpin();
+ else if(whBusy)return;
+ else if(k=='undo'){if(whSt.used.length){whSt.used.pop();whSave();R()}}
+ else if(k=='reset'){if(whSt.used.length&&!confirm('همه‌ی عددهای آمده پاک شود و گردونه از اول شروع شود؟'))return;whSt.used=[];whSave();R()}});
+document.addEventListener('change',e=>{const t=e.target;if(t.id!='whn'||tab!='wh'||whBusy)return;let v=Math.round(+t.value);if(!(v>=2))v=2;if(v>100)v=100;whSt.n=v;whSt.used=[];whSave();R()});
 /* ===== کلید برگشت گوشی ===== */
 const bkDeep=()=>!!(navO||mp||cal||(tab=='tp'&&tpSend)||tab!='mn');
 function bkSync(){try{if(bkDeep()&&!(history.state&&history.state.cb==2))history.pushState({cb:2},'')}catch(e){}}
