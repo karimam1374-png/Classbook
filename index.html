@@ -1544,7 +1544,7 @@ function peFixF(P){
  let R=null;try{R=peRebuild(L,lk)}catch(e){R=null}
  if(R&&(peBad(L,lk)||peCost(R)<peCost(L))){P.rd={v:3,r:R};P.fxn=1;mk('st')}}
 /* نتیجه‌های ثبت‌شده‌ی برنامه‌ی قبلی را در برنامه‌ی جدید، برای همان دو تیم و همان رشته، جا می‌دهد */
-function peCarry(R,olds,j){(olds||[]).forEach(o=>{if(!o||!o.d)return;for(const r of R.r){const x=r[j];if(!x.d&&((x.a==o.a&&x.b==o.b)||(x.a==o.b&&x.b==o.a))){if(x.a==o.a){x.ga=+o.ga||0;x.gb=+o.gb||0}else{x.ga=+o.gb||0;x.gb=+o.ga||0}x.d=1;return}}})}
+function peCarry(R,olds,j){(olds||[]).forEach(o=>{if(!o||!o.d)return;for(const r of R.r){const x=r[j];if(!x.d&&((x.a==o.a&&x.b==o.b)||(x.a==o.b&&x.b==o.a))){if(x.a==o.a){x.ga=+o.ga||0;x.gb=+o.gb||0}else{x.ga=+o.gb||0;x.gb=+o.ga||0}x.d=1;if(o.t)x.t=o.t;return}}})}
 function peConv(P){
  if(P.rd){if(P.sx)delete P.sx;return}
  const sx=P.sx&&typeof P.sx=='object'?P.sx:null,fb=P.lg&&Array.isArray(P.lg.f)?P.lg.f:null,vb=sx&&sx.v&&Array.isArray(sx.v.f)?sx.v.f:null,dg=sx&&sx.d&&Array.isArray(sx.d.f)?sx.d.f:null;
@@ -1620,11 +1620,12 @@ const css=fontCss()+`*{box-sizing:border-box}body{margin:0;background:#0a1a3a;fo
 const cups=new Set(n==PEFT?T.filter(t=>t.pt==T[0].pt&&t.gf-t.ga==T[0].gf-T[0].ga&&t.gf==T[0].gf).map(t=>t.i):[]);
 const rows=T.map((t,k)=>{const f=fm(t.i),z=!t.p?'z0':k==0?'z1':k<3?'z2':'z0',dots=[...f,...Array(5-f.length).fill('e')].map(c=>`<i class="${c}"></i>`).join('');
 return `<tr class="${z}"><td><span class="rk">${fd(k+1)}</span></td><td class="nm">${E(P.t[t.i])}${cups.has(t.i)?' <span style="display:inline-block;vertical-align:-4px">'+rnTr(22,'lg'+t.i)+'</span>':''}</td><td>${fd(t.p)}</td><td>${fd(t.w)}</td><td>${fd(t.d)}</td><td>${fd(t.l)}</td><td>${fd(t.gf)}</td><td>${fd(t.ga)}</td><td style="direction:ltr">${t.gf-t.ga>0?'+':''}${fd(t.gf-t.ga)}</td><td><span class="fm">${dots}</span></td><td class="pt">${fd(t.pt)}</td></tr>`}).join('');
-const rec=dn.slice(-4).reverse().map(g=>`<div class="rs"><span>${E(P.t[g.a])}</span><b>${fd(g.gb)} - ${fd(g.ga)}</b><span>${E(P.t[g.b])}</span></div>`).join('');
+const lt=[...dn].reverse().find(g=>g.t),rg=lt?dn.filter(g=>g.t==lt.t):dn.slice(-4),rtl=lt?'نتایج بازی‌های روز '+fd(lt.t):'نتایج اخیر';
+const rec=rg.slice().reverse().map(g=>`<div class="rs"><span>${E(P.t[g.a])}</span><b>${fd(g.gb)} - ${fd(g.ga)}</b><span>${E(P.t[g.b])}</span></div>`).join('');
 const body=`<div class="hd"><div class="hr"><div class="bl">${peBall(56)}</div><div><h1>جدول رده‌بندی لیگ فوتبال</h1><small>${E(I.school||'')}${I.cls?' — کلاس '+E(I.cls):''}${I.year?' — سال تحصیلی '+E(I.year):''}</small><span class="bd">${fd(n)} بازی از ${fd(PEFT)} بازی</span></div></div></div>
 <div class="bw"><table class="tb"><thead><tr><th>رده</th><th style="text-align:right">تیم</th><th>بازی</th><th>برد</th><th>مساوی</th><th>باخت</th><th>زده</th><th>خورده</th><th>تفاضل</th><th>۵ بازی اخیر</th><th>امتیاز</th></tr></thead><tbody>${rows}</tbody></table></div>
 <div class="lg"><span style="--c:#e8b923">صدرنشین</span><span style="--c:#1d6fe0">رده‌های دوم و سوم</span><span style="--c:#16a34a">برد</span><span style="--c:#9aa5b8">مساوی</span><span style="--c:#dc2626">باخت</span></div>
-${rec?`<div class="sec"><h3>نتایج اخیر</h3>${rec}</div>`:''}
+${rec?`<div class="sec"><h3>${rtl}</h3>${rec}</div>`:''}
 ${nx?`<div class="sec" style="border-right-color:#e8b923"><h3>هفته‌ی پیش‌رو</h3><div class="nx"><span>${E(P.t[nx.a])}</span><em>VS</em><span>${E(P.t[nx.b])}</span></div></div>`:''}
 <div class="lg" style="margin-top:8px">برد ۳ امتیاز، مساوی ۱ و باخت ۰ — در برابری امتیاز: تفاضل گل، سپس گل زده</div>
 <div class="ft"><span>${I.teacher?'معلم: '+E(I.teacher):'آکادمی ایران'}</span><span>تاریخ صدور: ${dt}</span></div>`;
@@ -1657,7 +1658,7 @@ document.addEventListener('click',e=>{const t=e.target.closest('[data-pe]');if(!
  else if(k=='fp'){const x=gx(a[1],a[2]);if(!x||x.d)return;x.p=x.p?0:1;mk('st')}
  else if(k=='fe'){pee=pee==+a[1]?-1:+a[1]}
  else if(k=='fs'){const x=gx(a[1],a[2]);if(!x)return;const f=a[3]=='a'?'ga':'gb';x[f]=Math.max(0,Math.min(99,(+x[f]||0)+(+a[4])));mk('st')}
- else if(k=='fd'){const x=gx(a[1],a[2]);if(!x)return;const nx=peNext(P);x.d=x.d?0:1;if(x.d)x.p=0;if(x.d){pee=-1;if(peNext(P)!=nx)peReset()}mk('st')}
+ else if(k=='fd'){const x=gx(a[1],a[2]);if(!x)return;const nx=peNext(P);x.d=x.d?0:1;if(x.d)x.p=0;if(x.d&&!x.t)x.t=tdy();if(x.d){pee=-1;if(peNext(P)!=nx)peReset()}mk('st')}
   else if(k=='cw'){peNL(P,+a[1])}
   else if(k=='nl'){if(!P.rd||peDn(P)<PEFT)return;const T=peTbl(P),a0=T[0],ti=T.filter(x=>x.pt==a0.pt&&x.gf-x.ga==a0.gf-a0.ga&&x.gf==a0.gf);if(ti.length>1){alert('چند تیم کاملاً مساوی شده‌اند. اول در بالای همین صفحه قهرمان را انتخاب کنید.');return}peNL(P,a0.i)}
  else if(k=='lr'){if(!confirm('همه‌ی بازی‌ها و نتیجه‌های فوتبال، والیبال و وسطی پاک می‌شود و برنامه‌ی هم‌زمان دوباره قرعه‌کشی خواهد شد (قهرمانی‌های قبلی حفظ می‌شود). ادامه می‌دهید؟'))return;P.rd=null;pee=-1;pem='g';peReset();mk('st')}
