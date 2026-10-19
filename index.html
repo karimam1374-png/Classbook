@@ -377,8 +377,27 @@ function vmn(){const I=inf(),it=[['at','🙋','حضور و غیاب','ثبت ر�
 return `<div class="k2" style="text-align:center"><div style="font-weight:700">${E(I.school)}${I.cls?' — '+E(I.cls):''}</div><div class="m">${E(I.teacher)}${I.year?' | سال تحصیلی '+E(I.year):''}</div></div>${riskCard()}<div class="mg">${it.map(([k,i,t,s])=>`<button class="mt" data-t="${k}"><span class="mi">${i}</span><b>${t}</b><small>${s}</small></button>`).join('')}</div><p class="m" style="text-align:center;margin-top:12px">ورژن ${VER}</p>`}
 function vcl(){const all=S.st.map((s,i)=>{const f=S.mo.flatMap(m=>S.hm[m].v[i]).filter(x=>x!=null);return[i,f.length?Math.round(f.filter(x=>x==1).length/f.length*100):null]}).filter(a=>a[1]!=null).sort((a,b)=>a[1]-b[1]).slice(0,5);
 return `<h3>تکالیف — میانگین کلاس</h3><div class="g">${S.mo.map(m=>{const a=S.st.map((_,i)=>hp(m,i)).filter(x=>x!=='');return `<div class="k"><b>${a.length?Math.round(a.reduce((p,c)=>p+c,0)/a.length)+'٪':'-'}</b><span>${m}</span></div>`}).join('')}</div><h3>دروس — میانگین سطح کلاس (۱ بهترین)</h3>`+S.sub.map(U=>{const ks=bks(U);return `<div class="k2"><b>${E(U.n)}</b> `+ks.map(k=>{const a=S.st.flatMap((_,i)=>numsB(U,i,k));return (ks.length>1?'<span class="m">'+BL[k]+': </span>':'')+(a.length?ow(a,1)+' ('+a.length+' نمره)':'—')}).join(' | ')+'</div>'}).join('')+`<h3>کمترین درصد انجام تکلیف</h3>`+all.map(([i,p])=>`<div class="k2">${E(S.st[i].n)} — ${p}٪</div>`).join('')}
-function vbk(){return bkStat()+vbk0()+vauto()+vpp()+vnm()+`<div class="k2"><b>درباره برنامه</b><p class="m">ورژن ${VER} — ساخت ${BUILD}</p></div>`}
-var BUILD='20261031-1000',VER='۱۰۲';
+function vbk(){return bkStat()+vbk0()+vauto()+vrm()+vpp()+vnm()+`<div class="k2"><b>درباره برنامه</b><p class="m">ورژن ${VER} — ساخت ${BUILD}</p></div>`}
+var BUILD='20261020-1500',VER='۱۱۵';
+/* ===== یادآوری و آلارم غیبت ===== */
+var rmAC=null,rmG=null,rmLast=0,rmWas='';
+function rmWin(){const i=(S&&S.info)||{},d=new Date(),w=d.getDay();if(w==4||w==5)return null;
+const iso=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'),aft=rmShift(d)==1,h=String(aft?(i.rs1||'12:45'):(i.rs0||'07:55')).split(':');
+return{aft,min:(+h[0])*60+(+h[1]||0),now:d.getHours()*60+d.getMinutes()}}
+function rmShift(d){const i=(S&&S.info)||{},m=i.rsm||'am1';if(m=='am')return 0;if(m=='pm')return 1;
+const a=String(i.rsa||'2026-09-19').split('-').map(Number),n=Math.round((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())-Date.UTC(a[0],a[1]-1,a[2]))/864e5),w=Math.floor(n/7);return(((w+(m=='pm1'?1:0))%2)+2)%2}
+function rmPrev(){const I=Object.assign({},inf(),S.info||{}),o=[];for(let k=0;k<4;k++){const d=new Date();d.setDate(d.getDate()+7*k);const a=rmShift(d)==1;o.push((['این هفته','هفتهٔ بعد','دو هفتهٔ بعد','سه هفتهٔ بعد'])[k]+': '+(a?'بعدازظهر (از '+fd(I.rs1||'12:45')+')':'صبح (از '+fd(I.rs0||'07:55')+')'))}return o.join(' ← ')}
+function rmOn(){const w=rmWin();return !!w&&w.now>=w.min}
+function rmCtx(){try{const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;if(!rmAC)rmAC=new A();if(rmAC.state!='running')rmAC.resume();return rmAC}catch(e){return null}}
+function rmSound(){const c=rmCtx();if(c&&c.state=='running'){rmG=c.createGain();rmG.gain.value=.5;rmG.connect(c.destination);for(let k=0;k<20;k++){const o=c.createOscillator();o.type='square';o.frequency.value=k%2?660:880;o.connect(rmG);const s=c.currentTime+k*.5;o.start(s);o.stop(s+.42)}}try{navigator.vibrate&&navigator.vibrate([400,200,400,200,400,200,400,200,400])}catch(e){}}
+function rmStop(){try{if(rmG)rmG.gain.value=0;navigator.vibrate&&navigator.vibrate(0)}catch(e){}}
+function rmNote(){try{if(!(window.Notification&&Notification.permission=='granted'))return;const m='🔔 ثبت و ارسال غیبت امروز در ربات بله هنوز انجام نشده است';if(navigator.serviceWorker&&navigator.serviceWorker.getRegistration)navigator.serviceWorker.getRegistration().then(r=>{if(r)r.showNotification(m,{tag:'rm',renotify:true});else new Notification(m,{tag:'rm'})}).catch(()=>{});else new Notification(m,{tag:'rm'})}catch(e){}}
+function rmTick(){try{if(!baleDue()){rmWas='';return}const n=Date.now(),k=tdy();
+if(rmWas!=k){rmWas=k;rmLast=0;balePt=0;if(!/INPUT|TEXTAREA|SELECT/.test((document.activeElement||{}).tagName||''))R();setTimeout(balePop,300)}
+if(n-rmLast<18e4)return;rmLast=n;rmSound();if(document.hidden)rmNote()}catch(e){}}
+setInterval(rmTick,5000);document.addEventListener('pointerdown',()=>{rmCtx()});
+function vrm(){const I=Object.assign({},inf(),S.info||{}),w=rmWin();return `<div class="k2"><b>⏰ یادآوری و آلارم غیبت</b><p class="m">شنبه تا چهارشنبه، از ساعت شروع شیفت، پیام یادآوری در برنامه نمایش داده می‌شود و تا وقتی ارسال در بله ثبت نشود می‌ماند. تا آن موقع هر ۳ دقیقه یک‌بار، ۱۰ ثانیه آلارم پخش می‌شود. خاموش/روشن کردن: دکمهٔ «یادآوری روزانه» در بخش ربات بله.</p><div class="bar"><span class="m" style="flex:3">شروع شیفت صبح</span><input type="time" data-in="rs0" value="${E(I.rs0||'07:55')}" style="flex:2"></div><div class="bar"><span class="m" style="flex:3">شروع شیفت بعدازظهر</span><input type="time" data-in="rs1" value="${E(I.rs1||'12:45')}" style="flex:2"></div><div class="bar"><span class="m" style="flex:2">برنامهٔ شیفت</span><select data-in="rsm" style="flex:5;font:inherit;padding:8px"><option value="am1"${(I.rsm||'am1')=='am1'?' selected':''}>هفتهٔ اول مهر صبحی بودیم (هفته‌ها یکی‌درمیان جابه‌جا می‌شود)</option><option value="pm1"${(I.rsm||'am1')=='pm1'?' selected':''}>هفتهٔ اول مهر بعدازظهری بودیم (هفته‌ها یکی‌درمیان جابه‌جا می‌شود)</option><option value="am"${(I.rsm||'am1')=='am'?' selected':''}>همیشه صبحی</option><option value="pm"${(I.rsm||'am1')=='pm'?' selected':''}>همیشه بعدازظهری</option></select></div><div class="bar"><span class="m" style="flex:3">شنبهٔ هفتهٔ اول مهر</span><input type="date" data-in="rsa" value="${E(I.rsa||'2026-09-19')}" style="flex:2"></div><p class="m">${rmPrev()}</p><p class="m">اگر هفتهٔ اول مهر صبحی بودید، هفته‌های فرد سال صبحی و هفته‌های زوج بعدازظهری حساب می‌شوند (و برعکس). هفتهٔ اول همان هفته‌ای است که ۱ مهر در آن قرار دارد؛ برای سال ۱۴۰۵ شنبه ۲۸ شهریور (۱۹ سپتامبر ۲۰۲۶). سال بعد تاریخ را عوض کنید.</p><button class="bt" data-a="rmn">🔔 اجازهٔ اعلان در پس‌زمینه</button><button class="bt" data-a="rmt">🔊 آزمایش آلارم</button><p class="m">ورژن ${VER}</p></div>`}
+
 /* ===== سرور و پورتال اولیا ===== */
 const ncN=v=>String(v||'').replace(/[۰-۹]/g,c=>c.charCodeAt(0)-1776).replace(/[٠-٩]/g,c=>c.charCodeAt(0)-1632).replace(/\D/g,'');
 let srvOk=false,cbV=-1,cbD={},cbW=[],cbT=0,ppT=0;
@@ -736,11 +755,11 @@ return capJ('🙋 گزارش حضور و غیاب',[],['📅 تاریخ: '+fd(wd
 /* ===== ربات بله ===== */
 const baleLink=()=>{let v=String((S.info&&S.info.bale)||'').trim();if(!v)return 'https://ble.ir/Hendoyanschool_bot';if(/^@/.test(v))v='https://ble.ir/'+v.slice(1);else if(!/^https?:\/\//i.test(v))v='https://'+v.replace(/^\/+/,'');return v};
 const bsm={};
-const baleSent=()=>{try{return localStorage.getItem('cb2bale')==tdy()}catch(e){return false}};
-const baleMark=()=>{try{localStorage.setItem('cb2bale',tdy())}catch(e){}};
+const baleSent=()=>{try{return localStorage.getItem('cb2bale')==tdy()||!!(S.info&&S.info.bsd==tdy())}catch(e){return false}};
+const baleMark=()=>{try{localStorage.setItem('cb2bale',tdy())}catch(e){}try{S.info=Object.assign(inf(),S.info||{});S.info.bsd=tdy();mk('st')}catch(e){}rmStop()};
 const baleOn=()=>!(S.info&&S.info.brm==='0');
 function baleReg(){try{const z=jp(new Date()),mi=MN.indexOf(z[1]);if(mi<0)return false;const H=S.hm&&S.hm[MO0[mi]];if(!H||!H.a)return false;const j=H.d.findIndex(x=>{const q=md2(x);return q[0]==z[1]&&q[1]==z[2]});return j>=0&&S.st.some((_,i)=>H.a[i]&&H.a[i][j]!=null)}catch(e){return false}}
-const baleDue=()=>{try{return !!(S&&S.st&&S.st.length&&S.hm&&baleOn()&&!baleSent()&&!thf(tdy()))}catch(e){return false}};
+const baleDue=()=>{try{return !!(S&&S.st&&S.st.length&&S.hm&&baleOn()&&!baleSent()&&!thf(tdy())&&rmOn())}catch(e){return false}};
 function cpDayCap(){const inp=document.querySelector('input[data-cf]'),e=CE(cpd||tdy(),false);return String(inp?inp.value:((e&&e.f&&e.f[csi])||'')).trim()}
 function baleText(kind){if(kind=='hw'){wm=cm;wg=hd>=0?hd/5|0:-1;wkInit();if(!wkData().rows.some(r=>r.t)){alert('برای این هفته هنوز تکلیفی ثبت نشده است.');return''}return wkCap()}
 if(kind=='at'){const H=S.hm[am];if(!H||!H.a||!S.st.some((_,i)=>H.a[i]&&H.a[i][ahd]!=null)){alert('برای این روز هنوز حضور و غیابی ثبت نشده است. ابتدا حضور و غیاب را ثبت کنید.');return''}return attCap()}
@@ -761,8 +780,8 @@ o.querySelector('#bx').onclick=()=>o.remove();
 o.querySelector('#bgo').onclick=()=>{const v=t();o.remove();baleGo(kind,v)};
 const sh=o.querySelector('#bsh');if(sh)sh.onclick=async()=>{try{await navigator.share({text:t()});baleMark();o.remove();R()}catch(e){if(e&&e.name=='AbortError')return;m.textContent='اشتراک‌گذاری انجام نشد. از «کپی و باز کردن ربات» استفاده کنید.'}};
 document.body.appendChild(o)}
-function baleBanner(){if(!baleDue())return'';const reg=baleReg();
-return `<div class="k2" style="border:2px solid #dc2626;background:rgba(220,38,38,.06)"><b>🔔 یادآوری روزانه</b><div class="m" style="color:var(--t);margin:4px 0">${reg?'حضور و غیاب امروز ثبت شده است. گزارش را به ربات بله بفرستید.':'امروز هنوز حضور و غیاب ثبت نشده است. آن را ثبت کنید و گزارش را به ربات بله بفرستید.'} تا وقتی «ارسال به ربات بله» را نزنید، این پیام می‌ماند.</div><div class="cb cbw">${reg?'':'<button class="chip" data-a="brg" type="button">🙋 ثبت حضور و غیاب</button>'}<button class="chip" data-a="bg:att" type="button" style="background:#2563eb;color:#fff;border-color:#2563eb">📨 ارسال به ربات بله</button></div></div>`}
+function baleBanner(){if(!baleDue())return'';const reg=baleReg(),w=rmWin();
+return `<div class="k2" style="border:2px solid #dc2626;background:rgba(220,38,38,.06)"><b>🔔 یادآوری روزانه غیبت</b><div class="m" style="color:var(--t);margin:4px 0">${reg?'حضور و غیاب امروز ثبت شده است. غیبت‌ها را به ربات بله بفرستید.':'امروز هنوز حضور و غیاب ثبت نشده است. آن را ثبت کنید و غیبت‌ها را به ربات بله بفرستید.'} تا وقتی «ارسال به ربات بله» را نزنید، این پیام می‌ماند و هر ۳ دقیقه ۱۰ ثانیه آلارم پخش می‌شود.</div>${rmAC&&rmAC.state=='running'?'':'<div class="m" style="color:#b45309">🔇 برای فعال شدن صدا، یک‌بار صفحه را لمس کنید.</div>'}<div class="cb cbw">${reg?'':'<button class="chip" data-a="brg" type="button">🙋 ثبت حضور و غیاب</button>'}<button class="chip" data-a="bg:att" type="button" style="background:#2563eb;color:#fff;border-color:#2563eb">📨 ارسال به ربات بله</button><button class="chip" data-a="rms" type="button">🔇 قطع صدا</button><button class="chip" data-a="rmok" type="button">✓ قبلاً ارسال کرده‌ام</button></div><div class="m" style="font-size:11px">شیفت ${w&&w.aft?'بعدازظهر':'صبح'} | ورژن ${VER}</div></div>`}
 let balePt=0;
 function balePop(){try{if(!baleDue()||document.getElementById('bpo')||document.getElementById('bov')||Date.now()-balePt<18e5)return;if(document.visibilityState&&document.visibilityState!='visible')return;balePt=Date.now();
 const reg=baleReg(),o=document.createElement('div');o.id='bpo';o.setAttribute('style','position:fixed;left:0;top:0;right:0;bottom:0;z-index:99998;background:rgba(15,23,42,.7);display:flex;align-items:center;justify-content:center;padding:18px;direction:rtl');
@@ -953,7 +972,7 @@ else if(d.a&&d.a.slice(0,4)=='dsc:'){dscSend(+d.a.slice(4));return}
 else if(d.a&&d.a.slice(0,4)=='dsd:'){const i=+d.a.slice(4);S.st[i].dm=gen(i).m;mk('st')}
 else if(d.a=='j'){markBk();dl('classbook-backup-'+stamp()+'.json',JSON.stringify(S));return}
 else if(d.a=='c'){dl('class-summary-'+stamp()+'.csv',csv());return}
-else if(d.a=='pp'){ppPub(true);return}else if(d.a=='ppi'){ppPub(false,rs);return}else if(d.a=='cbc'){cbConn();return}else if(d.a=='cbx'){localStorage.removeItem('cbtok');location.reload();return}
+else if(d.a=='rms'){rmStop();return}else if(d.a=='rmok'){baleMark();R();return}else if(d.a=='rmn'){try{Notification.requestPermission().then(()=>R())}catch(e){}return}else if(d.a=='rmt'){rmCtx();rmSound();return}else if(d.a=='pp'){ppPub(true);return}else if(d.a=='ppi'){ppPub(false,rs);return}else if(d.a=='cbc'){cbConn();return}else if(d.a=='cbx'){localStorage.removeItem('cbtok');location.reload();return}
 else if(d.a=='k'){dl('karnameh-'+(rs+1)+'.html',card(rs));return}
 R()});
 document.addEventListener('change',e=>{const t=e.target,d=t.dataset;if(d.xn!=null||d.cf!=null)return;rbm='';
