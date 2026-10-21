@@ -32,7 +32,7 @@ nav{position:fixed;top:0;bottom:0;right:0;width:230px;max-width:80vw;display:fle
 .nb.on{opacity:1;border-color:#2563eb}.nb u{position:absolute;top:3px;left:3px;width:7px;height:7px;border-radius:50%;background:#2563eb}
 .nx{display:flex;gap:6px;margin-top:5px}.nx input{flex:1;min-width:0;height:36px;box-sizing:border-box;padding:4px 8px;font:inherit;font-size:14px;border:1px solid var(--l);border-radius:8px;background:var(--c);color:var(--t)}.nx .chip{height:36px}
 .tbr2{gap:5px;flex-wrap:wrap}.tbr2 .chip{padding:3px 9px;font-size:12px}
-</style><style id="tpcss">
+.cbr{margin-bottom:8px}.cbr .cbt{display:block;width:100%;box-sizing:border-box;height:70px;font-size:14px;padding:6px 10px;text-align:right;cursor:text;resize:none;line-height:1.6;font-family:inherit}.cbc{display:flex;gap:6px;justify-content:flex-start;flex-direction:row-reverse;margin-bottom:6px}.cbc .cbb{flex:0 0 100px;width:100px;height:30px;padding:0 4px;font-size:12px;display:flex;align-items:center;justify-content:center;white-space:nowrap}</style><style id="tpcss">
 .tpo{width:100%;position:relative;overflow:hidden;direction:rtl}
 .tpf{width:1080px;position:absolute;top:0;right:0;transform-origin:top right;display:flex;flex-direction:column;gap:10px;align-items:stretch;direction:rtl;padding:4px 4px 8px;box-sizing:border-box;color:var(--t)}
 .tmain{flex:0 0 auto}.tsb{flex:0 0 190px;display:flex;flex-direction:column;justify-content:space-between;padding-top:36px}
@@ -334,7 +334,7 @@ let am='',ahd=-1,abulk={},abm='',amode='r';
 let ptm='p',ptd='',ptt='',ptk=-1;
 let ptO=-1,ptU=[];
 function nRow(i,s,p,m,tp,tm,nv,dp,dm,inp){const op=ptO==i;return `<div class="nr${op?' op':''}"><div class="nrr"><span class="xi">${fd(i+1)}</span><div class="nm"><div class="xnm">${E(s.n)}</div><div class="nt">جمع: <b class="gp">＋${fd(tp)}</b> | <b class="gm">－${fd(tm)}</b>${nv?` · <i class="pv">${E(nv)}</i>`:''}</div></div><div class="qc2${p?' s1':''}" ${dp}>＋ ${fd(p)}</div><div class="qc2${m?' s4':''}" ${dm}>－ ${fd(m)}</div><button type="button" class="nb${nv||op?' on':''}" data-pto="${i}" aria-label="بازخورد / موضوع">💬${nv?'<u></u>':''}</button></div>${op?`<div class="nx"><input ${inp}><button type="button" class="chip bl" data-a="bgs:${i}">📨 بله</button></div>`:''}</div>`}
-function cbar(){const g=ptk<0;return `<div class="bar"><input id="ptc" class="dbx" style="cursor:text;text-align:right" maxlength="${g?300:60}" placeholder="${g?'بازخورد مشترک برای همه — مثلاً رعایت نظم':'موضوع مشترک — مثلاً سؤال شفاهی'}" value="${E(ptc)}"><button class="chip" data-a="ptall" type="button">📋 درج برای همه</button><button class="chip" data-a="ptclr" type="button">🧹</button></div>`}
+function cbar(){const g=ptk<0,u=g?cpU:ptU;return `<div class="cbr"><div class="cbc"><button class="chip cbb" data-a="${g?'cpu':'ptu'}" type="button">↩️ لغو${u.length?' ('+fd(u.length)+')':''}</button><button class="chip cbb" data-a="ptall" type="button">📋 درج برای همه</button></div><textarea id="ptc" class="dbx cbt" maxlength="300" placeholder="${g?'بازخورد مشترک برای همه — مثلاً رعایت نظم':'موضوع مشترک — مثلاً سؤال شفاهی'}">${E(ptc)}</textarea></div>`}
 function ptSnap(k){try{const U=S.sub[k];ptU.push(JSON.stringify({k,n:S.st.length,p:U.p,m:U.m,pl:U.pl||[]}));if(ptU.length>30)ptU.shift()}catch(e){}}
 function ptUndo(){if(!ptU.length){alert('تغییری برای لغو کردن وجود ندارد.');return}let o;try{o=JSON.parse(ptU.pop())}catch(e){return}if(o.n!=S.st.length||!S.sub[o.k]){ptU=[];alert('ساختار کلاس تغییر کرده و لغو ممکن نیست.');return}const U=S.sub[o.k];U.p=o.p;U.m=o.m;U.pl=o.pl;mk('s'+o.k);if(ptk!=o.k)ptk=o.k;R()}
 function vpt(){if(!S.st.length)return'';if(!ptd)ptd=tdy();cpd=ptd;if(ptk>=S.sub.length)ptk=-1;if(csi<0||csi>=S.st.length)csi=0;
@@ -344,18 +344,16 @@ const strip=(ti,sub,p,m)=>`<div class="xs"><div class="xst"><b>${ti}</b><span>${
 const sm=f=>S.st.reduce((a,_,i)=>a+(+f(i)||0),0);
 let h=sel;
 if(gm){const GT=S.st.map((_,i)=>gen(i));
-h+=cbar()+`<div class="cb cbw tbr2"><button class="chip" data-mp="cp">📨 پیام انضباطی به اولیا (${fd(mpn('cp'))})</button><button class="chip" data-a="cpw">📤 هفتگی</button><button class="chip" data-a="cpm">📤 ماهانه</button><button class="chip" data-a="cpu">↩️ لغو${cpU.length?' ('+fd(cpU.length)+')':''}</button></div>${baleMsg('cp')}${dscPanel()}`;
-h+=strip('شایستگی‌های عمومی — جمع کل کلاس','در تاریخ انتخاب‌شده: ＋'+fd(sm(i=>e.p[i]))+' و －'+fd(sm(i=>e.m[i])),GT.reduce((a,g)=>a+g.p,0),GT.reduce((a,g)=>a+g.m,0));
+h+=cbar()+`<div class="cb cbw tbr2"><button class="chip" data-mp="cp">📨 پیام انضباطی به اولیا (${fd(mpn('cp'))})</button><button class="chip" data-a="cpw">📤 هفتگی</button><button class="chip" data-a="cpm">📤 ماهانه</button></div>${baleMsg('cp')}${dscPanel()}`;
 h+=`<details class="k2 xhp"><summary>راهنمای ثبت</summary><p class="m">تاریخ را بالا انتخاب کنید. برای هر دانش‌آموز روی ＋ (مثبت) یا － (منفی) بزنید؛ نگه داشتن انگشت روی دکمه یک مورد کم می‌کند. بازخورد توصیفی هر تاریخ در کادر زیر نام او نوشته می‌شود. دکمه‌ی «📨 بله» فقط همان جمله‌ی بازخورد را کپی می‌کند (بدون نام یا عدد) و ربات بله را باز می‌کند؛ در چت ربات Paste بزنید و ارسال کنید.</p></details>`;
 h+='<div class="nl">'+rows((s,i)=>{const g=GT[i],p=+e.p[i]||0,m=+e.m[i]||0,nv=String((e.f&&e.f[i])||'').trim();return nRow(i,s,p,m,g.p,g.m,nv,`data-cp="${i},p"`,`data-cp="${i},m"`,`data-cf="${i}" maxlength="300" placeholder="بازخورد توصیفی برای این تاریخ" value="${E((e.f&&e.f[i])||'')}"`)})+'</div>';
 const ds=Object.keys(c.d).filter(k=>{const x=c.d[k];return [x.p,x.m].some(a=>a&&a.some(v=>v))||(x.f&&x.f.some(t=>String(t||'').trim()))}).sort(dcmp).reverse();
 if(ds.length)h+=`<details class="k2"><summary>تاریخ‌های ثبت‌شده (${fd(ds.length)})</summary><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">${ds.map(k=>`<button class="chip" data-cj="${E(k)}">${E(fd(k))}</button>`).join('')}</div></details>`;
 h+=`<h3>سابقه و حذف موارد یک دانش‌آموز</h3><div class="bar"><select id="pcs" class="dbx">${S.st.map((s,k)=>`<option value="${k}"${k==csi?' selected':''}>${E(s.n)}</option>`).join('')}</select></div>`+hist(csi)}
 else{
-h+=cbar()+`<div class="cb cbw tbr2"><button class="chip" data-a="ptu">↩️ لغو${ptU.length?' ('+fd(ptU.length)+')':''}</button></div>`;
-h+=strip('درس '+E(U.n)+' — جمع کل کلاس','در تاریخ انتخاب‌شده: ＋'+fd(sm(i=>ptDay(U,i,'p')))+' و －'+fd(sm(i=>ptDay(U,i,'m'))),sm(i=>U.p[i]),sm(i=>U.m[i]));
+h+=cbar();
 h+=`<details class="k2 xhp"><summary>راهنمای ثبت</summary><p class="m">درس و تاریخ را بالا انتخاب کنید. برای موضوع مشترک، آن را در کادر بالا بنویسید و «درج برای همه» را بزنید. عدد ＋ و － هر روز از صفر شروع می‌شود و با انتخاب تاریخ قبلی، امتیازهای همان روز نمایش داده می‌شود. در کادر «موضوع» (اختیاری) هر دانش‌آموز یک موضوع کوتاه بنویسید. با هر ＋ یا － همین تاریخ و موضوع ذخیره می‌شود. «جمع کل» (کادر رنگی) مجموع همهٔ روزهاست. نگه داشتن انگشت روی دکمه یک مورد از همان روز کم می‌کند. این امتیازها در گزارش همان درس (همراه با موضوع‌ها) می‌آید و بر نمره‌ی آزمون اثری ندارد.</p></details>`;
-h+='<div class="nl">'+rows((s,i)=>{const p=ptDay(U,i,'p'),m=ptDay(U,i,'m'),tp=+U.p[i]||0,tm=+U.m[i]||0,nv=String(ptTs[i]||'').trim();return nRow(i,s,p,m,tp,tm,nv,`data-pt="${i},p,${ptk}"`,`data-pt="${i},m,${ptk}"`,`data-ptti="${i}" maxlength="60" placeholder="موضوع (اختیاری)" value="${E(ptTs[i]||'')}"`)})+'</div>';
+h+='<div class="nl">'+rows((s,i)=>{const p=ptDay(U,i,'p'),m=ptDay(U,i,'m'),tp=+U.p[i]||0,tm=+U.m[i]||0,nv=String(ptTs[i]||'').trim();return nRow(i,s,p,m,tp,tm,nv,`data-pt="${i},p,${ptk}"`,`data-pt="${i},m,${ptk}"`,`data-ptti="${i}" maxlength="200" placeholder="موضوع (اختیاری)" value="${E(ptTs[i]||'')}"`)})+'</div>';
 h+=ptLogs()}
 const pm=(p,m)=>p||m?(p?'<b style="color:#15803d">+'+fd(p)+'</b>':'')+(p&&m?' ':'')+(m?'<b style="color:#b91c1c">−'+fd(m)+'</b>':''):'·';
 const tp=S.sub.map(u=>sm(i=>u.p[i])),tq=S.sub.map(u=>sm(i=>u.m[i])),gp=S.st.reduce((a,_,i)=>a+gen(i).p,0),gq=S.st.reduce((a,_,i)=>a+gen(i).m,0);
