@@ -1886,7 +1886,7 @@ const css=fontCss()+`*{box-sizing:border-box}body{margin:0;background:#0a1a3a;fo
 .hr{display:flex;align-items:center;gap:16px}.hr h1{margin:0;font-size:34px;font-weight:800}.hr small{display:block;font-size:14px;opacity:.85;font-weight:400;margin-top:2px}
 .bd{display:inline-block;background:#e8b923;color:#07163a;border-radius:6px;padding:0 12px;font-size:14px;font-weight:800;margin-top:8px}
 .bl{flex:0 0 74px;height:74px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 4px #e8b923}
-.bw{padding:14px 18px 6px}.mvc{display:inline-flex;align-items:center;background:#fff;border:1px solid #b7c4dc;border-right:5px solid #16a34a;border-radius:44px;padding:6px 20px 6px 16px;margin:6px 4px;font-weight:700;font-size:22px;color:#0f1f3d}.mvc img,.mvc>span:first-child{margin-inline-end:12px!important}
+.bw{padding:14px 18px 6px}.mvc{display:inline-flex;align-items:center;background:#fff;border:1px solid #b7c4dc;border-right:4px solid #16a34a;border-radius:38px;padding:5px 18px 5px 14px;margin:5px 4px;font-weight:700;font-size:18px;color:#0f1f3d}.mvc img,.mvc>span:first-child{margin-inline-end:10px!important}
 .tb{width:100%;border-collapse:separate;border-spacing:0 4px}
 .tb th{background:#0d2c6b;color:#fff;font-size:13px;font-weight:700;padding:8px 3px;text-align:center}.tb th:first-child{border-radius:0 8px 8px 0}.tb th:last-child{border-radius:8px 0 0 8px}
 .tb td{background:#fff;padding:9px 3px;text-align:center;font-size:17px;font-weight:700;border-top:1px solid #dbe3f0;border-bottom:1px solid #dbe3f0}
@@ -1911,7 +1911,7 @@ const body=`<div class="hd"><div class="hr"><div class="bl">${peBall(56)}</div><
 <div class="bw"><table class="tb"><thead><tr><th>رده</th><th style="text-align:right">تیم</th><th>بازی</th><th>برد</th><th>مساوی</th><th>باخت</th><th>زده</th><th>خورده</th><th>تفاضل</th><th>۵ بازی اخیر</th><th>امتیاز</th></tr></thead><tbody>${rows}</tbody></table></div>
 <div class="lg"><span style="--c:#e8b923">صدرنشین</span><span style="--c:#1d6fe0">رده‌های دوم و سوم</span><span style="--c:#16a34a">برد</span><span style="--c:#9aa5b8">مساوی</span><span style="--c:#dc2626">باخت</span></div>
 ${rec?`<div class="sec"><h3>${rtl}</h3>${rec}</div>`:''}
-${mvx.txt?`<div class="sec" style="border-right-color:#16a34a"><h3>بازیکنان نمونه بازی‌های اخیر</h3><div>${mvx.txt.split(/[،,\n]+/).map(s=>s.trim()).filter(Boolean).map(s=>`<span class="mvc">${avN(s,72)}${E(s)}</span>`).join('')}</div></div>`:''}
+${mvx.txt?`<div class="sec" style="border-right-color:#16a34a"><h3>بازیکنان نمونه بازی‌های اخیر</h3><div>${mvx.txt.split(/[،,\n]+/).map(s=>s.trim()).filter(Boolean).map(s=>`<span class="mvc">${avN(s,60)}${E(s)}</span>`).join('')}</div></div>`:''}
 ${nx?`<div class="sec" style="border-right-color:#e8b923"><h3>هفته‌ی پیش‌رو</h3><div class="nx"><span>${E(P.t[nx.a])}</span><em>VS</em><span>${E(P.t[nx.b])}</span></div></div>`:''}
 <div class="lg" style="margin-top:8px">برد ۳ امتیاز، مساوی ۱ و باخت ۰ — در برابری امتیاز: تفاضل گل، سپس گل زده</div>
 <div class="ft"><span>${I.teacher?'معلم: '+E(I.teacher):'آکادمی ایران'}</span><span>تاریخ صدور: ${dt}</span></div>`;
@@ -2248,7 +2248,10 @@ const phOn=()=>S.st.some(s=>s&&s.ph);
 function av(i,z,m){if(!phOn())return'';const s=S.st[i];if(!s)return'';z=z||26;
  const b='width:'+z+'px;height:'+z+'px;border-radius:50%;flex:0 0 '+z+'px;box-sizing:border-box;border:1px solid #cbd5e1;background:#e2e8f0;'+(m=='c'?'display:block;margin:0 auto 4px;':'display:inline-block;vertical-align:middle;margin-inline-end:6px;');
  return s.ph?'<img alt="" src="'+s.ph+'" style="'+b+'object-fit:cover">':'<span style="'+b+'text-align:center;line-height:'+(z-2)+'px;font-size:'+Math.round(z*.46)+'px;color:#64748b;font-weight:700;overflow:hidden">'+E(String(s.n||'').trim().charAt(0))+'</span>'}
-function avN(n,z){const k=S.st.findIndex(s=>nz(s.n)==nz(String(n).replace(/^آقای\s+/,'').trim()));return k<0?'':av(k,z)}
+function nm0(x){return nz(String(x||'')).replace(/[\u064B-\u065F\u0640]/g,'').replace(/^\s*(آقای|آقا|خانم)\s+/,'').trim()}
+function avK(n){const q=nm0(n);if(!q)return -1;const sq=q.replace(/[\u200c\u200d\s]+/g,''),T=x=>x.split(/[\u200c\u200d\s]+/).filter(Boolean);let k=S.st.findIndex(s=>nm0(s.n).replace(/[\u200c\u200d\s]+/g,'')==sq);if(k>=0)return k;
+ const qt=T(q),c=[];S.st.forEach((s,i)=>{const st=T(nm0(s.n)),u=[];if(qt.length&&qt.every(a=>{const j=st.findIndex((b,x)=>!u.includes(x)&&(b==a||b.startsWith(a)||a.startsWith(b)&&b.length>2));if(j<0)return false;u.push(j);return true}))c.push(i)});return c.length==1?c[0]:-1}
+function avN(n,z){const k=avK(n);return k<0?'':av(k,z)}
 function phBtn(i){const s=S.st[i];return '<label title="عکس دانش‌آموز" style="flex:0 0 38px;width:38px;height:38px;border-radius:50%;border:1px dashed #94a3b8;overflow:hidden;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#f1f5f9;font-size:17px;position:relative">'+(s.ph?'<img alt="" src="'+s.ph+'" style="width:100%;height:100%;object-fit:cover">':'📷')+'<input type="file" accept="image/*" data-phf="'+i+'" aria-label="آپلود عکس" style="position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;cursor:pointer"></label>'+(s.ph?'<button type="button" class="chip" data-phx="'+i+'" aria-label="حذف عکس" style="flex:0 0 auto;padding:2px 8px">✕</button>':'')}
 async function phUp(i,f,inp){if(!f||!S.st[i])return;
  try{let bm;try{bm=await createImageBitmap(f,{imageOrientation:'from-image'})}catch(e){bm=await new Promise((ok,no)=>{const u=URL.createObjectURL(f),m=new Image();m.onload=()=>{URL.revokeObjectURL(u);ok(m)};m.onerror=no;m.src=u})}
