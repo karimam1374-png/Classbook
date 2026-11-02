@@ -1040,7 +1040,7 @@ const box=document.createElement('div');box.setAttribute('style','position:fixed
 const FH=+pg.getAttribute('data-h')||0,DK=+pg.getAttribute('data-k')||0,W=W0,H=FH||Math.ceil(box.scrollHeight);box.setAttribute('style','width:'+W0+'px;direction:rtl;background:#fff;font-family:Yekan,Vazirmatn,Tahoma,system-ui,sans-serif');const xml=new XMLSerializer().serializeToString(box);document.body.removeChild(box);
 const svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+H+'"><foreignObject x="0" y="0" width="'+W+'" height="'+H+'">'+xml+'</foreignObject></svg>';
 const img=await new Promise((ok,no)=>{const m=new Image();m.onload=()=>ok(m);m.onerror=no;m.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg)});
-let k=0,cv,cx;for(const kk of (FH?(DK?[DK,1.6,1]:[3.2,2.4,1.6,1]):[5,4,3,2,1].filter(x=>x<=Math.max(2,Math.round(3840/W))))){if(W*kk*H*kk>268e6)continue;try{cv=document.createElement('canvas');cv.width=Math.round(W*kk);cv.height=Math.round(H*kk);cx=cv.getContext('2d');if(!cx)continue;cx.fillStyle='#fff';cx.fillRect(0,0,cv.width,cv.height);if(cx.getImageData(0,0,1,1).data[3]!==255)continue;cx.scale(kk,kk);cx.drawImage(img,0,0);k=kk;break}catch(e){}}if(!k)throw new Error('canvas');
+let k=0,cv,cx;for(const kk of (FH?(DK?(DK>2.2?[DK,2.2,1.6,1]:[DK,1.6,1]):[3.2,2.4,1.6,1]):[5,4,3,2,1].filter(x=>x<=Math.max(2,Math.round(3840/W))))){if(W*kk*H*kk>268e6)continue;try{cv=document.createElement('canvas');cv.width=Math.round(W*kk);cv.height=Math.round(H*kk);cx=cv.getContext('2d');if(!cx)continue;cx.fillStyle='#fff';cx.fillRect(0,0,cv.width,cv.height);if(cx.getImageData(0,0,1,1).data[3]!==255)continue;cx.scale(kk,kk);cx.drawImage(img,0,0);k=kk;break}catch(e){}}if(!k)throw new Error('canvas');
 const sm=document.createElement('canvas');sm.width=W;sm.height=H;const sx=sm.getContext('2d');sx.drawImage(cv,0,0,W,H);const id=sx.getImageData(0,0,W,H).data;let ly=H-1;out:for(;ly>0;ly--){const o=ly*W*4;for(let x=0;x<W;x+=2){const q=o+x*4;if(id[q]<235||id[q+1]<235||id[q+2]<235)break out}}
 const ch=FH?cv.height:Math.min(cv.height,Math.round((ly+24)*k)),c2=document.createElement('canvas');c2.width=cv.width;c2.height=ch;const x2=c2.getContext('2d');x2.fillStyle='#fff';x2.fillRect(0,0,c2.width,ch);x2.drawImage(cv,0,0);
 const blob=await new Promise(r=>c2.toBlob(r,'image/jpeg',0.95));return{blob,w:c2.width,h:ch}}
@@ -2021,7 +2021,7 @@ icCal=ic('<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3
 icTr=ic('<path d="M7 4h10v5a5 5 0 0 1-10 0V4zM7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3M12 14v4M8 21h8M9 18h6"/>'),
 icPin=ic('<path d="M12 2l3 6.5 7 .8-5.2 4.8 1.5 7-6.3-3.6L5.7 21l1.5-7L2 9.3l7-.8z"/>');
 const n=M.ms.length,nfs=n>=6?16:n==5?18:20;
-const mem=n?`<div class="mg">${M.ms.map(k=>{const s=S.st[k],cap=k==M.ld,im=s.ph?`<img alt="" src="${s.ph}" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;object-position:50% 25%;display:block">`:`<div style="position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(160deg,#1c3a8a,#0a1a45);color:rgba(241,213,138,.9);font-size:96px;font-weight:800;text-align:center;line-height:250px">${E(nm0(s.n).charAt(0))}</div>`;return `<div class="mc${cap?' cap':''}">${im}<div class="ov"></div>${cap?'<div class="cb">C</div>':''}<div class="lb">${cap?'<div class="cs">سرگروه تیم</div>':''}<div class="mn" style="font-size:${nfs}px">${E(s.n)}</div></div></div>`}).join('')}</div>`:(()=>{const rows=tb.slice(0,6);return `<div class="tw"><div class="tr th"><span class="c1">#</span><span class="c2">تیم</span><span class="c3">گل زده</span><span class="c3">گل خورده</span><span class="c4">امتیاز</span></div>${rows.map((x,k)=>`<div class="tr${x[0]==R.c?' hl2':''}"><span class="c1">${fd(k+1)}</span><span class="c2">${E(P.t[x[0]]||'')}</span><span class="c3">${fd(x[2])}</span><span class="c3">${fd(x[3])}</span><span class="c4">${fd(x[1])}</span></div>`).join('')}</div>`})();
+const mem=n?`<div class="mg">${M.ms.map(k=>{const s=S.st[k],cap=k==M.ld,hp=(s.pid&&PHQ[s.pid])||s.ph,im=hp?`<img alt="" src="${hp}" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;object-position:50% 25%;display:block">`:`<div style="position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(160deg,#1c3a8a,#0a1a45);color:rgba(241,213,138,.9);font-size:96px;font-weight:800;text-align:center;line-height:250px">${E(nm0(s.n).charAt(0))}</div>`;return `<div class="mc${cap?' cap':''}">${im}<div class="ov"></div>${cap?'<div class="cb">C</div>':''}<div class="lb">${cap?'<div class="cs">سرگروه تیم</div>':''}<div class="mn" style="font-size:${nfs}px">${E(s.n)}</div></div></div>`}).join('')}</div>`:(()=>{const rows=tb.slice(0,6);return `<div class="tw"><div class="tr th"><span class="c1">#</span><span class="c2">تیم</span><span class="c3">گل زده</span><span class="c3">گل خورده</span><span class="c4">امتیاز</span></div>${rows.map((x,k)=>`<div class="tr${x[0]==R.c?' hl2':''}"><span class="c1">${fd(k+1)}</span><span class="c2">${E(P.t[x[0]]||'')}</span><span class="c3">${fd(x[2])}</span><span class="c3">${fd(x[3])}</span><span class="c4">${fd(x[1])}</span></div>`).join('')}</div>`})();
 const it=(v,l,hi)=>`<div class="si${hi?' hi':''}"><b>${v}</b><span>${l}</span></div>`;
 const tiles=R.st?it(fd(R.st.p),'بازی')+it(fd(R.st.w),'برد')+it(fd(R.st.d),'مساوی')+it(fd(R.st.l),'باخت')+it(fd(f),'گل زده')+it(fd(a),'گل خورده')+it(ltr((df>0?'+':'')+fd(df)),'تفاضل گل')+it(fd(pt),'امتیاز',1):it(fd(f),'گل زده')+it(fd(a),'گل خورده')+it(ltr((df>0?'+':'')+fd(df)),'تفاضل گل')+it(fd(pt),'امتیاز',1);
 const dt=R.dt?E(wdp(R.dt)+fd(ln(R.dt))):'',dn=new Date().toLocaleDateString('fa-IR',{year:'numeric',month:'long',day:'numeric'});
@@ -2065,9 +2065,10 @@ const body=`<div style="left:0;top:0">${peBg()}</div>
 ${mem}
 <div class="hl" style="left:44px;right:44px;top:922px"></div>
 <div class="ft" style="right:44px">${I.teacher?'معلم: '+E(I.teacher):'آکادمی ایران'}</div><div class="cg">تبریک به قهرمانان لیگ</div><div class="ft" style="left:44px">تاریخ صدور: ${dn}</div>`;
-return rcPage(css,1000,body).replace('data-w="1000"','data-w="1000" data-h="1000" data-k="2.2"')}
+return rcPage(css,1000,body).replace('data-w="1000"','data-w="1000" data-h="1000" data-k="3.84"')}
 function peChampCap(R){const P=PE(),M=peChampMem(R.c),l=['🏆 تیم قهرمان لیگ فوتبال: «'+(P.t[R.c]||'')+'»'];if(M.ms.length)l.push('👥 اعضا: '+M.ms.map(k=>S.st[k].n).join('، '));if(R.st&&R.st.p)l.push('📊 '+fd(R.st.p)+' بازی: '+fd(R.st.w)+' برد، '+fd(R.st.d)+' مساوی، '+fd(R.st.l)+' باخت');l.push('🎉 تبریک به قهرمانان!');l.push(capCT());if(R.dt)l.push('📅 '+fd(wdp(R.dt)+ln(R.dt)));return l.filter(Boolean).join('\n')}
-function peChampShare(k){const R=peChampRec(k);if(!R){alert(k=='cur'?'قهرمان لیگ هنوز مشخص نیست (همه‌ی ۳۰ بازی فوتبال باید ثبت شده و تیم اول بدون تساوی کامل باشد).':'اطلاعات این لیگ پیدا نشد.');return}shareImg(peChampCard(R),'tim-ghahreman-'+stamp(),peChampCap(R))}
+async function peChampShare(k){const R=peChampRec(k);if(!R){alert(k=='cur'?'قهرمان لیگ هنوز مشخص نیست (همه‌ی ۳۰ بازی فوتبال باید ثبت شده و تیم اول بدون تساوی کامل باشد).':'اطلاعات این لیگ پیدا نشد.');return}try{await phqLoad(R.mb&&R.mb.length?R.mb:peChampMem(R.c).ms)}catch(e){}
+shareImg(peChampCard(R),'tim-ghahreman-'+stamp(),peChampCap(R))}
 function peLeagueCap(){const d=tdy();
 return ['🏆 جدول رده بندی لیگ فوتبال',capCT(),'📅 بروز شده در روز '+fd(wdp(d)+d)].join('\n')}
 function pel(P){
@@ -2395,7 +2396,12 @@ document.addEventListener('change',e=>{const t=e.target;if(tab!='rs'||!t.dataset
  else if(D.rsp!=null){if(t.value=='x'){const v=rsAsk(d.p);if(v){d.p=v;mk('st')}}else d.p=rsPv(t.value)||d.p;mk('st');R()}});
 
 /* ===== عکس دانش‌آموز: آپلود در تنظیمات و نمایش دایره‌ای کوچک کنار نام (فقط وقتی حداقل یک عکس آپلود شده باشد) ===== */
-const PHZ=112;
+const PHZ=112,PHQ={};
+const phDb=()=>new Promise((ok,no)=>{const r=indexedDB.open('cb2photos',1);r.onupgradeneeded=()=>r.result.createObjectStore('p');r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)});
+async function phqPut(id,u){const d=await phDb();return new Promise((ok,no)=>{const t=d.transaction('p','readwrite');t.objectStore('p').put(u,id);t.oncomplete=()=>ok();t.onerror=()=>no(t.error)})}
+async function phqGet(id){const d=await phDb();return new Promise(ok=>{const q=d.transaction('p').objectStore('p').get(id);q.onsuccess=()=>ok(q.result||'');q.onerror=()=>ok('')})}
+async function phqDel(id){try{const d=await phDb();d.transaction('p','readwrite').objectStore('p').delete(id)}catch(e){}}
+async function phqLoad(ids){await Promise.all(ids.map(async k=>{const s=S.st[k];if(s&&s.pid&&!PHQ[s.pid]){try{PHQ[s.pid]=await phqGet(s.pid)}catch(e){}}}))}
 const phOn=()=>S.st.some(s=>s&&s.ph);
 function av(i,z,m){if(!phOn())return'';const s=S.st[i];if(!s)return'';z=z||26;
  const b='width:'+z+'px;height:'+z+'px;border-radius:50%;flex:0 0 '+z+'px;box-sizing:border-box;border:1px solid #cbd5e1;background:#e2e8f0;'+(m=='c'?'display:block;margin:0 auto 4px;':'display:inline-block;vertical-align:middle;margin-inline-end:6px;');
@@ -2408,10 +2414,12 @@ function phBtn(i){const s=S.st[i];return '<label title="عکس دانش‌آمو
 async function phUp(i,f,inp){if(!f||!S.st[i])return;
  try{let bm;try{bm=await createImageBitmap(f,{imageOrientation:'from-image'})}catch(e){bm=await new Promise((ok,no)=>{const u=URL.createObjectURL(f),m=new Image();m.onload=()=>{URL.revokeObjectURL(u);ok(m)};m.onerror=no;m.src=u})}
   const w=bm.width||bm.naturalWidth,h=bm.height||bm.naturalHeight,s=Math.min(w,h),sx=(w-s)/2,sy=h>w?(h-s)*.2:(h-s)/2,c=document.createElement('canvas');c.width=c.height=PHZ;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,PHZ,PHZ);x.drawImage(bm,sx,sy,s,s,0,0,PHZ,PHZ);
-  S.st[i].ph=c.toDataURL('image/jpeg',.72);mk('st');R()}catch(e){alert('خواندن عکس انجام نشد. عکس دیگری را امتحان کنید.')}
+  S.st[i].ph=c.toDataURL('image/jpeg',.72);
+  try{const L=1600,q=Math.min(1,L/Math.max(w,h)),hc=document.createElement('canvas');hc.width=Math.round(w*q);hc.height=Math.round(h*q);const hx=hc.getContext('2d');hx.imageSmoothingQuality='high';hx.fillStyle='#fff';hx.fillRect(0,0,hc.width,hc.height);hx.drawImage(bm,0,0,hc.width,hc.height);const u=hc.toDataURL('image/jpeg',.88),id=S.st[i].pid||(Date.now().toString(36)+Math.random().toString(36).slice(2,8));await phqPut(id,u);S.st[i].pid=id;PHQ[id]=u}catch(e){}
+  mk('st');R()}catch(e){alert('خواندن عکس انجام نشد. عکس دیگری را امتحان کنید.')}
  if(inp)inp.value=''}
 document.addEventListener('change',e=>{const t=e.target;if(t&&t.dataset&&t.dataset.phf!=null)phUp(+t.dataset.phf,t.files&&t.files[0],t)});
-document.addEventListener('click',e=>{const t=e.target.closest&&e.target.closest('[data-phx]');if(!t)return;const i=+t.dataset.phx;if(S.st[i]&&confirm('عکس «'+S.st[i].n+'» حذف شود؟')){delete S.st[i].ph;mk('st');R()}});
+document.addEventListener('click',e=>{const t=e.target.closest&&e.target.closest('[data-phx]');if(!t)return;const i=+t.dataset.phx;if(S.st[i]&&confirm('عکس «'+S.st[i].n+'» حذف شود؟')){if(S.st[i].pid){phqDel(S.st[i].pid);delete PHQ[S.st[i].pid];delete S.st[i].pid}delete S.st[i].ph;mk('st');R()}});
 
 /* در صفحه‌های باریک (مثلاً نیمه‌ی تبلت) ستون نامِ ردیف‌های نمره بازتر می‌شود و کادر توضیح زیر آن می‌آید */
 try{const stx=document.createElement('style');stx.textContent='@media(max-width:640px){.xr.xn1{grid-template-columns:minmax(0,1fr) 60px}.xr.xb{grid-template-columns:minmax(0,1fr) auto}.xr.xn1 .xn,.xr.xb .xn{grid-column:1/-1}.xh>img,.xh>span:not(.xi):not(.xnm){width:34px!important;height:34px!important;flex:0 0 34px!important;line-height:32px!important}}';document.head.appendChild(stx)}catch(_){}
