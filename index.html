@@ -1996,14 +1996,12 @@ ${wr}<g transform="translate(420 0) scale(-1 1)">${wr}</g>
 <ellipse cx="210" cy="200" rx="31" ry="10" fill="url(#${i}g)" stroke="#a86a00" stroke-width="2.5"/><rect x="199" y="206" width="22" height="16" fill="url(#${i}g)" stroke="#a86a00" stroke-width="2"/>
 <path d="M168 222H252L264 240H156Z" fill="url(#${i}v)" stroke="#8a5200" stroke-width="2.5" stroke-linejoin="round"/><rect x="144" y="238" width="132" height="22" rx="5" fill="url(#${i}v)" stroke="#8a5200" stroke-width="2.5"/><rect x="178" y="245" width="64" height="8" rx="3" fill="#ffe98a"/>
 </svg>`}
-function peBg(){const r=peRng(7);let o=`<svg viewBox="0 0 1000 1000" width="1000" height="1000" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="pb0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#030816"/><stop offset=".5" stop-color="#081742"/><stop offset="1" stop-color="#040b22"/></linearGradient><radialGradient id="pb1" gradientUnits="userSpaceOnUse" cx="500" cy="300" r="470"><stop offset="0" stop-color="#3b66d6" stop-opacity=".6"/><stop offset=".5" stop-color="#1b3a95" stop-opacity=".25"/><stop offset="1" stop-color="#0a1a45" stop-opacity="0"/></radialGradient><radialGradient id="pb2" gradientUnits="userSpaceOnUse" cx="500" cy="300" r="210"><stop offset="0" stop-color="#ffe9b0" stop-opacity=".5"/><stop offset="1" stop-color="#c9a24b" stop-opacity="0"/></radialGradient><linearGradient id="pb3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".5"/></linearGradient></defs><rect width="1000" height="1000" fill="url(#pb0)"/><rect width="1000" height="1000" fill="url(#pb1)"/>`;
-for(let k=0;k<13;k++){const a=(k-6)*9*Math.PI/180+Math.PI/2,d=.028;o+=`<polygon points="500,-60 ${(500+1500*Math.cos(a-d)).toFixed(0)},${(-60+1500*Math.sin(a-d)).toFixed(0)} ${(500+1500*Math.cos(a+d)).toFixed(0)},${(-60+1500*Math.sin(a+d)).toFixed(0)}" fill="#fff" opacity=".035"/>`}
-o+=`<g fill="none" stroke="#fff" stroke-width="2" opacity=".07"><circle cx="500" cy="1130" r="330"/><circle cx="500" cy="1130" r="520"/><path d="M0 700Q500 640 1000 700"/></g>`;
-o+=`<ellipse cx="500" cy="300" rx="210" ry="210" fill="url(#pb2)"/>`;
-for(let i=0;i<46;i++){const x=r()*1000,y=40+r()*560;o+=`<circle cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="${(.7+r()*1.5).toFixed(1)}" fill="#f1d58a" opacity="${(.2+r()*.5).toFixed(2)}"/>`}
-o+=`<rect y="600" width="1000" height="400" fill="url(#pb3)"/>`;
-o+=`<rect x="22" y="22" width="956" height="956" fill="none" stroke="#c9a24b" stroke-opacity=".45" stroke-width="1.2"/>`;
-[[22,22,1,1],[978,22,-1,1],[22,978,1,-1],[978,978,-1,-1]].forEach(([x,y,sx,sy])=>{o+=`<path d="M${x} ${y+sy*52}V${y}H${x+sx*52}" fill="none" stroke="#d6b25e" stroke-width="3.5"/>`});
+function peBg(){const r=peRng(9);let o=`<svg viewBox="0 0 1000 1000" width="1000" height="1000" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="rb0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#04070e"/><stop offset=".5" stop-color="#0a1226"/><stop offset="1" stop-color="#050b14"/></linearGradient><radialGradient id="rb1" gradientUnits="userSpaceOnUse" cx="500" cy="1040" r="620"><stop offset="0" stop-color="#14805c" stop-opacity=".6"/><stop offset=".55" stop-color="#0b4a37" stop-opacity=".25"/><stop offset="1" stop-color="#0b4a37" stop-opacity="0"/></radialGradient><radialGradient id="rb2" gradientUnits="userSpaceOnUse" cx="190" cy="250" r="300"><stop offset="0" stop-color="#ffdf8f" stop-opacity=".45"/><stop offset=".5" stop-color="#c9a24b" stop-opacity=".12"/><stop offset="1" stop-color="#c9a24b" stop-opacity="0"/></radialGradient><linearGradient id="rb3" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d6b25e" stop-opacity="0"/><stop offset=".5" stop-color="#d6b25e"/><stop offset="1" stop-color="#d6b25e" stop-opacity="0"/></linearGradient></defs><rect width="1000" height="1000" fill="url(#rb0)"/><rect width="1000" height="1000" fill="url(#rb1)"/><rect width="1000" height="1000" fill="url(#rb2)"/>`;
+for(let k=0;k<7;k++){const x=-200+k*190;o+=`<polygon points="${x},0 ${x+70},0 ${x+470},1000 ${x+330},1000" fill="#fff" opacity=".022"/>`}
+o+=`<g fill="none" stroke="#fff" stroke-width="2" opacity=".07"><circle cx="500" cy="1000" r="300"/><circle cx="500" cy="1000" r="480"/><path d="M0 930H1000"/></g>`;
+for(let i=0;i<40;i++){const x=r()*1000,y=30+r()*420;o+=`<circle cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="${(.6+r()*1.3).toFixed(1)}" fill="#f1d58a" opacity="${(.15+r()*.45).toFixed(2)}"/>`}
+o+=`<rect x="14" y="14" width="972" height="972" fill="none" stroke="#d6b25e" stroke-opacity=".3" stroke-width="1"/>`;
+o+=`<rect x="962" y="112" width="4" height="296" fill="#d6b25e"/><rect x="962" y="112" width="4" height="40" fill="#fff3c4"/>`;
 return o+'</svg>'}
 function peTrophy2(h,u){const i='tq'+u,w=Math.round(h*120/190);return `<svg viewBox="0 0 120 190" width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="${i}g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6e4f14"/><stop offset=".18" stop-color="#d9b560"/><stop offset=".38" stop-color="#fff0c0"/><stop offset=".55" stop-color="#e2bd62"/><stop offset=".8" stop-color="#a47a28"/><stop offset="1" stop-color="#5e430f"/></linearGradient><linearGradient id="${i}v" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3d68a"/><stop offset="1" stop-color="#8a621a"/></linearGradient><linearGradient id="${i}m" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#06261d"/><stop offset=".4" stop-color="#14624a"/><stop offset="1" stop-color="#06261d"/></linearGradient></defs>
 <path d="M24 26C4 24 2 58 22 70C28 74 36 78 44 78" fill="none" stroke="#5e430f" stroke-width="9" stroke-linecap="round"/><path d="M24 26C4 24 2 58 22 70C28 74 36 78 44 78" fill="none" stroke="url(#${i}v)" stroke-width="6" stroke-linecap="round"/>
@@ -2018,57 +2016,55 @@ function peTrophy2(h,u){const i='tq'+u,w=Math.round(h*120/190);return `<svg view
 function peChampCard(R){const P=PE(),I=inf(),nm=P.t[R.c]||'تیم',M=R.mb?{ms:R.mb.filter(x=>S.st[x]),ld:R.ml!=null&&R.ml>=0&&S.st[R.ml]?R.ml:-1}:peChampMem(R.c),tb=R.tb.length?R.tb:[[R.c,0,0,0]];
 const gf=(tb.find(x=>x[0]==R.c)||[0,0,0,0]),pt=gf[1],f=gf[2],a=gf[3],df=f-a;
 const ltr=x=>'<span style="direction:ltr;unicode-bidi:isolate;display:inline-block;font-size:inherit;color:inherit;font-weight:inherit">'+x+'</span>';
-const ic=d=>`<svg viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#d6b25e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`,
+const ic=d=>`<svg viewBox="0 0 24 24" width="19" height="19" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#d6b25e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`,
 icCal=ic('<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>'),
 icTr=ic('<path d="M7 4h10v5a5 5 0 0 1-10 0V4zM7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3M12 14v4M8 21h8M9 18h6"/>'),
 icPin=ic('<path d="M12 2l3 6.5 7 .8-5.2 4.8 1.5 7-6.3-3.6L5.7 21l1.5-7L2 9.3l7-.8z"/>');
-const n=M.ms.length,z=n<=4?104:n==5?100:92,nfs=n>=6?16:18;
-const crown=`<svg viewBox="0 0 32 24" width="22" height="17" xmlns="http://www.w3.org/2000/svg"><path d="M2 20L4 6L11 13L16 3L21 13L28 6L30 20Z" fill="#d6b25e"/></svg>`;
-const ring='border:3px solid #fff;box-shadow:0 0 0 2px #c9a24b,0 8px 18px rgba(0,0,0,.55)';
-const mem=n?`<div class="mg">${M.ms.map(k=>{const s=S.st[k],cap=k==M.ld,im=s.ph?`<img alt="" src="${s.ph}" style="width:${z}px;height:${z}px;border-radius:50%;object-fit:cover;display:block;${ring};background:#1b2a5a">`:`<div style="width:${z}px;height:${z}px;border-radius:50%;${ring};background:#0f2260;color:#d6b25e;font-size:${Math.round(z*.42)}px;font-weight:800;text-align:center;line-height:${z-6}px">${E(nm0(s.n).charAt(0))}</div>`;return `<div class="mc"><div style="position:relative;width:${z}px;height:${z}px">${im}${cap?`<div class="cb">C</div>`:''}</div><div class="mn" style="font-size:${nfs}px">${E(s.n)}</div><div class="cs">${cap?'سرگروه تیم':''}</div></div>`}).join('')}</div>`:(()=>{const rows=tb.slice(0,6);return `<div class="tw"><div class="tr th"><span class="c1">#</span><span class="c2">تیم</span><span class="c3">گل زده</span><span class="c3">گل خورده</span><span class="c4">امتیاز</span></div>${rows.map((x,k)=>`<div class="tr${x[0]==R.c?' hl2':''}"><span class="c1">${fd(k+1)}</span><span class="c2">${E(P.t[x[0]]||'')}</span><span class="c3">${fd(x[2])}</span><span class="c3">${fd(x[3])}</span><span class="c4">${fd(x[1])}</span></div>`).join('')}</div>`})();
+const n=M.ms.length,nfs=n>=6?16:n==5?18:20;
+const mem=n?`<div class="mg">${M.ms.map(k=>{const s=S.st[k],cap=k==M.ld,im=s.ph?`<img alt="" src="${s.ph}" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;object-position:50% 25%;display:block">`:`<div style="position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(160deg,#1c3a8a,#0a1a45);color:rgba(241,213,138,.9);font-size:96px;font-weight:800;text-align:center;line-height:250px">${E(nm0(s.n).charAt(0))}</div>`;return `<div class="mc${cap?' cap':''}">${im}<div class="ov"></div>${cap?'<div class="cb">C</div>':''}<div class="lb">${cap?'<div class="cs">سرگروه تیم</div>':''}<div class="mn" style="font-size:${nfs}px">${E(s.n)}</div></div></div>`}).join('')}</div>`:(()=>{const rows=tb.slice(0,6);return `<div class="tw"><div class="tr th"><span class="c1">#</span><span class="c2">تیم</span><span class="c3">گل زده</span><span class="c3">گل خورده</span><span class="c4">امتیاز</span></div>${rows.map((x,k)=>`<div class="tr${x[0]==R.c?' hl2':''}"><span class="c1">${fd(k+1)}</span><span class="c2">${E(P.t[x[0]]||'')}</span><span class="c3">${fd(x[2])}</span><span class="c3">${fd(x[3])}</span><span class="c4">${fd(x[1])}</span></div>`).join('')}</div>`})();
 const it=(v,l,hi)=>`<div class="si${hi?' hi':''}"><b>${v}</b><span>${l}</span></div>`;
 const tiles=R.st?it(fd(R.st.p),'بازی')+it(fd(R.st.w),'برد')+it(fd(R.st.d),'مساوی')+it(fd(R.st.l),'باخت')+it(fd(f),'گل زده')+it(fd(a),'گل خورده')+it(ltr((df>0?'+':'')+fd(df)),'تفاضل گل')+it(fd(pt),'امتیاز',1):it(fd(f),'گل زده')+it(fd(a),'گل خورده')+it(ltr((df>0?'+':'')+fd(df)),'تفاضل گل')+it(fd(pt),'امتیاز',1);
 const dt=R.dt?E(wdp(R.dt)+fd(ln(R.dt))):'',dn=new Date().toLocaleDateString('fa-IR',{year:'numeric',month:'long',day:'numeric'});
-const meta=[I.year?icCal+'سال تحصیلی '+E(I.year):'',icTr+'لیگ شماره '+fd(R.n),dt?icCal+dt:'',R.cnt>1?icPin+fd(R.cnt)+' قهرمانی در این سال':''].filter(Boolean).map(x=>`<span class="mi">${x}</span>`).join('<i class="dot"></i>');
-const css=fontCss()+`*{box-sizing:border-box}body{margin:0;background:#050d27;font-family:Yekan,Vazirmatn,Tahoma,system-ui,sans-serif;line-height:1.35}
-.pg{position:relative;width:1000px;height:1000px;overflow:hidden;background:#07143a;color:#fff}.pg>*{position:absolute}.pg svg{display:block}
-.hd{top:48px;height:26px;line-height:26px;font-size:17px;font-weight:700;color:#cfd9f5;white-space:nowrap}
-.hl{height:1px;background:linear-gradient(90deg,rgba(214,178,94,0),rgba(214,178,94,.9),rgba(214,178,94,0))}
-.kick{left:0;width:1000px;top:98px;text-align:center;font-size:14px;letter-spacing:10px;padding-left:10px;color:#d6b25e;font-weight:700;font-family:Arial,Helvetica,sans-serif}
-.ttl{left:0;width:1000px;top:118px;height:66px;line-height:66px;text-align:center;font-size:54px;font-weight:800;color:#fff;text-shadow:0 3px 18px rgba(0,0,0,.5)}
-.tl{left:0;width:1000px;top:400px;height:24px;line-height:24px;text-align:center;font-size:19px;color:#d6b25e;font-weight:700}
-.nm{left:60px;width:880px;top:422px;height:80px;line-height:80px;text-align:center;font-weight:800;color:#fff;white-space:nowrap;text-shadow:0 4px 22px rgba(0,0,0,.6)}
-.mt{left:0;width:1000px;top:524px;height:26px;display:flex;justify-content:center;align-items:center;gap:14px;font-size:17px;font-weight:700;color:#d6e0fa;white-space:nowrap}
-.mi{display:flex;align-items:center;gap:7px}.dot{width:5px;height:5px;background:#d6b25e;transform:rotate(45deg);display:block}
-.ss{left:44px;right:44px;top:566px;height:78px;display:flex;align-items:stretch;border-top:1px solid rgba(214,178,94,.55);border-bottom:1px solid rgba(214,178,94,.55);background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.02))}
+const meta=[I.year?icCal+'سال تحصیلی '+E(I.year):'',icTr+'لیگ شماره '+fd(R.n),dt?icCal+dt:'',R.cnt>1?icPin+fd(R.cnt)+' قهرمانی در این سال':''].filter(Boolean).map(x=>`<div class="mi">${x}</div>`).join('');
+const css=fontCss()+`*{box-sizing:border-box}body{margin:0;background:#05080f;font-family:Yekan,Vazirmatn,Tahoma,system-ui,sans-serif;line-height:1.35}
+.pg{position:relative;width:1000px;height:1000px;overflow:hidden;background:#070b16;color:#fff}.pg>*{position:absolute}.pg svg{display:block}
+.hd{top:34px;height:26px;line-height:26px;font-size:16px;font-weight:700;color:#c4cfee;white-space:nowrap}
+.hl{height:1px;background:linear-gradient(90deg,rgba(214,178,94,0),rgba(214,178,94,.8),rgba(214,178,94,0))}
+.kick{right:84px;top:106px;font-size:13px;letter-spacing:9px;color:#d6b25e;font-weight:700;font-family:Arial,Helvetica,sans-serif;white-space:nowrap}
+.ttl{right:84px;top:126px;height:40px;line-height:40px;font-size:30px;font-weight:800;color:#f1d58a;white-space:nowrap}
+.nm{right:84px;left:290px;top:166px;height:104px;line-height:104px;text-align:right;font-weight:800;color:#fff;white-space:nowrap;text-shadow:0 4px 24px rgba(0,0,0,.6)}
+.bar{right:84px;top:280px;width:90px;height:4px;background:#d6b25e}
+.mt{right:84px;top:298px;display:flex;flex-direction:column;gap:2px}.mi{display:flex;align-items:center;gap:9px;height:26px;font-size:17px;font-weight:700;color:#d3dcf5;white-space:nowrap}
+.ss{left:44px;right:44px;top:424px;height:74px;display:flex;align-items:stretch;border-top:2px solid #d6b25e;background:linear-gradient(180deg,rgba(255,255,255,.11),rgba(255,255,255,.03));box-shadow:0 10px 24px rgba(0,0,0,.4)}
 .si{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;border-left:1px solid rgba(255,255,255,.12);white-space:nowrap}.si:last-child{border-left:0}
-.si b{font-size:34px;line-height:40px;font-weight:800;color:#fff}.si span{font-size:14px;color:#9fb2e0;font-weight:700}
-.si.hi{background:linear-gradient(180deg,rgba(214,178,94,.32),rgba(214,178,94,.08));box-shadow:inset 0 3px 0 #d6b25e}.si.hi b{color:#f1d58a}.si.hi span{color:#f1d58a}
-.mh{left:44px;right:44px;top:664px;height:26px;display:flex;align-items:center;gap:16px;font-size:20px;font-weight:800;color:#fff}.mh i{display:block;flex:1;height:1px;background:linear-gradient(90deg,rgba(214,178,94,0),rgba(214,178,94,.8))}.mh i:last-child{background:linear-gradient(270deg,rgba(214,178,94,0),rgba(214,178,94,.8))}
-.mg{left:44px;right:44px;top:700px;height:198px;display:flex;justify-content:center;gap:10px}
-.mc{flex:1 1 0;min-width:0;max-width:200px;display:flex;flex-direction:column;align-items:center;padding-top:16px;border-radius:12px;border:1px solid rgba(214,178,94,.35);border-top:3px solid #d6b25e;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.03))}
-.mn{flex:1;width:100%;display:flex;align-items:center;justify-content:center;padding:0 4px;text-align:center;font-weight:800;color:#fff;line-height:1.3;overflow-wrap:anywhere}
-.cs{height:24px;line-height:20px;font-size:14px;font-weight:800;color:#f1d58a}
-.cb{position:absolute;right:-4px;bottom:-2px;width:30px;height:30px;line-height:28px;border-radius:50%;text-align:center;background:linear-gradient(180deg,#f6dc94,#c9a24b);color:#0b1b4a;font:800 17px/28px Arial,sans-serif;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.5)}
-.tw{left:150px;right:150px;top:700px;height:198px}.tr{display:flex;align-items:center;height:30px;margin-bottom:2px;padding:0 14px;font-size:17px;font-weight:700;color:#dbe4fb;background:rgba(255,255,255,.05);border-radius:4px}
-.th{height:26px;font-size:14px;color:#9fb2e0;background:none}.c1{width:34px}.c2{flex:1}.c3{width:90px;text-align:center}.c4{width:80px;text-align:center;font-weight:800}
-.hl2{background:linear-gradient(90deg,rgba(214,178,94,.35),rgba(214,178,94,.12));color:#fff;box-shadow:inset 3px 0 0 #d6b25e}
-.ft{height:30px;line-height:30px;top:936px;font-size:15px;font-weight:700;color:#a9b9e3;white-space:nowrap}
-.cg{left:0;width:1000px;top:930px;height:36px;line-height:36px;text-align:center;font-size:25px;font-weight:800;color:#f1d58a;white-space:nowrap}`;
-const nl=nm.length,tfs=nl<=8?76:nl<=13?68:nl<=18?56:nl<=22?46:40,sc=I.school||'',cl=I.cls?'کلاس '+I.cls:'';
+.si b{font-size:32px;line-height:38px;font-weight:800;color:#fff}.si span{font-size:13px;color:#9fb2e0;font-weight:700}
+.si.hi{background:linear-gradient(180deg,#f1d58a,#c9a24b)}.si.hi b,.si.hi span{color:#0a1226}
+.mh{left:44px;right:44px;top:512px;height:26px;display:flex;align-items:center;gap:14px;font-size:19px;font-weight:800;color:#fff}.mh i{display:block;flex:1;height:1px;background:linear-gradient(90deg,rgba(214,178,94,0),rgba(214,178,94,.8))}.mh i:last-child{background:linear-gradient(270deg,rgba(214,178,94,0),rgba(214,178,94,.8))}
+.mg{left:44px;right:44px;top:548px;height:344px;display:flex;justify-content:center;gap:10px}
+.mc{position:relative;flex:1 1 0;min-width:0;max-width:270px;border-radius:12px;overflow:hidden;border:1.5px solid rgba(214,178,94,.5);background:#0a1a45;box-shadow:0 10px 22px rgba(0,0,0,.5)}
+.mc.cap{border:3px solid #f1d58a;box-shadow:0 0 0 1px rgba(214,178,94,.5),0 0 26px rgba(214,178,94,.45),0 10px 22px rgba(0,0,0,.5)}
+.ov{position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(180deg,rgba(4,8,20,0),rgba(4,8,20,.92) 75%)}
+.lb{position:absolute;left:6px;right:6px;bottom:12px;text-align:center}
+.mn{font-weight:800;color:#fff;line-height:1.3;overflow-wrap:anywhere}
+.cs{display:inline-block;margin-bottom:4px;padding:1px 12px;border-radius:999px;background:linear-gradient(180deg,#f6dc94,#c9a24b);color:#0a1226;font-size:13px;font-weight:800}
+.cb{position:absolute;right:8px;top:8px;width:32px;height:32px;border-radius:50%;text-align:center;background:linear-gradient(180deg,#f6dc94,#c9a24b);color:#0a1226;font:800 18px/30px Arial,sans-serif;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.5)}
+.tw{left:150px;right:150px;top:552px;height:240px}.tr{display:flex;align-items:center;height:36px;margin-bottom:3px;padding:0 16px;font-size:19px;font-weight:700;color:#dbe4fb;background:rgba(255,255,255,.06);border-radius:5px}
+.th{height:28px;font-size:14px;color:#9fb2e0;background:none}.c1{width:36px}.c2{flex:1}.c3{width:100px;text-align:center}.c4{width:90px;text-align:center;font-weight:800}
+.hl2{background:linear-gradient(90deg,rgba(214,178,94,.4),rgba(214,178,94,.12));color:#fff;box-shadow:inset 3px 0 0 #d6b25e}
+.ft{height:30px;line-height:30px;top:944px;font-size:15px;font-weight:700;color:#a9b9e3;white-space:nowrap}
+.cg{left:0;width:1000px;top:938px;height:36px;line-height:36px;text-align:center;font-size:25px;font-weight:800;color:#f1d58a;white-space:nowrap}`;
+const nl=nm.length,tfs=nl<=8?92:nl<=13?80:nl<=18?64:nl<=22?52:44,sc=I.school||'',cl=I.cls?'کلاس '+I.cls:'';
 const body=`<div style="left:0;top:0">${peBg()}</div>
-<div class="hd" style="left:52px">آکادمی ایران</div><div class="hd" style="right:52px">${E(sc)}${cl?' <span style="color:#d6b25e">|</span> '+E(cl):''}</div>
-<div class="hl" style="left:44px;right:44px;top:84px"></div>
+<div class="hd" style="left:44px">آکادمی ایران</div><div class="hd" style="right:44px">${E(sc)}${cl?' <span style="color:#d6b25e">|</span> '+E(cl):''}</div>
+<div class="hl" style="left:44px;right:44px;top:72px"></div>
+<div style="left:64px;top:104px;filter:drop-shadow(0 16px 18px rgba(0,0,0,.55))">${peTrophy2(300,'a')}</div>
 <div class="kick">LEAGUE CHAMPIONS</div><div class="ttl">قهرمان لیگ فوتبال</div>
-<div style="left:435px;top:190px">${peTrophy2(206,'a')}</div>
-<div class="tl">★ تیم قهرمان ★</div><div class="nm" style="font-size:${tfs}px">${E(nm)}</div>
-<div class="hl" style="left:320px;right:320px;top:510px"></div>
-<div class="mt">${meta}</div>
+<div class="nm" style="font-size:${tfs}px">${E(nm)}</div><div class="bar"></div><div class="mt">${meta}</div>
 <div class="ss">${tiles}</div>
 <div class="mh"><i></i>${n?'اعضای تیم قهرمان':'جدول نهایی لیگ'}<i></i></div>
 ${mem}
 <div class="hl" style="left:44px;right:44px;top:922px"></div>
-<div class="ft" style="right:52px">${I.teacher?'معلم: '+E(I.teacher):'آکادمی ایران'}</div><div class="cg">تبریک به قهرمانان لیگ</div><div class="ft" style="left:52px">تاریخ صدور: ${dn}</div>`;
+<div class="ft" style="right:44px">${I.teacher?'معلم: '+E(I.teacher):'آکادمی ایران'}</div><div class="cg">تبریک به قهرمانان لیگ</div><div class="ft" style="left:44px">تاریخ صدور: ${dn}</div>`;
 return rcPage(css,1000,body).replace('data-w="1000"','data-w="1000" data-h="1000" data-k="2.2"')}
 function peChampCap(R){const P=PE(),M=peChampMem(R.c),l=['🏆 تیم قهرمان لیگ فوتبال: «'+(P.t[R.c]||'')+'»'];if(M.ms.length)l.push('👥 اعضا: '+M.ms.map(k=>S.st[k].n).join('، '));if(R.st&&R.st.p)l.push('📊 '+fd(R.st.p)+' بازی: '+fd(R.st.w)+' برد، '+fd(R.st.d)+' مساوی، '+fd(R.st.l)+' باخت');l.push('🎉 تبریک به قهرمانان!');l.push(capCT());if(R.dt)l.push('📅 '+fd(wdp(R.dt)+ln(R.dt)));return l.filter(Boolean).join('\n')}
 function peChampShare(k){const R=peChampRec(k);if(!R){alert(k=='cur'?'قهرمان لیگ هنوز مشخص نیست (همه‌ی ۳۰ بازی فوتبال باید ثبت شده و تیم اول بدون تساوی کامل باشد).':'اطلاعات این لیگ پیدا نشد.');return}shareImg(peChampCard(R),'tim-ghahreman-'+stamp(),peChampCap(R))}
