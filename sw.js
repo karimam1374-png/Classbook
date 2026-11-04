@@ -1,6 +1,6 @@
 /* Service Worker — اجرای کامل آفلاین (آکادمی ایران / ClassBook)
    با هر نسخهٔ جدید، عدد CACHE_VERSION را یکی بالا ببرید تا کش قدیمی پاک شود. */
-const CACHE_VERSION = 'classbook-v193-offline-3';
+const CACHE_VERSION = 'classbook-v194-offline-1';
 const CORE = [
   './',
   'index.html',
