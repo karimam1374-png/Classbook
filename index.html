@@ -1347,12 +1347,11 @@ x.textAlign='center';x.textBaseline='middle';try{x.direction='rtl'}catch(e){}x.f
 x.font='700 32px '+FN;const t2='امتیازی  •  '+sub,pw=x.measureText(t2).width+80;x.fillStyle='#fbbf24';rr(W/2-pw/2,132,pw,58,29);x.fill();x.fillStyle='#78350f';x.fillText(t2,W/2,162);
 x.fillStyle='rgba(255,255,255,.92)';x.font='400 28px '+FN;x.fillText([I.school,I.cls,I.teacher].filter(Boolean).join(' — '),W/2,236)}
 items.forEach(g=>{let n=0;if(sd<0){if(dr){x.fillStyle='#0c4a6e';rr(P,y,W-2*P,64,32);x.fill();x.fillStyle='#fde68a';x.textAlign='right';x.textBaseline='middle';x.font='700 32px '+FN;x.fillText(TPD[g.d]+' '+tpFd(k,g.d),W-P-30,y+33)}y+=64+16}
-g.rows.forEach(r=>{n++;const ls=wrap(r.h,CF,W-2*P-14-26-70);x.font=LF2;const pw=x.measureText(r.l).width+56,ph=56,ch=28+ph+(ls.length?16+ls.length*LH:0)+28;
+g.rows.forEach(r=>{n++;const ls=wrap(r.h,CF,838),ch=Math.max(116,56+ls.length*LH);
 if(dr){x.save();x.shadowColor='rgba(3,105,161,.2)';x.shadowBlur=22;x.shadowOffsetY=8;x.fillStyle='#fff';rr(P,y,W-2*P,ch,28);x.fill();x.restore();
 x.save();rr(P,y,W-2*P,ch,28);x.clip();x.fillStyle='#f0f9ff';x.fillRect(P,y,W-2*P,ch);x.fillStyle='#fbbf24';x.fillRect(W-P-14,y,14,ch);x.restore();
-x.fillStyle='#0369a1';rr(RX-70-pw,y+28,pw,ph,28);x.fill();x.fillStyle='#fff';x.textAlign='center';x.textBaseline='middle';x.font=LF2;x.fillText(r.l,RX-70-pw/2,y+28+ph/2+2);
-star(RX-26,y+28+ph/2,30,'#f59e0b');x.fillStyle='#fff';x.font='700 22px '+FN;x.fillText(fd(n),RX-26,y+28+ph/2+3);
-x.fillStyle='#0f172a';x.textAlign='right';x.textBaseline='middle';x.font=CF;ls.forEach((l,i)=>x.fillText(l,RX,y+28+ph+16+i*LH+LH/2))}
+star(RX-30,y+ch/2,30,'#f59e0b');x.fillStyle='#fff';x.textAlign='center';x.textBaseline='middle';x.font='700 22px '+FN;x.fillText(fd(n),RX-30,y+ch/2+3);
+x.fillStyle='#0f172a';x.textAlign='right';x.textBaseline='middle';x.font=CF;ls.forEach((l,i)=>x.fillText(l,RX-72,y+(ch-ls.length*LH)/2+i*LH+LH/2))}
 y+=ch+22});y+=6});
 if(dr){x.fillStyle='#0891b2';x.textAlign='center';x.textBaseline='middle';x.font='400 22px '+FN;x.fillText('آکادمی ایران',W/2,y+24)}
 return y+70};
