@@ -1817,11 +1817,11 @@ function peSeed65(P){
 function peSeedMv(P){if(P.sdMv)return;P.sdMv=1;if(!P.mvn)P.mvn={t:tdy(),v:'آقای محمدامین ذاکری، آقای امیرعلی شیرعلی‌پور، آقای محمدصادق پرنیان، آقای محمد رضایی'};mk('st')}
 /* بازیکنان بازی‌های اخیر: دستی (اگر نوشته شده) وگرنه بازیکن‌های نمونه‌ی بازی‌های فوتبالِ همان روز */
 function peMvInfo(P,j){j=j||0;const fb=peFb(P,j),dn=fb.filter(g=>g.d),lt=[...dn].reverse().find(g=>g.t),day=lt?lt.t:'',MV=j?P.mvn1:P.mvn,m=MV&&String(MV.v||'').trim()&&(MV.t==tdy()||MV.t==day)?String(MV.v).trim():'',a=[...new Set(fb.filter(g=>g.d&&day&&g.t==day&&g.mp!=null&&S.st[g.mp]).map(g=>S.st[g.mp].n))].map(n=>'آقای '+n);const ml=m?m.split(/[،,\n]+/).map(x=>x.trim()).filter(Boolean):[],ex=a.filter(n=>!ml.some(y=>nm0(y)==nm0(n)||(avK(y)>=0&&avK(y)==avK(n))));return{m,a,txt:[...ml,...ex].join('، ')}}
-/* بازیکنان نمونه‌ی روزِ آخرین بازی: همه‌ی ⭐ انتخاب‌شده‌ها + نام‌های دستی (بدون محدودیت تعداد و بدون تکرار)؛ عکس از روی شماره‌ی دانش‌آموز */
-function peMvDays(P,j){j=j||0;const fb=peFb(P,j),dn=fb.filter(g=>g.d),lt=[...dn].reverse().find(g=>g.t),day=lt?lt.t:'',mi=peMvInfo(P,j),days=[],mp=new Map(),MV=j?P.mvn1:P.mvn;
+function peMvDays(P,j){j=j||0;const dnOf=q=>peFb(P,q).filter(g=>g.d),lt=q=>[...dnOf(q)].reverse().find(g=>g.t),l0=lt(j),l1=lt(1-j),day=l0?l0.t:(l1?l1.t:''),days=[],mp=new Map(),MV=j?P.mvn1:P.mvn;
  const add=(o,n,k0)=>{const k=k0!=null&&k0>=0?k0:avK(n),key=k>=0?'i'+k:'n'+nm0(n).replace(/[\u200c\u200d\s]+/g,'');if(!o.S)o.S=new Set();if(o.S.has(key))return;o.S.add(key);o.L.push({n,k})};
- dn.forEach(g=>{if(!g.t||g.mp==null||!S.st[g.mp])return;let o=mp.get(g.t);if(!o){o={d:g.t,L:[]};mp.set(g.t,o);days.push(o)}add(o,'آقای '+S.st[g.mp].n,g.mp)});
- if(mi.m){const L=mi.m.split(/[،,\n]+/).map(x=>x.trim()).filter(Boolean),k=day||(MV&&MV.t)||tdy();let o=mp.get(k);if(!o){o={d:k,L:[]};mp.set(k,o);days.push(o)}L.forEach(n=>add(o,n))}
+ /* بازیکنان نمونه‌ی هر دو بازی (فوتبال و والیبال) در هر دو گزارش می‌آیند */
+ [j,1-j].forEach(q=>dnOf(q).forEach(g=>{if(!g.t||g.mp==null||!S.st[g.mp])return;let o=mp.get(g.t);if(!o){o={d:g.t,L:[]};mp.set(g.t,o);days.push(o)}add(o,'آقای '+S.st[g.mp].n,g.mp)}));
+ [j,1-j].forEach(q=>{const mi=peMvInfo(P,q);if(!mi.m)return;const k=day||(MV&&MV.t)||tdy();let o=mp.get(k);if(!o){o={d:k,L:[]};mp.set(k,o);days.push(o)}mi.m.split(/[،,\n]+/).map(x=>x.trim()).filter(Boolean).forEach(n=>add(o,n))});
  const key=day||(MV&&MV.t)||tdy();return days.filter(o=>o.d==key&&o.L.length)}
 function peSeed66(P){
  if(P.sd66||!P.rd||!P.sd65)return;P.sd66=1;
