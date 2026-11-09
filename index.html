@@ -1945,7 +1945,7 @@ return `<tr class="${z}"><td><span class="rk">${fd(k+1)}</span></td><td class="n
 const lt=[...dn].reverse().find(g=>g.t),day=lt?lt.t:'',SPI=['⚽','🏐','🤾'],rtl='نتایج اخیر',mvx=peMvInfo(P,j);
 /* فقط بازی‌های همین لیگ (رشته‌ی خودش) در آخرین روزِ بازی، با بازیکن نمونه‌ی هر بازی */
 const rgo=(day?dn.filter(g=>g.t==day):[]).map(g=>({q:j,g})).reverse();
-const rec=rgo.map(({q,g})=>`<div class="gm"><div class="rs"><span>${E(P.t[g.a])}</span><b>${fd(g.gb)} - ${fd(g.ga)}</b><span>${E(P.t[g.b])}</span></div>`+(g.mp!=null&&S.st[g.mp]?`<div class="rsm">⭐ بازیکن نمونه: ${E(S.st[g.mp].n)}</div>`:'')+'</div>').join('');
+const rec=rgo.map(({q,g})=>`<div class="gm"><div class="rs"><span>${E(P.t[g.a])}</span><b>${fd(g.gb)} - ${fd(g.ga)}</b><span>${E(P.t[g.b])}</span></div>`+'</div>').join('');
 const body=`<div class="hd"><div class="hr"><div class="bl">${j?peVball(56):peBall(56)}</div><div><h1>جدول رده‌بندی لیگ ${j?'والیبال':'فوتبال'}</h1><small>${E(I.school||'')}${I.cls?' — کلاس '+E(I.cls):''}${I.year?' — سال تحصیلی '+E(I.year):''}</small><span class="bd">${fd(n)} بازی از ${fd(PEFT)} بازی</span></div></div></div>
 <div class="bw"><table class="tb"><thead><tr><th>رده</th><th style="text-align:right">تیم</th><th>بازی</th><th>برد</th><th>مساوی</th><th>باخت</th><th>زده</th><th>خورده</th><th>تفاضل</th><th>بازی‌های اخیر</th><th>امتیاز</th></tr></thead><tbody>${rows}</tbody></table></div>
 <div class="lg"><span style="--c:#e8b923">صدرنشین</span><span style="--c:#1d6fe0">رده‌های دوم و سوم</span><span style="--c:#16a34a">برد</span><span style="--c:#9aa5b8">مساوی</span><span style="--c:#dc2626">باخت</span></div>
